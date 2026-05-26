@@ -1,12 +1,14 @@
+import styles from "./HeroSection.module.css";
+
 export const HeroSection = () => (
   <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden" id="home">
-    <div className="floating-pixels" aria-hidden="true">
+    <div className={styles.floatingPixels} aria-hidden="true">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
     </div>
-    <div className="wrap hero-grid grid items-center">
+    <div className={`wrap ${styles.heroGrid} grid items-center`}>
       <div>
         <div className="eyebrow">16-bit beer bar · arcade blog · new retro games</div>
         <h1>Beer Bar with Arcade Machines</h1>
@@ -25,16 +27,16 @@ export const HeroSection = () => (
         </div>
       </div>
       <div
-        className="pixel-card bar-scene"
+        className={`${styles.pixelCard} ${styles.barScene}`}
         aria-label="Pixel art bar scene with arcade machines"
       >
-        <div className="sign">Cold Beer · Hot Pixels</div>
+        <div className={styles.sign}>Cold Beer · Hot Pixels</div>
         <div className="arcades flex gap-[22px] items-end mt-[70px]" aria-hidden="true">
-          <div className="cabinet"></div>
-          <div className="cabinet"></div>
-          <div className="cabinet"></div>
+          <div className={styles.cabinet}></div>
+          <div className={styles.cabinet}></div>
+          <div className={styles.cabinet}></div>
         </div>
-        <div className="beer-counter" aria-hidden="true"></div>
+        <div className={styles.beerCounter} aria-hidden="true"></div>
       </div>
     </div>
   </section>

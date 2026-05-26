@@ -1,11 +1,13 @@
+import styles from "./Runner.module.css";
+
 export const Runner = () => (
-  <div className="runner" data-runner aria-hidden="true">
-    <span className="head"></span>
-    <span className="body"></span>
-    <span className="arm a1"></span>
-    <span className="arm a2"></span>
-    <span className="leg l1"></span>
-    <span className="leg l2"></span>
-    <span className="sword"></span>
+  <div className={styles.runner} data-runner aria-hidden="true">
+    <span className={styles.head}></span>
+    <span className={styles.body}></span>
+    <span className={`${styles.arm} ${styles.a1}`}></span>
+    <span className={`${styles.arm} ${styles.a2}`}></span>
+    <span className={`${styles.leg} ${styles.l1}`}></span>
+    <span className={`${styles.leg} ${styles.l2}`}></span>
+    <span className={styles.sword}></span>
   </div>
 );

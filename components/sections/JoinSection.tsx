@@ -1,7 +1,9 @@
+import styles from "./JoinSection.module.css";
+
 export const JoinSection = () => (
-  <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden jump-section" id="join" data-runner-mode="jump">
+  <section className={`section ${styles.jumpSection} min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden`} id="join" data-runner-mode="jump">
     <div className="wrap">
-      <div className="cta-box">
+      <div className={styles.ctaBox}>
         <div className="eyebrow">Press Start</div>
         <h2>Walk into the Bar, Stay for the Story</h2>
         <p>

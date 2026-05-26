@@ -1,8 +1,10 @@
+import styles from "./DevSection.module.css";
+
 export const DevSection = () => (
   <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden" id="dev">
-    <div className="wrap dev-lab grid items-center">
-      <div className="dev-machine" aria-label="Pixel art dev computer"></div>
-      <div className="dev-copy">
+    <div className={`wrap ${styles.devLab} grid items-center`}>
+      <div className={styles.devMachine} aria-label="Pixel art dev computer"></div>
+      <div className={styles.devCopy}>
         <div className="eyebrow">Retro Game Dev Lab</div>
         <h2>Next-Gen Retro Game Development</h2>
         <p className="lead">

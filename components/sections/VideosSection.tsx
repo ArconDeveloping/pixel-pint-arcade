@@ -1,16 +1,18 @@
+import styles from "./VideosSection.module.css";
+
 export const VideosSection = () => (
   <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden" id="videos">
-    <div className="battle-layer" aria-hidden="true">
-      <div className="monster monster-left m1">
+    <div className={styles.battleLayer} aria-hidden="true">
+      <div className={`${styles.monster} ${styles.monsterLeft} ${styles.m1}`}>
         <span></span>
       </div>
-      <div className="monster monster-left m2">
+      <div className={`${styles.monster} ${styles.monsterLeft} ${styles.m2}`}>
         <span></span>
       </div>
-      <div className="monster monster-right m3">
+      <div className={`${styles.monster} ${styles.monsterRight} ${styles.m3}`}>
         <span></span>
       </div>
-      <div className="monster monster-right m4">
+      <div className={`${styles.monster} ${styles.monsterRight} ${styles.m4}`}>
         <span></span>
       </div>
     </div>
@@ -25,9 +27,9 @@ export const VideosSection = () => (
           go to YouTube.
         </p>
       </div>
-      <div className="videos-grid grid">
+      <div className={`${styles.videosGrid} grid`}>
         <a
-          className="video-screen"
+          className={styles.videoScreen}
           href="https://www.youtube.com/"
           target="_blank"
           rel="noreferrer"
@@ -38,21 +40,21 @@ export const VideosSection = () => (
           </span>
         </a>
         <div className="video-list grid gap-[18px]">
-          <article className="video-card">
+          <article className={styles.videoCard}>
             <h3>One Game&apos;s Story</h3>
             <p>Long-form format: development, release, legacy, bugs, fan base.</p>
             <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
               Open YouTube
             </a>
           </article>
-          <article className="video-card">
+          <article className={styles.videoCard}>
             <h3>Hardware Table</h3>
             <p>Short reviews of consoles, controllers, cartridges, mods and rare devices.</p>
             <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
               Watch Playlist
             </a>
           </article>
-          <article className="video-card">
+          <article className={styles.videoCard}>
             <h3>Bar Stream</h3>
             <p>
               Live playthroughs, commentary, chat and game breakdowns right in the arcade bar

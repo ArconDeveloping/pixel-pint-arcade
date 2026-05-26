@@ -1,9 +1,11 @@
+import styles from "./Footer.module.css";
+
 export const Footer = () => (
-  <footer className="footer">
-    <div className="footer-grid grid grid-cols-[1fr_auto] gap-6 items-center">
+  <footer className={styles.footer}>
+    <div className={`${styles.footerGrid} grid grid-cols-[1fr_auto] gap-6 items-center`}>
       <div>
-        <a className="logo" href="#home">
-          <span className="logo-mark" aria-hidden="true"></span>
+        <a className={styles.logo} href="#home">
+          <span className={styles.logoMark} aria-hidden="true"></span>
           <span>Pixel Pint Arcade</span>
         </a>
         <p style={{ marginTop: "14px" }}>
