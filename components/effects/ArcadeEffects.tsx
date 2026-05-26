@@ -12,8 +12,8 @@ export const ArcadeEffects = () => {
 
   useEffect(() => {
     const root = document.documentElement;
-    const runner = document.getElementById('runner');
-    const navLinks = [...document.querySelectorAll('.nav-links a')];
+    const runner = document.querySelector<HTMLElement>('[data-runner]');
+    const navLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
     const sections = [...document.querySelectorAll('section[id]')];
 
     let lastScrollY = window.scrollY;
@@ -32,7 +32,7 @@ export const ArcadeEffects = () => {
       const gapTarget =
         activeObstacle ||
         (jumpSection && jumpSection.classList.contains('is-active')
-          ? jumpSection.querySelector('.cta-box')
+          ? jumpSection
           : null);
       const jumpActive = Boolean(gapTarget);
 
@@ -42,7 +42,7 @@ export const ArcadeEffects = () => {
     }
 
     function updateSwordPickup() {
-      const history = document.getElementById('history');
+      const history = document.querySelector<HTMLElement>('[data-sword-pickup]');
       if (!history || swordPicked) return;
       const rect = history.getBoundingClientRect();
 

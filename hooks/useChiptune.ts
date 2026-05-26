@@ -11,7 +11,7 @@ const bass = [65.41, 65.41, 98.00, 98.00, 82.41, 82.41, 73.42, 98.00];
 
 export const useChiptune = () => {
   useEffect(() => {
-    const soundBtn = document.getElementById('soundBtn');
+    const soundBtn = document.querySelector<HTMLButtonElement>('[data-sound-toggle]');
 
     let audioCtx: AudioContext | null = null;
     let musicTimer: ReturnType<typeof setInterval> | null = null;
@@ -68,7 +68,11 @@ export const useChiptune = () => {
     }
 
     function handleClick() {
-      soundOn ? stopMusic() : startMusic();
+      if (soundOn) {
+        stopMusic();
+      } else {
+        startMusic();
+      }
     }
 
     soundBtn?.addEventListener('click', handleClick);

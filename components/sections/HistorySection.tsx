@@ -11,14 +11,14 @@ export const HistorySection = () => (
         </p>
       </div>
       <div className="timeline grid gap-[18px] max-w-[820px]">
-        <article className="timeline-item grid gap-5 items-start p-5 reveal">
+        <article className="timeline-item grid gap-5 items-start p-5 reveal" data-reveal>
           <div className="timeline-year">1983</div>
           <div>
             <h3>Pixel as Language</h3>
             <p>Games learned to speak through shape, colour, tile and sound. Constraints became style.</p>
           </div>
         </article>
-        <article className="timeline-item grid gap-5 items-start p-5 reveal">
+        <article className="timeline-item grid gap-5 items-start p-5 reveal" data-reveal>
           <div className="timeline-year">1991</div>
           <div>
             <h3>The 16-bit War</h3>
@@ -28,7 +28,7 @@ export const HistorySection = () => (
             </p>
           </div>
         </article>
-        <article className="timeline-item grid gap-5 items-start p-5 reveal">
+        <article className="timeline-item grid gap-5 items-start p-5 reveal" data-reveal>
           <div className="timeline-year">2026</div>
           <div>
             <h3>The New Retro Wave</h3>

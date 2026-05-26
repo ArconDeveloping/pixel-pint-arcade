@@ -1,10 +1,10 @@
 export const BlogSection = () => (
   <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden" id="blog">
     <div className="hanging-joysticks" aria-hidden="true">
-      <div className="joystick j1"></div>
-      <div className="joystick j2"></div>
-      <div className="joystick j3"></div>
-      <div className="joystick j4"></div>
+      <div className="joystick j1" data-joystick></div>
+      <div className="joystick j2" data-joystick></div>
+      <div className="joystick j3" data-joystick></div>
+      <div className="joystick j4" data-joystick></div>
     </div>
     <div className="wrap">
       <div className="section-title-row flex items-end justify-between">
@@ -18,7 +18,7 @@ export const BlogSection = () => (
         </p>
       </div>
       <div className="cards grid grid-cols-3">
-        <article className="feature-card reveal">
+        <article className="feature-card reveal" data-reveal>
           <div className="icon gamepad" aria-hidden="true"></div>
           <h3>2D Games</h3>
           <p>
@@ -26,12 +26,12 @@ export const BlogSection = () => (
             that still hold up today.
           </p>
         </article>
-        <article className="feature-card reveal obstacle-card" data-runner-mode="jump-card">
+        <article className="feature-card reveal obstacle-card" data-reveal data-runner-mode="jump-card">
           <div className="icon console" aria-hidden="true"></div>
           <h3>Consoles</h3>
           <p>NES, SNES, Mega Drive, Game Boy, PlayStation and other systems — no museum dust.</p>
         </article>
-        <article className="feature-card reveal">
+        <article className="feature-card reveal" data-reveal>
           <div className="icon device" aria-hidden="true"></div>
           <h3>Hardware</h3>
           <p>

@@ -8,11 +8,11 @@ export const Topbar = () => (
         <span>Pixel Pint Arcade</span>
       </a>
       <div className="nav-links flex items-center gap-[14px] flex-wrap justify-end">
-        <a href="#blog">Blog</a>
-        <a href="#history">Stories</a>
-        <a href="#videos">Videos</a>
-        <a href="#dev">Dev Lab</a>
-        <button className="sound-btn" id="soundBtn" type="button">
+        <a href="#blog" data-nav-link>Blog</a>
+        <a href="#history" data-nav-link>Stories</a>
+        <a href="#videos" data-nav-link>Videos</a>
+        <a href="#dev" data-nav-link>Dev Lab</a>
+        <button className="sound-btn" type="button" data-sound-toggle>
           Sound OFF
         </button>
       </div>

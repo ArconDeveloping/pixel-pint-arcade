@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 export const useReveal = () => {
   useEffect(() => {
-    const reveals = [...document.querySelectorAll('.reveal')];
+    const reveals = [...document.querySelectorAll('[data-reveal]')];
 
     const observer = new IntersectionObserver(
       (entries) => {

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 export const useJoystickTilt = () => {
   useEffect(() => {
-    const joysticks = [...document.querySelectorAll('.joystick')];
+    const joysticks = [...document.querySelectorAll('[data-joystick]')];
 
     function handlePointerMove(event: PointerEvent) {
       joysticks.forEach((joy) => {
