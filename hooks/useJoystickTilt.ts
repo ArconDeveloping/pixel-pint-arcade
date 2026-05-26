@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export function useJoystickTilt() {
+export const useJoystickTilt = () => {
   useEffect(() => {
     const joysticks = [...document.querySelectorAll('.joystick')];
 

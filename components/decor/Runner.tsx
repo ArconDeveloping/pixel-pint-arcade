@@ -1,13 +1,11 @@
-export default function Runner() {
-  return (
-    <div className="runner" id="runner" aria-hidden="true">
-      <span className="head"></span>
-      <span className="body"></span>
-      <span className="arm a1"></span>
-      <span className="arm a2"></span>
-      <span className="leg l1"></span>
-      <span className="leg l2"></span>
-      <span className="sword"></span>
-    </div>
-  );
-}
+export const Runner = () => (
+  <div className="runner" id="runner" aria-hidden="true">
+    <span className="head"></span>
+    <span className="body"></span>
+    <span className="arm a1"></span>
+    <span className="arm a2"></span>
+    <span className="leg l1"></span>
+    <span className="leg l2"></span>
+    <span className="sword"></span>
+  </div>
+);

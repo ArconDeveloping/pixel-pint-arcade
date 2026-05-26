@@ -9,7 +9,7 @@ const notes = [
 
 const bass = [65.41, 65.41, 98.00, 98.00, 82.41, 82.41, 73.42, 98.00];
 
-export function useChiptune() {
+export const useChiptune = () => {
   useEffect(() => {
     const soundBtn = document.getElementById('soundBtn');
 

@@ -5,7 +5,7 @@ import { useChiptune } from '@/hooks/useChiptune';
 import { useReveal } from '@/hooks/useReveal';
 import { useJoystickTilt } from '@/hooks/useJoystickTilt';
 
-export default function ArcadeEffects() {
+export const ArcadeEffects = () => {
   useChiptune();
   useReveal();
   useJoystickTilt();

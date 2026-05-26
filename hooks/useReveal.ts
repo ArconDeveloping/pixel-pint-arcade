@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export function useReveal() {
+export const useReveal = () => {
   useEffect(() => {
     const reveals = [...document.querySelectorAll('.reveal')];
 
