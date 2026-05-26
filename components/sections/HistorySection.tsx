@@ -1,7 +1,7 @@
 export const HistorySection = () => (
-  <section className="section" id="history" data-sword-pickup="true">
+  <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden" id="history" data-sword-pickup="true">
     <div className="sword-pickup" id="swordPickup" aria-hidden="true"></div>
-    <div className="wrap split">
+    <div className="wrap split grid items-center">
       <div>
         <div className="eyebrow">Content presentation example</div>
         <h2>From Cartridge to Indie</h2>
@@ -10,15 +10,15 @@ export const HistorySection = () => (
           eras, consoles, studios, genres and technical constraints.
         </p>
       </div>
-      <div className="timeline">
-        <article className="timeline-item reveal">
+      <div className="timeline grid gap-[18px] max-w-[820px]">
+        <article className="timeline-item grid gap-5 items-start p-5 reveal">
           <div className="timeline-year">1983</div>
           <div>
             <h3>Pixel as Language</h3>
             <p>Games learned to speak through shape, colour, tile and sound. Constraints became style.</p>
           </div>
         </article>
-        <article className="timeline-item reveal">
+        <article className="timeline-item grid gap-5 items-start p-5 reveal">
           <div className="timeline-year">1991</div>
           <div>
             <h3>The 16-bit War</h3>
@@ -28,7 +28,7 @@ export const HistorySection = () => (
             </p>
           </div>
         </article>
-        <article className="timeline-item reveal">
+        <article className="timeline-item grid gap-5 items-start p-5 reveal">
           <div className="timeline-year">2026</div>
           <div>
             <h3>The New Retro Wave</h3>

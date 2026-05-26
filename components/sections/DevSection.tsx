@@ -1,6 +1,6 @@
 export const DevSection = () => (
-  <section className="section" id="dev">
-    <div className="wrap dev-lab">
+  <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden" id="dev">
+    <div className="wrap dev-lab grid items-center">
       <div className="dev-machine" aria-label="Pixel art dev computer"></div>
       <div className="dev-copy">
         <div className="eyebrow">Retro Game Dev Lab</div>

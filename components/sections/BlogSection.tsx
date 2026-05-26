@@ -1,5 +1,5 @@
 export const BlogSection = () => (
-  <section className="section" id="blog">
+  <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden" id="blog">
     <div className="hanging-joysticks" aria-hidden="true">
       <div className="joystick j1"></div>
       <div className="joystick j2"></div>
@@ -7,7 +7,7 @@ export const BlogSection = () => (
       <div className="joystick j4"></div>
     </div>
     <div className="wrap">
-      <div className="section-title-row">
+      <div className="section-title-row flex items-end justify-between">
         <div>
           <div className="eyebrow">Blog inside the project</div>
           <h2>Stories, Hardware and the Spirit of 2D</h2>
@@ -17,7 +17,7 @@ export const BlogSection = () => (
           breakdowns, archives and personal notes on 2D gaming culture will live here.
         </p>
       </div>
-      <div className="cards">
+      <div className="cards grid grid-cols-3">
         <article className="feature-card reveal">
           <div className="icon gamepad" aria-hidden="true"></div>
           <h3>2D Games</h3>
@@ -40,7 +40,7 @@ export const BlogSection = () => (
           </p>
         </article>
       </div>
-      <div className="stats">
+      <div className="stats grid grid-cols-3 gap-[14px] mt-7">
         <div className="stat">
           <strong>8-bit</strong>
           <span>cultural roots</span>

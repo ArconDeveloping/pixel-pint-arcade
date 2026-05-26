@@ -1,5 +1,5 @@
 export const JoinSection = () => (
-  <section className="section jump-section" id="join" data-runner-mode="jump">
+  <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden jump-section" id="join" data-runner-mode="jump">
     <div className="wrap">
       <div className="cta-box">
         <div className="eyebrow">Press Start</div>
@@ -8,7 +8,7 @@ export const JoinSection = () => (
           This landing should work as the front door of the project: instantly showing the
           tone, theme, media formats and promising regular content without overwhelming.
         </p>
-        <div className="actions" style={{ justifyContent: "center" }}>
+        <div className="actions flex flex-wrap gap-4 items-center" style={{ justifyContent: "center" }}>
           <a className="btn" href="#home">
             Back to Top
           </a>

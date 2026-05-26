@@ -2,12 +2,12 @@
 
 export const Topbar = () => (
   <header className="topbar">
-    <nav className="nav" aria-label="Main navigation">
+    <nav className="nav flex items-center justify-between gap-[18px] min-h-[70px]">
       <a className="logo" href="#home" aria-label="Pixel Pint Arcade">
         <span className="logo-mark" aria-hidden="true"></span>
         <span>Pixel Pint Arcade</span>
       </a>
-      <div className="nav-links">
+      <div className="nav-links flex items-center gap-[14px] flex-wrap justify-end">
         <a href="#blog">Blog</a>
         <a href="#history">Stories</a>
         <a href="#videos">Videos</a>

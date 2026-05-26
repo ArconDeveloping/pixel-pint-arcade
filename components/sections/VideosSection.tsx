@@ -1,5 +1,5 @@
 export const VideosSection = () => (
-  <section className="section" id="videos">
+  <section className="section min-h-screen relative grid items-center pt-[110px] pb-[100px] overflow-hidden" id="videos">
     <div className="battle-layer" aria-hidden="true">
       <div className="monster monster-left m1">
         <span></span>
@@ -15,7 +15,7 @@ export const VideosSection = () => (
       </div>
     </div>
     <div className="wrap">
-      <div className="section-title-row">
+      <div className="section-title-row flex items-end justify-between">
         <div>
           <div className="eyebrow">YouTube & video format</div>
           <h2>Videos from the Bar</h2>
@@ -25,7 +25,7 @@ export const VideosSection = () => (
           go to YouTube.
         </p>
       </div>
-      <div className="videos-grid">
+      <div className="videos-grid grid">
         <a
           className="video-screen"
           href="https://www.youtube.com/"
@@ -37,7 +37,7 @@ export const VideosSection = () => (
             Latest episode: how pixels, beer and arcade machines became one culture
           </span>
         </a>
-        <div className="video-list">
+        <div className="video-list grid gap-[18px]">
           <article className="video-card">
             <h3>One Game&apos;s Story</h3>
             <p>Long-form format: development, release, legacy, bugs, fan base.</p>
