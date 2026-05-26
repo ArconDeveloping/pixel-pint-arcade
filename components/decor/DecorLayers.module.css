@@ -1,0 +1,111 @@
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 200 !important;
+  pointer-events: none;
+  opacity: .08;
+  background-image:
+    linear-gradient(90deg, transparent 0 6px, rgba(255, 255, 255, .8) 6px 7px),
+    linear-gradient(transparent 0 6px, rgba(255, 255, 255, .8) 6px 7px);
+  background-size: 7px 7px;
+  animation: noiseShift .8s steps(2) infinite;
+}
+
+.trackLayer {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 8 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+}
+
+.trackLayer::before,
+.trackLayer::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+}
+
+.runnerPath {
+  position: fixed !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: calc(50% - 8px) !important;
+  right: auto !important;
+  width: 16px !important;
+  height: auto !important;
+  z-index: 1 !important;
+  transform: none !important;
+  opacity: .92 !important;
+  pointer-events: none !important;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(255, 209, 102, .58) 22px 34px),
+    linear-gradient(180deg, rgba(70, 240, 255, .1), rgba(255, 79, 216, .14)) !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 4px solid rgba(255, 209, 102, .25) !important;
+  border-right: 4px solid rgba(0, 0, 0, .8) !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+.runnerPath::before {
+  content: "" !important;
+  display: block !important;
+  position: fixed !important;
+  left: calc(50% - 96px) !important;
+  top: calc(var(--break-top) - 2px) !important;
+  width: 192px !important;
+  height: calc(var(--break-bottom) - var(--break-top) + 4px) !important;
+  opacity: var(--road-gap-opacity) !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 75, 92, .18), transparent 34%),
+    radial-gradient(circle at 50% 82%, rgba(70, 240, 255, .14), transparent 34%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .035) 0 6px, transparent 6px 12px),
+    rgba(5, 2, 10, .96) !important;
+  border-left: 4px solid rgba(255, 209, 102, .18) !important;
+  border-right: 4px solid rgba(0, 0, 0, .7) !important;
+  box-shadow:
+    inset 0 12px 0 rgba(0, 0, 0, .42),
+    inset 0 -12px 0 rgba(0, 0, 0, .42),
+    0 0 28px rgba(255, 79, 216, .12) !important;
+  transition: opacity .16s steps(2), top .12s steps(2), height .12s steps(2) !important;
+}
+
+.runnerPath::after {
+  content: none !important;
+  display: none !important;
+}
+
+@keyframes noiseShift {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-7px, 7px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (max-width: 900px) {
+  .runnerPath {
+    left: calc(100% - 48px) !important;
+  }
+
+  .runnerPath::before {
+    left: calc(100% - 136px) !important;
+  }
+
+  .trackLayer::before,
+  .trackLayer::after {
+    left: calc(100% - 72px) !important;
+  }
+}

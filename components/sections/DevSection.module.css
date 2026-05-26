@@ -1,0 +1,93 @@
+.devLab {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: calc(34px + var(--gate));
+}
+
+.devLab > * {
+  transition: transform .75s steps(9), opacity .45s ease;
+}
+
+:global(.section.is-active) .devLab > :first-child {
+  transform: translateX(calc(var(--gate) * -1));
+}
+
+:global(.section.is-active) .devLab > :last-child {
+  transform: translateX(var(--gate));
+}
+
+.devMachine {
+  min-height: 430px;
+  border: 6px solid #05020a;
+  background:
+    linear-gradient(#412167 0 0) 30px 24px / calc(100% - 60px) 72px no-repeat,
+    linear-gradient(#071422 0 0) 48px 116px / calc(100% - 96px) 180px no-repeat,
+    linear-gradient(var(--green) 0 0) 70px 338px / 74px 26px no-repeat,
+    linear-gradient(var(--red) 0 0) 170px 338px / 30px 26px no-repeat,
+    linear-gradient(var(--yellow) 0 0) 218px 338px / 30px 26px no-repeat,
+    #251141;
+  box-shadow: 10px 10px 0 #000;
+  position: relative;
+  z-index: 30 !important;
+  overflow: hidden;
+}
+
+.devMachine::before {
+  content: "NEW RETRO ENGINE\A 8 WAY MOVE\A CRT SHADER ON\A LEVEL BUILD: 72%";
+  white-space: pre;
+  position: absolute;
+  left: 70px;
+  top: 148px;
+  color: var(--green);
+  line-height: 1.8;
+  text-shadow: 0 0 12px rgba(105, 255, 143, .8);
+}
+
+.devMachine::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background: repeating-linear-gradient(90deg, #1d0b31 0 30px, #2d1450 30px 60px);
+}
+
+.devCopy p {
+  margin: 0;
+  color: #e2cffd;
+  line-height: 1.55;
+}
+
+.devCopy ul {
+  list-style: none;
+  padding: 0;
+  margin: 22px 0 0;
+  display: grid;
+  gap: 14px;
+}
+
+.devCopy li {
+  padding: 14px 14px 14px 44px;
+  border: 3px solid rgba(255, 255, 255, .14);
+  background: rgba(0, 0, 0, .22);
+  position: relative;
+  line-height: 1.45;
+}
+
+.devCopy li::before {
+  content: "■";
+  position: absolute;
+  left: 16px;
+  color: var(--green);
+}
+
+@media (max-width: 900px) {
+  .devLab {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .devMachine {
+    min-height: 330px;
+  }
+}

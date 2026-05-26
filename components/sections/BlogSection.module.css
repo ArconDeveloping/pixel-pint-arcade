@@ -1,0 +1,317 @@
+.hangingJoysticks {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.joystick {
+  position: absolute;
+  top: -260px;
+  width: 108px;
+  height: 270px;
+  transform-origin: top center;
+  transform: rotate(0deg);
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+:global(#blog.is-active) .joystick {
+  animation: joystickDrop 1.05s steps(8) forwards, joystickIdle 3.4s ease-in-out 1.05s infinite;
+}
+
+.j1 {
+  left: 15%;
+  animation-delay: 0s, 1.05s;
+}
+
+.j2 {
+  right: 16%;
+  animation-delay: .18s, 1.23s;
+}
+
+.j3 {
+  left: calc(50% - 260px);
+  animation-delay: .34s, 1.39s;
+}
+
+.j4 {
+  right: calc(50% - 260px);
+  animation-delay: .48s, 1.53s;
+}
+
+.joystick::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 6px;
+  height: 186px;
+  background: #120719;
+  border-left: 3px solid #412167;
+  border-right: 3px solid #000;
+  transform: translateX(-50%);
+}
+
+.joystick::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 168px;
+  width: 102px;
+  height: 70px;
+  transform: translateX(-50%) rotate(var(--joy-tilt));
+  background:
+    linear-gradient(#05020a 0 0) 18px 31px / 34px 10px no-repeat,
+    linear-gradient(#05020a 0 0) 30px 19px / 10px 34px no-repeat,
+    linear-gradient(var(--red) 0 0) 66px 18px / 16px 16px no-repeat,
+    linear-gradient(var(--yellow) 0 0) 78px 36px / 16px 16px no-repeat,
+    linear-gradient(135deg, #46f0ff, #ff4fd8);
+  border: 5px solid #05020a;
+  box-shadow: 7px 7px 0 #000, 0 0 22px rgba(70, 240, 255, .35);
+  transition: transform .18s steps(3), filter .18s ease;
+}
+
+.joystick:hover::after {
+  filter: brightness(1.35);
+  transform: translateX(-50%) rotate(calc(var(--joy-tilt) * 1.4)) translateY(-8px);
+}
+
+.cards {
+  gap: calc(22px + var(--gate) / 4);
+}
+
+.cards > * {
+  transition: transform .75s steps(9), opacity .45s ease;
+}
+
+.featureCard {
+  min-height: 250px;
+  padding: 22px;
+  border: 5px solid #51207b;
+  background: rgba(12, 5, 22, .78);
+  box-shadow: 8px 8px 0 #000;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: transform .7s steps(8), opacity .7s ease;
+  position: relative;
+  z-index: 30 !important;
+}
+
+.featureCard:global(.is-visible) {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+:global(#blog.is-active) .featureCard:global(.is-visible):nth-child(1) {
+  transform: translateX(calc(var(--gate) * -1));
+}
+
+:global(#blog.is-active) .featureCard:global(.is-visible):nth-child(2) {
+  transform: translateY(66px) !important;
+}
+
+:global(#blog.is-active) .featureCard:global(.is-visible):nth-child(2):global(.is-jump-target) {
+  transform: translateY(66px) scale(1.03) !important;
+  box-shadow: 8px 8px 0 #000, 0 0 32px rgba(105, 255, 143, .25);
+}
+
+:global(#blog.is-active) .featureCard:global(.is-visible):nth-child(3) {
+  transform: translateX(var(--gate));
+}
+
+.obstacleCard {
+  position: relative;
+  z-index: 30;
+  overflow: visible !important;
+}
+
+.obstacleCard::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: -26px !important;
+  bottom: -26px !important;
+  width: 204px !important;
+  transform: translateX(-50%) !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 75, 92, .2), transparent 34%),
+    radial-gradient(circle at 50% 82%, rgba(70, 240, 255, .16), transparent 34%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .04) 0 6px, transparent 6px 12px),
+    rgba(5, 2, 10, .98) !important;
+  border-top: 5px solid rgba(255, 75, 92, .5) !important;
+  border-bottom: 5px solid rgba(70, 240, 255, .36) !important;
+  border-left: 4px solid rgba(255, 209, 102, .18) !important;
+  border-right: 4px solid rgba(0, 0, 0, .7) !important;
+  box-shadow:
+    inset 0 12px 0 rgba(0, 0, 0, .42),
+    inset 0 -12px 0 rgba(0, 0, 0, .42),
+    0 0 28px rgba(255, 79, 216, .12) !important;
+}
+
+.obstacleCard:global(.is-jump-target)::before {
+  opacity: 1 !important;
+}
+
+.obstacleCard::after {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: -37px !important;
+  width: 78px !important;
+  height: 18px !important;
+  transform: translateX(-50%) !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background: repeating-linear-gradient(90deg, var(--red) 0 8px, transparent 8px 16px) !important;
+  filter: drop-shadow(0 0 10px rgba(255, 75, 92, .65)) !important;
+  transition: none !important;
+}
+
+.obstacleCard:global(.is-jump-target)::after {
+  opacity: 1 !important;
+}
+
+.obstacleCard:global(.is-jump-target) {
+  isolation: isolate;
+}
+
+.icon {
+  width: 58px;
+  height: 58px;
+  margin-bottom: 18px;
+  border: 4px solid #08020f;
+  box-shadow: 5px 5px 0 #000;
+  background: var(--pink);
+  position: relative;
+}
+
+.gamepad {
+  background:
+    linear-gradient(#05020a 0 0) 10px 24px / 36px 10px no-repeat,
+    linear-gradient(#05020a 0 0) 24px 10px / 10px 36px no-repeat,
+    var(--green);
+}
+
+.console {
+  background:
+    linear-gradient(#0b0414 0 0) 9px 12px / 40px 12px no-repeat,
+    linear-gradient(var(--cyan) 0 0) 9px 34px / 12px 8px no-repeat,
+    linear-gradient(var(--yellow) 0 0) 30px 34px / 18px 8px no-repeat,
+    var(--orange);
+}
+
+.device {
+  background:
+    linear-gradient(#06131c 0 0) 12px 10px / 34px 28px no-repeat,
+    linear-gradient(var(--yellow) 0 0) 18px 44px / 22px 6px no-repeat,
+    var(--cyan);
+}
+
+.featureCard h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  line-height: 1.35;
+  color: var(--yellow);
+  text-transform: uppercase;
+}
+
+.featureCard p {
+  margin: 0;
+  color: #e2cffd;
+  line-height: 1.55;
+}
+
+.stats {
+  transition: transform .75s steps(9), opacity .45s ease;
+}
+
+.stats > * {
+  transition: transform .75s steps(9), opacity .45s ease;
+}
+
+.stat {
+  padding: 16px;
+  background: rgba(0, 0, 0, .24);
+  border: 3px solid rgba(255, 255, 255, .16);
+  position: relative;
+  z-index: 30 !important;
+}
+
+.stat strong {
+  display: block;
+  color: var(--cyan);
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+:global(.section.is-active) .stats > :first-child {
+  transform: translateX(calc(var(--gate) * -1));
+}
+
+:global(.section.is-active) .stats > :last-child {
+  transform: translateX(var(--gate));
+}
+
+:global(.section.is-active) .stats > :nth-child(2) {
+  transform: translateY(44px);
+}
+
+@keyframes joystickDrop {
+  0% {
+    top: -260px;
+    transform: rotate(0deg);
+  }
+
+  45% {
+    top: 0;
+    transform: rotate(18deg);
+  }
+
+  62% {
+    top: -26px;
+    transform: rotate(-15deg);
+  }
+
+  78% {
+    top: 0;
+    transform: rotate(10deg);
+  }
+
+  90% {
+    top: -8px;
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    top: 0;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes joystickIdle {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .cards,
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .joystick {
+    display: none;
+  }
+}
