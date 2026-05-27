@@ -14,6 +14,7 @@ export const Topbar = () => (
         <a className={styles.navLink} href="#history" data-nav-link>Stories</a>
         <a className={styles.navLink} href="#videos" data-nav-link>Videos</a>
         <a className={styles.navLink} href="#dev" data-nav-link>Dev Lab</a>
+        <a className={styles.navLink} href="/auth/sign-in">Sign in</a>
         <button className={styles.soundBtn} type="button" data-sound-toggle>
           Sound OFF
         </button>

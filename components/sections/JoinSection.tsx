@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import styles from "./JoinSection.module.css";
 
 export const JoinSection = () => (
@@ -14,14 +16,12 @@ export const JoinSection = () => (
           <a className="btn" href="#home">
             Back to Top
           </a>
-          <a
+          <Link
             className="btn secondary"
-            href="https://www.youtube.com/"
-            target="_blank"
-            rel="noreferrer"
+            href="/blog"
           >
-            YouTube Channel
-          </a>
+            Read the Blog
+          </Link>
         </div>
       </div>
     </div>
