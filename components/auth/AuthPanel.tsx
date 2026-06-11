@@ -12,6 +12,8 @@ type AuthPanelProps = {
   googleEnabled: boolean;
 };
 
+const authSuccessPath = "/account";
+
 export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
   const router = useRouter();
   const [message, setMessage] = useState("");
@@ -33,12 +35,12 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
           name,
           email,
           password,
-          callbackURL: "/",
+          callbackURL: authSuccessPath,
         })
       : await authClient.signIn.email({
           email,
           password,
-          callbackURL: "/",
+          callbackURL: authSuccessPath,
         });
 
     setPending(false);
@@ -48,7 +50,7 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
       return;
     }
 
-    router.push("/");
+    router.push(authSuccessPath);
     router.refresh();
   };
 
@@ -58,7 +60,7 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
 
     const result = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/",
+      callbackURL: authSuccessPath,
     });
 
     setPending(false);
@@ -115,7 +117,7 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
         </form>
         <Link
           className={styles.switchLink}
-          href={isSignUp ? "/auth/sign-in" : "/auth/sign-up"}
+          href={isSignUp ? "/login" : "/register"}
         >
           {isSignUp ? "I have account" : "Create account"}
         </Link>

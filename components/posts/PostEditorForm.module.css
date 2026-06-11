@@ -1,0 +1,93 @@
+.form {
+  display: grid;
+  gap: 18px;
+  border: 5px solid #51207b;
+  background: rgba(12, 5, 22, .86);
+  box-shadow: 8px 8px 0 #000;
+  padding: clamp(18px, 4vw, 30px);
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label,
+.toggle {
+  color: var(--yellow);
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 4px solid #5b2c7e;
+  background: #090411;
+  color: var(--ink);
+  padding: 14px;
+  font: inherit;
+  line-height: 1.5;
+  outline: none;
+  box-shadow: 5px 5px 0 #000;
+}
+
+.field input {
+  min-height: 52px;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--cyan);
+}
+
+.field p {
+  margin: 0;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  color: #ffe6a3;
+  cursor: pointer;
+}
+
+.toggle input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--yellow);
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.actions button:disabled {
+  cursor: wait;
+  filter: grayscale(.7);
+  opacity: .72;
+}
+
+.success {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.error {
+  color: var(--red);
+  font-weight: 700;
+}

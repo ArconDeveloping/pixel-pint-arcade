@@ -45,6 +45,7 @@ export async function createPostAction(
   try {
     await createPost(parsed.data);
     revalidatePath("/");
+    revalidatePath("/account");
     revalidatePath(`/blog/${parsed.data.slug}`);
     return { ok: true };
   } catch (error) {
