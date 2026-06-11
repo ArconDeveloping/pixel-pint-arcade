@@ -1,7 +1,7 @@
 import "server-only";
 
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/data/auth";
+import { requireAdmin, requireUserRecord } from "@/data/auth";
 
 export type PostListItemDTO = {
   id: string;
@@ -17,6 +17,16 @@ export type PostListItemDTO = {
 
 export type PostDetailDTO = PostListItemDTO & {
   content: string;
+};
+
+export type AccountPostDTO = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
 const postListSelect = {
@@ -77,6 +87,29 @@ export const getPublishedPostBySlug = async (
     ...toPostListItemDTO(post),
     content: post.content,
   };
+};
+
+export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
+  const user = await requireUserRecord();
+  const posts = await prisma.post.findMany({
+    where: { authorId: user.id },
+    orderBy: { updatedAt: "desc" },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      published: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return posts.map((post) => ({
+    ...post,
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  }));
 };
 
 export const createPost = async (input: {

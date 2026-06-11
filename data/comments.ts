@@ -16,6 +16,17 @@ export type CommentDTO = {
   };
 };
 
+export type AccountCommentDTO = {
+  id: string;
+  body: string;
+  createdAt: string;
+  post: {
+    title: string;
+    slug: string;
+    published: boolean;
+  };
+};
+
 const toCommentDTO = (comment: {
   id: string;
   body: string;
@@ -118,6 +129,31 @@ export const createComment = async (input: {
   });
 
   return toCommentDTO(comment);
+};
+
+export const getCurrentUserComments = async (): Promise<AccountCommentDTO[]> => {
+  const user = await requireUserRecord();
+  const comments = await prisma.comment.findMany({
+    where: { authorId: user.id },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      body: true,
+      createdAt: true,
+      post: {
+        select: {
+          title: true,
+          slug: true,
+          published: true,
+        },
+      },
+    },
+  });
+
+  return comments.map((comment) => ({
+    ...comment,
+    createdAt: comment.createdAt.toISOString(),
+  }));
 };
 
 export const deleteComment = async (commentId: string) => {
