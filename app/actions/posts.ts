@@ -47,7 +47,7 @@ export async function createPostAction(
     revalidatePath("/");
     revalidatePath("/account");
     revalidatePath(`/blog/${parsed.data.slug}`);
-    return { ok: true };
+    return { ok: true, resetKey: parsed.data.slug };
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
       return actionError("Sign in before creating a post.");

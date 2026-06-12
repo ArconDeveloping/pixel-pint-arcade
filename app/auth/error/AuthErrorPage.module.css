@@ -1,0 +1,46 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 30;
+  padding: 110px 18px 70px;
+}
+
+.panel {
+  width: min(720px, 100%);
+  border: 5px solid #51207b;
+  background: rgba(12, 5, 22, .88);
+  box-shadow: 10px 10px 0 #000;
+  padding: clamp(18px, 4vw, 34px);
+}
+
+.panel h1 {
+  font-size: clamp(24px, 5vw, 44px);
+  margin-bottom: 22px;
+}
+
+.panel p {
+  color: #ffe6a3;
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.55;
+  margin: 0 0 18px;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.panel code {
+  display: inline-flex;
+  border: 3px solid rgba(255, 75, 92, .7);
+  background: rgba(255, 75, 92, .1);
+  color: var(--red);
+  padding: 8px 10px;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+}
