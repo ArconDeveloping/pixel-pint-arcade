@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useState } from "react";
 
 import { createPostAction } from "@/app/actions/posts";
 import type { ActionState } from "@/app/actions/comments";
@@ -17,20 +17,38 @@ const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-export const PostEditorForm = () => {
-  const [state, formAction, pending] = useActionState(createPostAction, initialState);
+type PostEditorFieldsProps = {
+  pending: boolean;
+  state: ActionState;
+};
+
+const PostEditorFields = ({ pending, state }: PostEditorFieldsProps) => {
   const [title, setTitle] = useState("");
-  const generatedSlug = useMemo(() => slugify(title), [title]);
+  const [slug, setSlug] = useState("");
+  const [slugEdited, setSlugEdited] = useState(false);
+
+  const handleTitleChange = (value: string) => {
+    setTitle(value);
+
+    if (!slugEdited) {
+      setSlug(slugify(value));
+    }
+  };
+
+  const handleSlugChange = (value: string) => {
+    setSlug(value);
+    setSlugEdited(true);
+  };
 
   return (
-    <form className={styles.form} action={formAction}>
+    <>
       <div className={styles.field}>
         <label htmlFor="title">Title</label>
         <input
           id="title"
           name="title"
           value={title}
-          onChange={(event) => setTitle(event.target.value)}
+          onChange={(event) => handleTitleChange(event.target.value)}
           required
           maxLength={160}
         />
@@ -42,8 +60,8 @@ export const PostEditorForm = () => {
         <input
           id="slug"
           name="slug"
-          defaultValue={generatedSlug}
-          key={generatedSlug}
+          value={slug}
+          onChange={(event) => handleSlugChange(event.target.value)}
           required
           maxLength={180}
           pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
@@ -75,6 +93,20 @@ export const PostEditorForm = () => {
         {state.ok ? <span className={styles.success}>Post saved.</span> : null}
         {state.message ? <span className={styles.error}>{state.message}</span> : null}
       </div>
+    </>
+  );
+};
+
+export const PostEditorForm = () => {
+  const [state, formAction, pending] = useActionState(createPostAction, initialState);
+
+  return (
+    <form className={styles.form} action={formAction}>
+      <PostEditorFields
+        key={state.resetKey ?? "draft"}
+        pending={pending}
+        state={state}
+      />
     </form>
   );
 };

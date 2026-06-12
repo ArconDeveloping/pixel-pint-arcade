@@ -59,16 +59,20 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
     setMessage("");
     setPending(true);
 
-    const result = await authClient.signIn.social({
-      provider: "google",
-      callbackURL: authSuccessPath,
-      errorCallbackURL: authErrorPath,
-    });
+    try {
+      const result = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: authSuccessPath,
+        errorCallbackURL: authErrorPath,
+      });
 
-    setPending(false);
-
-    if (result.error) {
-      setMessage(result.error.message ?? "Google sign in failed.");
+      if (result.error) {
+        setMessage(result.error.message ?? "Google sign in failed.");
+      }
+    } catch {
+      setMessage("Google sign in failed. Please try again.");
+    } finally {
+      setPending(false);
     }
   };
 
