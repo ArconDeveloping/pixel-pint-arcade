@@ -30,9 +30,10 @@ export default async function AccountPage() {
     redirect("/login");
   }
 
-  const [user, posts, comments] = await Promise.all([
-    requireUserRecord(),
-    getCurrentUserPosts(),
+  const user = await requireUserRecord();
+  const isAdmin = user.role === "ADMIN";
+  const [posts, comments] = await Promise.all([
+    isAdmin ? getCurrentUserPosts() : Promise.resolve([]),
     getCurrentUserComments(),
   ]);
 
@@ -51,54 +52,54 @@ export default async function AccountPage() {
             {user.name.slice(0, 1).toUpperCase()}
           </div>
           <div>
-            <div className="eyebrow">Player cabinet</div>
+            <div className="eyebrow">Account</div>
             <h1>{user.name}</h1>
             <p>{user.email}</p>
           </div>
         </section>
 
         <nav className={styles.tabs} aria-label="Account sections">
-          {user.role === "ADMIN" ? (
-            <Link href="/account/posts/new">Write post</Link>
-          ) : null}
-          <a href="#posts">My posts</a>
+          {isAdmin ? <Link href="/account/posts/new">Write post</Link> : null}
+          {isAdmin ? <a href="#posts">My posts</a> : null}
           <a href="#comments">My comments</a>
         </nav>
 
-        <section className={styles.section} id="posts">
-          <div className={styles.sectionHeader}>
-            <h2>My posts</h2>
-            <span>{posts.length}</span>
-          </div>
+        {isAdmin ? (
+          <section className={styles.section} id="posts">
+            <div className={styles.sectionHeader}>
+              <h2>My posts</h2>
+              <span>{posts.length}</span>
+            </div>
 
-          {posts.length > 0 ? (
-            <div className={styles.list}>
-              {posts.map((post) => (
-                <article className={styles.item} key={post.id}>
-                  <div className={styles.itemMeta}>
-                    <span className={post.published ? styles.published : styles.draft}>
-                      {post.published ? "Published" : "Draft"}
-                    </span>
-                    <time dateTime={post.updatedAt}>Updated {formatDate(post.updatedAt)}</time>
-                  </div>
-                  <h3>
-                    {post.published ? (
-                      <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                    ) : (
-                      post.title
-                    )}
-                  </h3>
-                  {post.excerpt ? <p>{post.excerpt}</p> : null}
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className={styles.emptyState}>
-              <h3>No posts yet</h3>
-              <p>Your authored posts will appear here after you create them.</p>
-            </div>
-          )}
-        </section>
+            {posts.length > 0 ? (
+              <div className={styles.list}>
+                {posts.map((post) => (
+                  <article className={styles.item} key={post.id}>
+                    <div className={styles.itemMeta}>
+                      <span className={post.published ? styles.published : styles.draft}>
+                        {post.published ? "Published" : "Draft"}
+                      </span>
+                      <time dateTime={post.updatedAt}>Updated {formatDate(post.updatedAt)}</time>
+                    </div>
+                    <h3>
+                      {post.published ? (
+                        <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                      ) : (
+                        post.title
+                      )}
+                    </h3>
+                    {post.excerpt ? <p>{post.excerpt}</p> : null}
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <h3>No posts yet</h3>
+                <p>Your authored posts will appear here after you create them.</p>
+              </div>
+            )}
+          </section>
+        ) : null}
 
         <section className={styles.section} id="comments">
           <div className={styles.sectionHeader}>

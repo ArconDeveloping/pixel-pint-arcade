@@ -13,6 +13,7 @@ type AuthPanelProps = {
 };
 
 const authSuccessPath = "/account";
+const authErrorPath = "/auth/error";
 
 export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
   const router = useRouter();
@@ -61,6 +62,7 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
     const result = await authClient.signIn.social({
       provider: "google",
       callbackURL: authSuccessPath,
+      errorCallbackURL: authErrorPath,
     });
 
     setPending(false);
@@ -78,12 +80,24 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
           {isSignUp ? (
             <div className={styles.field}>
               <label htmlFor="name">Name</label>
-              <input id="name" name="name" autoComplete="name" required minLength={2} />
+              <input
+                id="name"
+                name="name"
+                autoComplete="name"
+                required
+                minLength={2}
+              />
             </div>
           ) : null}
           <div className={styles.field}>
             <label htmlFor="email">Email</label>
-            <input id="email" name="email" type="email" autoComplete="email" required />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+            />
           </div>
           <div className={styles.field}>
             <label htmlFor="password">Password</label>
@@ -97,7 +111,11 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
             />
           </div>
           <div className={styles.actions}>
-            <button className={`btn ${styles.submit}`} type="submit" disabled={pending}>
+            <button
+              className={`btn ${styles.submit}`}
+              type="submit"
+              disabled={pending}
+            >
               {isSignUp ? "Create" : "Enter"}
             </button>
             {googleEnabled ? (
