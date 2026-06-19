@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { CommentsSection } from "@/components/comments/CommentsSection";
+import { getCurrentSession, requireUserRecord } from "@/data/auth";
+import { getCommentsForPost } from "@/data/comments";
 import { getPublishedPostBySlug } from "@/data/posts";
 import styles from "./PostPage.module.css";
 
@@ -44,6 +47,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const [comments, session] = await Promise.all([
+    getCommentsForPost(post.id),
+    getCurrentSession(),
+  ]);
+  const currentUser = session?.user ? await requireUserRecord() : null;
+
   return (
     <main className={styles.page}>
       <div className="wrap">
@@ -58,6 +67,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </p>
           <div className={styles.content}>{post.content}</div>
         </article>
+        <CommentsSection
+          comments={comments}
+          currentUser={currentUser}
+          postId={post.id}
+          postSlug={post.slug}
+        />
       </div>
     </main>
   );

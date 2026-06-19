@@ -48,7 +48,7 @@ export async function createCommentAction(
       revalidatePath(`/blog/${postSlug}`);
     }
 
-    return { ok: true };
+    return { ok: true, resetKey: String(Date.now()) };
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
       return actionError("Sign in before posting a comment.");

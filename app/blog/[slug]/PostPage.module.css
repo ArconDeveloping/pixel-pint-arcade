@@ -10,7 +10,8 @@
 }
 
 .backLink {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   margin-bottom: 38px;
   border: 3px solid #5b2c7e;
   background: #17082a;
