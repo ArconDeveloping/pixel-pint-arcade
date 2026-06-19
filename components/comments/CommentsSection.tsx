@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import type { CommentDTO } from "@/data/comments";
 import { CommentForm } from "./CommentForm";
-import { DeleteCommentButton } from "./DeleteCommentButton";
+import { CommentThreadItem } from "./CommentThreadItem";
 import styles from "./Comments.module.css";
 
 type CommentsSectionProps = {
@@ -17,18 +17,9 @@ type CommentsSectionProps = {
     | null;
 };
 
-type CommentNode = CommentDTO & {
+export type CommentNode = CommentDTO & {
   replies: CommentNode[];
 };
-
-const formatDate = (value: string) =>
-  new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(value));
 
 const buildCommentTree = (comments: CommentDTO[]) => {
   const nodes = new Map<string, CommentNode>();
@@ -55,49 +46,6 @@ const buildCommentTree = (comments: CommentDTO[]) => {
   });
 
   return roots;
-};
-
-const CommentItem = ({
-  comment,
-  currentUser,
-  postSlug,
-}: {
-  comment: CommentNode;
-  currentUser: CommentsSectionProps["currentUser"];
-  postSlug: string;
-}) => {
-  const canDelete =
-    currentUser?.role === "ADMIN" || currentUser?.id === comment.author.id;
-
-  return (
-    <li className={styles.comment}>
-      <article>
-        <header className={styles.commentHeader}>
-          <div>
-            <strong>{comment.author.name}</strong>
-            <time dateTime={comment.createdAt}>{formatDate(comment.createdAt)}</time>
-          </div>
-          {canDelete ? (
-            <DeleteCommentButton commentId={comment.id} postSlug={postSlug} />
-          ) : null}
-        </header>
-        <p>{comment.body}</p>
-      </article>
-
-      {comment.replies.length > 0 ? (
-        <ol className={styles.replies}>
-          {comment.replies.map((reply) => (
-            <CommentItem
-              comment={reply}
-              currentUser={currentUser}
-              key={reply.id}
-              postSlug={postSlug}
-            />
-          ))}
-        </ol>
-      ) : null}
-    </li>
-  );
 };
 
 export const CommentsSection = ({
@@ -138,10 +86,11 @@ export const CommentsSection = ({
       {roots.length > 0 ? (
         <ol className={styles.list}>
           {roots.map((comment) => (
-            <CommentItem
+            <CommentThreadItem
               comment={comment}
               currentUser={currentUser}
               key={comment.id}
+              postId={postId}
               postSlug={postSlug}
             />
           ))}

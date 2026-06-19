@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 import { createCommentAction } from "@/app/actions/comments";
 import type { ActionState } from "@/app/actions/comments";
@@ -10,6 +10,12 @@ type CommentFormProps = {
   postId: string;
   postSlug: string;
   parentId?: string | null;
+  label?: string;
+  submitLabel?: string;
+  pendingLabel?: string;
+  placeholder?: string;
+  className?: string;
+  onSuccess?: () => void;
 };
 
 const initialState: ActionState = {
@@ -25,6 +31,10 @@ const CommentFields = ({
   postId,
   postSlug,
   parentId,
+  label = parentId ? "Reply" : "Comment",
+  submitLabel = parentId ? "Post reply" : "Post comment",
+  pendingLabel = parentId ? "Replying..." : "Posting...",
+  placeholder = parentId ? "Write a reply..." : "Share your take...",
   pending,
   state,
 }: CommentFieldsProps) => (
@@ -35,7 +45,7 @@ const CommentFields = ({
 
     <div className={styles.field}>
       <label htmlFor={parentId ? `reply-${parentId}` : "comment-body"}>
-        Comment
+        {label}
       </label>
       <textarea
         id={parentId ? `reply-${parentId}` : "comment-body"}
@@ -43,14 +53,14 @@ const CommentFields = ({
         rows={5}
         required
         maxLength={2000}
-        placeholder="Share your take..."
+        placeholder={placeholder}
       />
       {state.errors?.body ? <p>{state.errors.body[0]}</p> : null}
     </div>
 
     <div className={styles.formActions}>
       <button className="btn" type="submit" disabled={pending}>
-        {pending ? "Posting..." : "Post comment"}
+        {pending ? pendingLabel : submitLabel}
       </button>
       {state.ok ? <span className={styles.success}>Comment posted.</span> : null}
       {state.message ? <span className={styles.error}>{state.message}</span> : null}
@@ -58,21 +68,36 @@ const CommentFields = ({
   </>
 );
 
-export const CommentForm = ({ postId, postSlug, parentId = null }: CommentFormProps) => {
+export const CommentForm = ({
+  postId,
+  postSlug,
+  parentId = null,
+  className,
+  onSuccess,
+  ...fieldProps
+}: CommentFormProps) => {
   const [state, formAction, pending] = useActionState(
     createCommentAction,
     initialState,
   );
+  const formClassName = className ? `${styles.form} ${className}` : styles.form;
+
+  useEffect(() => {
+    if (state.ok) {
+      onSuccess?.();
+    }
+  }, [onSuccess, state.ok, state.resetKey]);
 
   return (
-    <form className={styles.form} action={formAction}>
+    <form className={formClassName} action={formAction}>
       <CommentFields
-        key={state.resetKey ?? "comment"}
+        key={state.resetKey ?? `comment-${parentId ?? "root"}`}
         postId={postId}
         postSlug={postSlug}
         parentId={parentId}
         pending={pending}
         state={state}
+        {...fieldProps}
       />
     </form>
   );
