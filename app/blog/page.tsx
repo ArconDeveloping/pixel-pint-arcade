@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { connection } from "next/server";
 
 import { getPublishedPosts } from "@/data/posts";
 import styles from "./BlogPage.module.css";
@@ -17,6 +18,8 @@ const formatDate = (value: string) =>
   }).format(new Date(value));
 
 export default async function BlogPage() {
+  await connection();
+
   const posts = await getPublishedPosts();
 
   return (
