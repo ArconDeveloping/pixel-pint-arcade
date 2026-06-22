@@ -23,11 +23,11 @@ export default async function BlogPage() {
   const posts = await getPublishedPosts();
 
   return (
-    <main className={styles.page}>
+    <main className="page-shell">
       <div className="wrap">
-        <div className={styles.topline}>
+        <div className={`page-topline ${styles.topline}`}>
           <div className="eyebrow">Pixel Pint Arcade Blog</div>
-          <Link className={styles.homeLink} href="/">
+          <Link className="pixel-link" href="/">
             Back home
           </Link>
         </div>

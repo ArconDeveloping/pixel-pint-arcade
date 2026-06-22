@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import styles from "./BlogSection.module.css";
 
 export const BlogSection = () => (
@@ -11,49 +13,54 @@ export const BlogSection = () => (
     <div className="wrap">
       <div className="section-title-row flex items-end justify-between">
         <div>
-          <div className="eyebrow">Blog inside the project</div>
-          <h2>Stories, Hardware and the Spirit of 2D</h2>
+          <div className="eyebrow">Blog</div>
+          <h2>Stories from the Cabinets</h2>
         </div>
-        <p>
-          The landing does not reveal the blog in full. It sells the idea: articles,
-          breakdowns, archives and personal notes on 2D gaming culture will live here.
-        </p>
+        <div className={styles.titleAction}>
+          <p>
+            Field notes from the arcade floor: game history, hardware quirks, design
+            breakdowns and personal essays on why 2D games still feel immediate.
+          </p>
+          <Link className={`btn secondary ${styles.blogCta}`} href="/blog">
+            Read the Blog
+          </Link>
+        </div>
       </div>
       <div className={`${styles.cards} grid grid-cols-3`}>
         <article className={`${styles.featureCard} reveal`} data-reveal>
           <div className={`${styles.icon} ${styles.gamepad}`} aria-hidden="true"></div>
           <h3>2D Games</h3>
           <p>
-            Genre history, visual breakdowns, mechanics, levels, music and design decisions
-            that still hold up today.
+            Platformers, beat &apos;em ups, shooters and puzzle games, read through their
+            controls, rhythm, level flow and sprite craft.
           </p>
         </article>
         <article className={`${styles.featureCard} ${styles.obstacleCard} reveal`} data-reveal data-runner-mode="jump-card">
           <div className={`${styles.icon} ${styles.console}`} aria-hidden="true"></div>
           <h3>Consoles</h3>
-          <p>NES, SNES, Mega Drive, Game Boy, PlayStation and other systems — no museum dust.</p>
+          <p>NES, SNES, Mega Drive, Game Boy, PlayStation and the hardware that made living rooms louder.</p>
         </article>
         <article className={`${styles.featureCard} reveal`} data-reveal>
           <div className={`${styles.icon} ${styles.device}`} aria-hidden="true"></div>
           <h3>Hardware</h3>
           <p>
-            Controllers, cartridges, CRT monitors, flash carts, mods and devices that changed
-            the way we play.
+            Controllers, cartridges, CRTs, flash carts and mods, with the small details that
+            change how a game feels in your hands.
           </p>
         </article>
       </div>
       <div className={`${styles.stats} grid grid-cols-3 gap-[14px] mt-7`}>
         <div className={styles.stat}>
-          <strong>8-bit</strong>
-          <span>cultural roots</span>
+          <strong>1980s</strong>
+          <span>arcade DNA</span>
         </div>
         <div className={styles.stat}>
-          <strong>16-bit</strong>
-          <span>the golden era</span>
+          <strong>1990s</strong>
+          <span>console wars</span>
         </div>
         <div className={styles.stat}>
-          <strong>2D</strong>
-          <span>the main theme</span>
+          <strong>Today</strong>
+          <span>new retro</span>
         </div>
       </div>
     </div>

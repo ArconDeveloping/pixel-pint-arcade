@@ -38,13 +38,13 @@ export default async function AccountPage() {
   ]);
 
   return (
-    <main className={styles.page}>
+    <main className="page-shell">
       <div className="wrap">
-        <div className={styles.topline}>
-          <Link className={styles.homeLink} href="/">
+        <div className={`page-topline ${styles.topline}`}>
+          <Link className="pixel-link" href="/">
             Back home
           </Link>
-          <SignOutButton className={styles.signOut} />
+          <SignOutButton className={`pixel-link ${styles.signOut}`} />
         </div>
 
         <section className={styles.hero}>

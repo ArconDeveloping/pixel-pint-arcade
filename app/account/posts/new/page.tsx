@@ -25,10 +25,10 @@ export default async function NewPostPage() {
   }
 
   return (
-    <main className={styles.page}>
+    <main className="page-shell">
       <div className="wrap">
-        <div className={styles.topline}>
-          <Link className={styles.backLink} href="/account">
+        <div className={`page-topline ${styles.topline}`}>
+          <Link className="pixel-link" href="/account">
             Back to account
           </Link>
         </div>

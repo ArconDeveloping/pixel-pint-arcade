@@ -1,6 +1,5 @@
 import { DecorLayers } from "@/components/decor/DecorLayers";
 import { Runner } from "@/components/decor/Runner";
-import { Topbar } from "@/components/layout/Topbar";
 import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { BlogSection } from "@/components/sections/BlogSection";
@@ -13,7 +12,6 @@ import { ArcadeEffects } from "@/components/effects/ArcadeEffects";
 const Home = () => (
   <>
     <DecorLayers />
-    <Topbar />
     <Runner />
     <main>
       <HeroSection />

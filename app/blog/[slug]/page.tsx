@@ -54,10 +54,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const currentUser = session?.user ? await requireUserRecord() : null;
 
   return (
-    <main className={styles.page}>
+    <main className="page-shell">
       <div className="wrap">
-        <article className={styles.article}>
-          <Link className={styles.backLink} href="/blog">
+        <article>
+          <Link className={`pixel-link ${styles.backLink}`} href="/blog">
             Back to blog
           </Link>
           <div className="eyebrow">Article</div>

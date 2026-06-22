@@ -7,10 +7,11 @@ export const JoinSection = () => (
     <div className="wrap">
       <div className={styles.ctaBox}>
         <div className="eyebrow">Press Start</div>
-        <h2>Walk into the Bar, Stay for the Story</h2>
+        <h2>Pull Up a Stool</h2>
         <p>
-          This landing should work as the front door of the project: instantly showing the
-          tone, theme, media formats and promising regular content without overwhelming.
+          Pixel Pint Arcade is a place for people who remember the weight of a cartridge,
+          the hum of a cabinet and the first level they learned by heart. Come for the games,
+          stay for the stories around them.
         </p>
         <div className="actions flex flex-wrap gap-4 items-center" style={{ justifyContent: "center" }}>
           <a className="btn" href="#home">
