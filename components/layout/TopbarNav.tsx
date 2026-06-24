@@ -15,7 +15,6 @@ const navClassName = (active: boolean) =>
 export const TopbarNav = ({ signedIn }: TopbarNavProps) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const isAbout = pathname.startsWith("/about");
   const isBlog = pathname.startsWith("/blog");
   const isAccount = pathname.startsWith("/account");
   const accountHref = signedIn ? "/account" : "/login";
@@ -36,9 +35,6 @@ export const TopbarNav = ({ signedIn }: TopbarNavProps) => {
         <a className={styles.navLink} href="#dev" data-nav-link>
           Dev Lab
         </a>
-        <Link className={navClassName(isAbout)} href="/about">
-          About
-        </Link>
         <Link className={navClassName(isAccount)} href={accountHref}>
           {accountLabel}
         </Link>
@@ -56,9 +52,6 @@ export const TopbarNav = ({ signedIn }: TopbarNavProps) => {
       </Link>
       <Link className={navClassName(isBlog)} href="/blog">
         Blog
-      </Link>
-      <Link className={navClassName(isAbout)} href="/about">
-        About
       </Link>
       <Link className={navClassName(isAccount)} href={accountHref}>
         {accountLabel}

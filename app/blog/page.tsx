@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connection } from "next/server";
 
+import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { getPublishedPostCount, getPublishedPosts } from "@/data/posts";
 import styles from "./BlogPage.module.css";
 
@@ -79,6 +80,13 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             Back home
           </Link>
         </div>
+
+        <Breadcrumbs
+          items={[
+            { href: "/", label: "Home" },
+            { label: "Blog" },
+          ]}
+        />
 
         <section className={styles.intro}>
           <h1>Blog</h1>

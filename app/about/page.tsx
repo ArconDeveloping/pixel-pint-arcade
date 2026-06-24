@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import styles from "./AboutPage.module.css";
 
 export const metadata: Metadata = {
@@ -22,6 +23,13 @@ export default function AboutPage() {
             Read the Blog
           </Link>
         </div>
+
+        <Breadcrumbs
+          items={[
+            { href: "/", label: "Home" },
+            { label: "About" },
+          ]}
+        />
 
         <section className={styles.intro}>
           <h1>Pixel Pint Arcade</h1>

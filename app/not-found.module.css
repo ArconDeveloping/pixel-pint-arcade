@@ -1,0 +1,26 @@
+.panel {
+  border: 5px solid #51207b;
+  background: rgba(12, 5, 22, .82);
+  box-shadow: 8px 8px 0 #000;
+  padding: clamp(24px, 5vw, 44px);
+}
+
+.panel h1 {
+  margin-bottom: 24px;
+}
+
+.panel p {
+  max-width: 720px;
+  color: #ffe6a3;
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.55;
+  margin: 0;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
