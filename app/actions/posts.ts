@@ -31,6 +31,7 @@ export async function createPostAction(
     title: formData.get("title"),
     slug: formData.get("slug"),
     excerpt: formData.get("excerpt") || undefined,
+    tags: formData.get("tags") || undefined,
     content: formData.get("content"),
     published: booleanFromForm(formData.get("published")),
   });
@@ -70,6 +71,7 @@ export async function updatePostAction(
     title: formData.get("title"),
     slug: formData.get("slug"),
     excerpt: formData.get("excerpt") || undefined,
+    tags: formData.get("tags") || undefined,
     content: formData.get("content"),
     published: booleanFromForm(formData.get("published")),
   });

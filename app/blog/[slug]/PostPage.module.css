@@ -1,37 +1,21 @@
-.page {
-  min-height: 100vh;
-  position: relative;
-  z-index: 30;
-  padding: 118px 0 86px;
-}
-
-.article {
-  max-width: 880px;
-}
-
 .backLink {
-  display: flex;
-  width: fit-content;
   margin-bottom: 38px;
-  border: 3px solid #5b2c7e;
-  background: #17082a;
-  color: var(--ink);
-  text-decoration: none;
-  padding: 10px 12px;
-  box-shadow: 4px 4px 0 #000;
-  font-family: var(--font-press-start-2p), "Courier New", monospace;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-.backLink:hover {
-  background: var(--yellow);
-  color: #17082a;
 }
 
 .meta {
   color: var(--green);
   margin: 24px 0;
+}
+
+.tags {
+  margin-bottom: 22px;
+}
+
+.tag {
+  padding: 6px 9px;
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
 }
 
 .content {

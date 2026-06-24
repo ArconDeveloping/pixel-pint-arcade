@@ -38,13 +38,13 @@ export default async function AccountPage() {
   ]);
 
   return (
-    <main className={styles.page}>
+    <main className="page-shell">
       <div className="wrap">
-        <div className={styles.topline}>
-          <Link className={styles.homeLink} href="/">
+        <div className={`page-topline ${styles.topline}`}>
+          <Link className="pixel-link" href="/">
             Back home
           </Link>
-          <SignOutButton className={styles.signOut} />
+          <SignOutButton className={`pixel-link ${styles.signOut}`} />
         </div>
 
         <section className={styles.hero}>
@@ -89,6 +89,13 @@ export default async function AccountPage() {
                       )}
                     </h3>
                     {post.excerpt ? <p>{post.excerpt}</p> : null}
+                    {post.tags.length > 0 ? (
+                      <div className={`tag-list ${styles.tags}`} aria-label="Post tags">
+                        {post.tags.map((tag) => (
+                          <span className="tag-chip" key={tag.slug}>{tag.name}</span>
+                        ))}
+                      </div>
+                    ) : null}
                   </article>
                 ))}
               </div>

@@ -1,0 +1,41 @@
+.breadcrumbs {
+  margin-bottom: 26px;
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumbs li {
+  display: inline-flex;
+  align-items: center;
+  color: var(--green);
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  color: var(--muted);
+  content: "/";
+  margin-left: 8px;
+}
+
+.breadcrumbs a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--yellow);
+}
+
+.breadcrumbs span {
+  color: var(--muted);
+}

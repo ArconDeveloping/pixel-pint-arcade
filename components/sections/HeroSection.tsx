@@ -10,16 +10,16 @@ export const HeroSection = () => (
     </div>
     <div className={`wrap ${styles.heroGrid} grid items-center`}>
       <div>
-        <div className="eyebrow">16-bit beer bar · arcade blog · new retro games</div>
-        <h1>Beer Bar with Arcade Machines</h1>
+        <div className="eyebrow">Craft beer · CRT glow · 2D game culture</div>
+        <h1>Pixel Pint Arcade</h1>
         <p className="lead">
-          A landing for a project about 2D games, consoles, hardware and the people who keep
-          retro alive. Bar atmosphere, CRT noise, chiptune and a pixel character running
-          through the entire site.
+          A retro-game bar journal about sprite art, worn-out cartridges, cabinet sounds and
+          the people still keeping classic play alive. Pull up to the counter, pick a machine
+          and follow the stories behind the pixels.
         </p>
         <div className="actions flex flex-wrap gap-4 items-center">
           <a className="btn" href="#blog">
-            Insert Coin
+            Start Reading
           </a>
           <a className="btn secondary" href="#videos">
             Watch Videos

@@ -1,20 +1,7 @@
-.page {
-  min-height: 100vh;
-  position: relative;
-  z-index: 30;
-  padding: 42px 0 86px;
-}
-
 .topline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
   margin-bottom: 36px;
 }
 
-.homeLink,
-.signOut,
 .tabs a {
   border: 3px solid #5b2c7e;
   background: #17082a;
@@ -27,21 +14,9 @@
   text-transform: uppercase;
 }
 
-.signOut {
-  cursor: pointer;
-}
-
-.homeLink:hover,
-.signOut:hover,
 .tabs a:hover {
   background: var(--yellow);
   color: #17082a;
-}
-
-.signOut:disabled {
-  cursor: wait;
-  filter: grayscale(.7);
-  opacity: .72;
 }
 
 .hero {
@@ -189,8 +164,11 @@
   font-weight: 700;
 }
 
+.tags {
+  margin-top: 16px;
+}
+
 @media (max-width: 720px) {
-  .topline,
   .sectionHeader {
     align-items: flex-start;
     flex-direction: column;

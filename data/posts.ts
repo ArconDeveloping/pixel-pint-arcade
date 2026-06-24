@@ -9,6 +9,10 @@ export type PostListItemDTO = {
   slug: string;
   excerpt: string | null;
   createdAt: string;
+  tags: {
+    name: string;
+    slug: string;
+  }[];
   author: {
     name: string;
     image: string | null;
@@ -25,6 +29,10 @@ export type AccountPostDTO = {
   slug: string;
   excerpt: string | null;
   published: boolean;
+  tags: {
+    name: string;
+    slug: string;
+  }[];
   createdAt: string;
   updatedAt: string;
 };
@@ -35,6 +43,13 @@ const postListSelect = {
   slug: true,
   excerpt: true,
   createdAt: true,
+  tags: {
+    orderBy: { name: "asc" },
+    select: {
+      name: true,
+      slug: true,
+    },
+  },
   author: {
     select: {
       name: true,
@@ -49,6 +64,10 @@ const toPostListItemDTO = (post: {
   slug: string;
   excerpt: string | null;
   createdAt: Date;
+  tags: {
+    name: string;
+    slug: string;
+  }[];
   author: {
     name: string;
     image: string | null;
@@ -58,15 +77,83 @@ const toPostListItemDTO = (post: {
   createdAt: post.createdAt.toISOString(),
 });
 
-export const getPublishedPosts = async (): Promise<PostListItemDTO[]> => {
+const slugifyTag = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const normalizeTags = (value?: string | null) => {
+  const tags = new Map<string, { name: string; slug: string }>();
+
+  value
+    ?.split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+    .forEach((name) => {
+      const slug = slugifyTag(name);
+
+      if (slug && !tags.has(slug)) {
+        tags.set(slug, { name, slug });
+      }
+    });
+
+  return [...tags.values()];
+};
+
+const tagConnectOrCreate = (tags?: string | null) =>
+  normalizeTags(tags).map((tag) => ({
+    where: { slug: tag.slug },
+    create: tag,
+  }));
+
+const getPublishedPostWhere = (query?: string) => {
+  const search = query?.trim();
+
+  return {
+    published: true,
+    ...(search
+      ? {
+          OR: [
+            { title: { contains: search, mode: "insensitive" as const } },
+            { excerpt: { contains: search, mode: "insensitive" as const } },
+            { content: { contains: search, mode: "insensitive" as const } },
+            {
+              tags: {
+                some: {
+                  name: { contains: search, mode: "insensitive" as const },
+                },
+              },
+            },
+          ],
+        }
+      : {}),
+  };
+};
+
+export const getPublishedPosts = async (options?: {
+  query?: string;
+  take?: number;
+  skip?: number;
+}): Promise<PostListItemDTO[]> => {
   const posts = await prisma.post.findMany({
-    where: { published: true },
+    where: getPublishedPostWhere(options?.query),
     orderBy: { createdAt: "desc" },
+    take: options?.take,
+    skip: options?.skip,
     select: postListSelect,
   });
 
   return posts.map(toPostListItemDTO);
 };
+
+export const getPublishedPostCount = async (options?: {
+  query?: string;
+}): Promise<number> =>
+  prisma.post.count({
+    where: getPublishedPostWhere(options?.query),
+  });
 
 export const getPublishedPostBySlug = async (
   slug: string,
@@ -100,6 +187,13 @@ export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
       slug: true,
       excerpt: true,
       published: true,
+      tags: {
+        orderBy: { name: "asc" },
+        select: {
+          name: true,
+          slug: true,
+        },
+      },
       createdAt: true,
       updatedAt: true,
     },
@@ -116,10 +210,12 @@ export const createPost = async (input: {
   title: string;
   slug: string;
   excerpt?: string | null;
+  tags?: string | null;
   content: string;
   published?: boolean;
 }) => {
   const admin = await requireAdmin();
+  const tags = tagConnectOrCreate(input.tags);
 
   await prisma.post.create({
     data: {
@@ -128,7 +224,16 @@ export const createPost = async (input: {
       excerpt: input.excerpt,
       content: input.content,
       published: input.published ?? false,
-      authorId: admin.id,
+      author: {
+        connect: { id: admin.id },
+      },
+      ...(tags.length > 0
+        ? {
+            tags: {
+              connectOrCreate: tags,
+            },
+          }
+        : {}),
     },
   });
 };
@@ -139,11 +244,13 @@ export const updatePost = async (
     title: string;
     slug: string;
     excerpt?: string | null;
+    tags?: string | null;
     content: string;
     published?: boolean;
   },
 ) => {
   await requireAdmin();
+  const tags = tagConnectOrCreate(input.tags);
 
   await prisma.post.update({
     where: { id: postId },
@@ -153,6 +260,14 @@ export const updatePost = async (
       excerpt: input.excerpt,
       content: input.content,
       published: input.published ?? false,
+      ...(input.tags !== undefined
+        ? {
+            tags: {
+              set: [],
+              connectOrCreate: tags,
+            },
+          }
+        : {}),
     },
   });
 };

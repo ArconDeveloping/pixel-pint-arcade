@@ -3,9 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { CommentsSection } from "@/components/comments/CommentsSection";
+import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { getCurrentSession, requireUserRecord } from "@/data/auth";
 import { getCommentsForPost } from "@/data/comments";
 import { getPublishedPostBySlug } from "@/data/posts";
+import { formatReadingTime, getReadingTimeMinutes } from "@/lib/reading-time";
 import styles from "./PostPage.module.css";
 
 type BlogPostPageProps = {
@@ -52,19 +54,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     getCurrentSession(),
   ]);
   const currentUser = session?.user ? await requireUserRecord() : null;
+  const readingTime = formatReadingTime(getReadingTimeMinutes(post.content));
 
   return (
-    <main className={styles.page}>
+    <main className="page-shell">
       <div className="wrap">
-        <article className={styles.article}>
-          <Link className={styles.backLink} href="/blog">
+        <article>
+          <Breadcrumbs
+            items={[
+              { href: "/", label: "Home" },
+              { href: "/blog", label: "Blog" },
+              { label: post.title },
+            ]}
+          />
+          <Link className={`pixel-link ${styles.backLink}`} href="/blog">
             Back to blog
           </Link>
           <div className="eyebrow">Article</div>
           <h1>{post.title}</h1>
           <p className={styles.meta}>
-            {formatDate(post.createdAt)} · By {post.author.name}
+            {formatDate(post.createdAt)} · {readingTime} · By {post.author.name}
           </p>
+          {post.tags.length > 0 ? (
+            <div className={`tag-list ${styles.tags}`} aria-label="Post tags">
+              {post.tags.map((tag) => (
+                <span className={`tag-chip ${styles.tag}`} key={tag.slug}>{tag.name}</span>
+              ))}
+            </div>
+          ) : null}
           <div className={styles.content}>{post.content}</div>
         </article>
         <CommentsSection

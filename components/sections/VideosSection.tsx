@@ -19,12 +19,12 @@ export const VideosSection = () => (
     <div className="wrap">
       <div className="section-title-row flex items-end justify-between">
         <div>
-          <div className="eyebrow">YouTube & video format</div>
-          <h2>Videos from the Bar</h2>
+          <div className="eyebrow">Video shelf</div>
+          <h2>Episodes from the Bar</h2>
         </div>
         <p>
-          Pin your latest episodes, trailers, streams, shorts and playlists here. All links
-          go to YouTube.
+          Cabinet captures, hardware close-ups, short reviews and relaxed play sessions from
+          the same corner of the bar where the CRTs never sleep.
         </p>
       </div>
       <div className={`${styles.videosGrid} grid`}>
@@ -36,29 +36,29 @@ export const VideosSection = () => (
           aria-label="Open YouTube"
         >
           <span>
-            Latest episode: how pixels, beer and arcade machines became one culture
+            Now playing: sprite craft, cold taps and arcade stories after hours
           </span>
         </a>
         <div className="video-list grid gap-[18px]">
           <article className={styles.videoCard}>
             <h3>One Game&apos;s Story</h3>
-            <p>Long-form format: development, release, legacy, bugs, fan base.</p>
+            <p>Launch context, level structure, strange bugs, fan myths and the legacy a game leaves behind.</p>
             <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
               Open YouTube
             </a>
           </article>
           <article className={styles.videoCard}>
             <h3>Hardware Table</h3>
-            <p>Short reviews of consoles, controllers, cartridges, mods and rare devices.</p>
+            <p>Hands-on looks at consoles, controllers, cartridges, mods and the small fixes that matter.</p>
             <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
               Watch Playlist
             </a>
           </article>
           <article className={styles.videoCard}>
-            <h3>Bar Stream</h3>
+            <h3>After-Hours Plays</h3>
             <p>
-              Live playthroughs, commentary, chat and game breakdowns right in the arcade bar
-              atmosphere.
+              Casual runs, score chasing, commentary and deep dives once the last stool is
+              pushed under the counter.
             </p>
             <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
               Go to Streams

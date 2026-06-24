@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Press_Start_2P } from "next/font/google";
+import { Topbar } from "@/components/layout/Topbar";
 import "./globals.css";
 
 const pressStart2P = Press_Start_2P({
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={pressStart2P.variable}>
-      <body>{children}</body>
+      <body>
+        <Topbar />
+        {children}
+      </body>
     </html>
   );
 }
