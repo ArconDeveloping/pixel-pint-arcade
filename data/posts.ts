@@ -108,9 +108,31 @@ const tagConnectOrCreate = (tags?: string | null) =>
     create: tag,
   }));
 
-export const getPublishedPosts = async (): Promise<PostListItemDTO[]> => {
+export const getPublishedPosts = async (options?: {
+  query?: string;
+}): Promise<PostListItemDTO[]> => {
+  const query = options?.query?.trim();
+
   const posts = await prisma.post.findMany({
-    where: { published: true },
+    where: {
+      published: true,
+      ...(query
+        ? {
+            OR: [
+              { title: { contains: query, mode: "insensitive" } },
+              { excerpt: { contains: query, mode: "insensitive" } },
+              { content: { contains: query, mode: "insensitive" } },
+              {
+                tags: {
+                  some: {
+                    name: { contains: query, mode: "insensitive" },
+                  },
+                },
+              },
+            ],
+          }
+        : {}),
+    },
     orderBy: { createdAt: "desc" },
     select: postListSelect,
   });

@@ -17,10 +17,22 @@ const formatDate = (value: string) =>
     year: "numeric",
   }).format(new Date(value));
 
-export default async function BlogPage() {
+type BlogPageProps = {
+  searchParams: Promise<{
+    q?: string | string[];
+  }>;
+};
+
+const getSearchValue = (value: string | string[] | undefined) =>
+  Array.isArray(value) ? value[0] : value;
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
   await connection();
 
-  const posts = await getPublishedPosts();
+  const params = await searchParams;
+  const query = getSearchValue(params.q)?.trim() ?? "";
+  const posts = await getPublishedPosts({ query });
+  const hasSearch = query.length > 0;
 
   return (
     <main className="page-shell">
@@ -39,6 +51,29 @@ export default async function BlogPage() {
             and the culture around them.
           </p>
         </section>
+
+        <form action="/blog" className={styles.searchForm}>
+          <div className={styles.searchField}>
+            <label htmlFor="blog-search">Search articles</label>
+            <input
+              id="blog-search"
+              name="q"
+              defaultValue={query}
+              placeholder="Search posts..."
+              type="search"
+            />
+          </div>
+          <div className={styles.searchActions}>
+            <button className="btn" type="submit">
+              Search
+            </button>
+            {hasSearch ? (
+              <Link className="pixel-link" href="/blog">
+                Clear
+              </Link>
+            ) : null}
+          </div>
+        </form>
 
         {posts.length > 0 ? (
           <section className={styles.grid} aria-label="Published posts">
@@ -60,11 +95,20 @@ export default async function BlogPage() {
           </section>
         ) : (
           <section className={styles.emptyState}>
-            <h2>No posts yet</h2>
-            <p>
-              The first stories are still being prepared. Check back soon for
-              notes on 2D games, retro hardware and arcade culture.
-            </p>
+            {hasSearch ? (
+              <>
+                <h2>No posts found</h2>
+                <p>No articles match &quot;{query}&quot;. Try another search.</p>
+              </>
+            ) : (
+              <>
+                <h2>No posts yet</h2>
+                <p>
+                  The first stories are still being prepared. Check back soon for
+                  notes on 2D games, retro hardware and arcade culture.
+                </p>
+              </>
+            )}
           </section>
         )}
       </div>
