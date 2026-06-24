@@ -76,6 +76,17 @@ const PostEditorFields = ({ pending, state }: PostEditorFieldsProps) => {
       </div>
 
       <div className={styles.field}>
+        <label htmlFor="tags">Tags</label>
+        <input
+          id="tags"
+          name="tags"
+          maxLength={240}
+          placeholder="NES, hardware, review"
+        />
+        {state.errors?.tags ? <p>{state.errors.tags[0]}</p> : null}
+      </div>
+
+      <div className={styles.field}>
         <label htmlFor="content">Content</label>
         <textarea id="content" name="content" rows={14} required />
         {state.errors?.content ? <p>{state.errors.content[0]}</p> : null}

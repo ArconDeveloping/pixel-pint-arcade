@@ -89,6 +89,13 @@ export default async function AccountPage() {
                       )}
                     </h3>
                     {post.excerpt ? <p>{post.excerpt}</p> : null}
+                    {post.tags.length > 0 ? (
+                      <div className={`tag-list ${styles.tags}`} aria-label="Post tags">
+                        {post.tags.map((tag) => (
+                          <span className="tag-chip" key={tag.slug}>{tag.name}</span>
+                        ))}
+                      </div>
+                    ) : null}
                   </article>
                 ))}
               </div>

@@ -164,6 +164,10 @@
   font-weight: 700;
 }
 
+.tags {
+  margin-top: 16px;
+}
+
 @media (max-width: 720px) {
   .sectionHeader {
     align-items: flex-start;

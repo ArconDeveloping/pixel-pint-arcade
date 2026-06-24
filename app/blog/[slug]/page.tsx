@@ -65,6 +65,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <p className={styles.meta}>
             {formatDate(post.createdAt)} · By {post.author.name}
           </p>
+          {post.tags.length > 0 ? (
+            <div className={`tag-list ${styles.tags}`} aria-label="Post tags">
+              {post.tags.map((tag) => (
+                <span className={`tag-chip ${styles.tag}`} key={tag.slug}>{tag.name}</span>
+              ))}
+            </div>
+          ) : null}
           <div className={styles.content}>{post.content}</div>
         </article>
         <CommentsSection

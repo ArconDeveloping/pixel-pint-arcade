@@ -7,6 +7,17 @@
   margin: 24px 0;
 }
 
+.tags {
+  margin-bottom: 22px;
+}
+
+.tag {
+  padding: 6px 9px;
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
 .content {
   border: 5px solid #51207b;
   background: rgba(12, 5, 22, .82);

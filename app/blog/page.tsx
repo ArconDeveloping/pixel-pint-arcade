@@ -47,6 +47,13 @@ export default async function BlogPage() {
                 <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
                 <h2>{post.title}</h2>
                 {post.excerpt ? <p>{post.excerpt}</p> : null}
+                {post.tags.length > 0 ? (
+                  <div className="tag-list" aria-label="Post tags">
+                    {post.tags.map((tag) => (
+                      <span className="tag-chip" key={tag.slug}>{tag.name}</span>
+                    ))}
+                  </div>
+                ) : null}
                 <span>By {post.author.name}</span>
               </Link>
             ))}
