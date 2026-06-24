@@ -1,0 +1,94 @@
+.topline {
+  margin-bottom: 42px;
+}
+
+.intro {
+  margin-bottom: 42px;
+}
+
+.intro h1 {
+  margin-bottom: 24px;
+}
+
+.intro p,
+.story p,
+.contact p {
+  color: #ffe6a3;
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.55;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.story {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  margin-bottom: 34px;
+}
+
+.story h2,
+.panel h2,
+.contact h2 {
+  font-size: 18px;
+  margin-bottom: 18px;
+  text-shadow: 3px 3px 0 #3d1555, 5px 5px 0 #000;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-bottom: 34px;
+}
+
+.panel,
+.contact {
+  border: 5px solid #51207b;
+  background: rgba(12, 5, 22, .82);
+  box-shadow: 8px 8px 0 #000;
+}
+
+.panel {
+  padding: 24px;
+}
+
+.panel ul {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.panel li {
+  border-left: 5px solid var(--green);
+  color: var(--ink);
+  padding-left: 12px;
+}
+
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  padding: 28px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 860px) {
+  .story,
+  .columns,
+  .contact {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+}

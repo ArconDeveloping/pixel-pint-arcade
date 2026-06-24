@@ -39,3 +39,28 @@
   color: #e2cffd;
   line-height: 1.55;
 }
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.links a {
+  color: var(--green);
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 11px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.links a:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+  .footerGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -108,37 +108,52 @@ const tagConnectOrCreate = (tags?: string | null) =>
     create: tag,
   }));
 
-export const getPublishedPosts = async (options?: {
-  query?: string;
-}): Promise<PostListItemDTO[]> => {
-  const query = options?.query?.trim();
+const getPublishedPostWhere = (query?: string) => {
+  const search = query?.trim();
 
-  const posts = await prisma.post.findMany({
-    where: {
-      published: true,
-      ...(query
-        ? {
-            OR: [
-              { title: { contains: query, mode: "insensitive" } },
-              { excerpt: { contains: query, mode: "insensitive" } },
-              { content: { contains: query, mode: "insensitive" } },
-              {
-                tags: {
-                  some: {
-                    name: { contains: query, mode: "insensitive" },
-                  },
+  return {
+    published: true,
+    ...(search
+      ? {
+          OR: [
+            { title: { contains: search, mode: "insensitive" as const } },
+            { excerpt: { contains: search, mode: "insensitive" as const } },
+            { content: { contains: search, mode: "insensitive" as const } },
+            {
+              tags: {
+                some: {
+                  name: { contains: search, mode: "insensitive" as const },
                 },
               },
-            ],
-          }
-        : {}),
-    },
+            },
+          ],
+        }
+      : {}),
+  };
+};
+
+export const getPublishedPosts = async (options?: {
+  query?: string;
+  take?: number;
+  skip?: number;
+}): Promise<PostListItemDTO[]> => {
+  const posts = await prisma.post.findMany({
+    where: getPublishedPostWhere(options?.query),
     orderBy: { createdAt: "desc" },
+    take: options?.take,
+    skip: options?.skip,
     select: postListSelect,
   });
 
   return posts.map(toPostListItemDTO);
 };
+
+export const getPublishedPostCount = async (options?: {
+  query?: string;
+}): Promise<number> =>
+  prisma.post.count({
+    where: getPublishedPostWhere(options?.query),
+  });
 
 export const getPublishedPostBySlug = async (
   slug: string,

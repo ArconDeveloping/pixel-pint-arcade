@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import styles from "./Footer.module.css";
 
 export const Footer = () => (
@@ -11,6 +13,13 @@ export const Footer = () => (
         <p style={{ marginTop: "14px" }}>
           Blog, videos and dev lab about 2D games, consoles and retro culture.
         </p>
+        <nav className={styles.links} aria-label="Footer navigation">
+          <Link href="/blog">Blog</Link>
+          <Link href="/about">About</Link>
+          <a href="https://www.youtube.com/" rel="noreferrer" target="_blank">
+            YouTube
+          </a>
+        </nav>
       </div>
       <p>© 2026 · Insert Coin</p>
     </div>
