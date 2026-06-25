@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { PostListItemDTO } from "@/data/posts";
+import { PostCoverImage } from "./PostCoverImage";
 import styles from "./RelatedPosts.module.css";
 
 type RelatedPostsProps = {
@@ -28,6 +29,13 @@ export const RelatedPosts = ({ posts }: RelatedPostsProps) => {
       <div className={styles.grid}>
         {posts.map((post) => (
           <article className={styles.card} key={post.id}>
+            {post.coverImageUrl ? (
+              <PostCoverImage
+                alt={post.coverImageAlt ?? post.title}
+                className={styles.coverImage}
+                src={post.coverImageUrl}
+              />
+            ) : null}
             <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
             <h3>
               <Link href={`/blog/${post.slug}`}>{post.title}</Link>

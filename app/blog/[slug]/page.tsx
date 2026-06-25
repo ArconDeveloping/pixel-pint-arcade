@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { CommentsSection } from "@/components/comments/CommentsSection";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { ArticleBody } from "@/components/posts/ArticleBody";
+import { PostCoverImage } from "@/components/posts/PostCoverImage";
 import { RelatedPosts } from "@/components/posts/RelatedPosts";
 // import { SocialShare } from "@/components/posts/SocialShare";
 import { TableOfContents } from "@/components/posts/TableOfContents";
@@ -48,9 +49,25 @@ export async function generateMetadata({
     };
   }
 
+  const title = post.seoTitle ?? post.title;
+  const description =
+    post.seoDescription ?? post.excerpt ?? "Pixel Pint Arcade blog article.";
+
   return {
-    title: `${post.title} | Pixel Pint Arcade`,
-    description: post.excerpt ?? "Pixel Pint Arcade blog article.",
+    title: `${title} | Pixel Pint Arcade`,
+    description,
+    ...(post.coverImageUrl
+      ? {
+          openGraph: {
+            images: [
+              {
+                alt: post.coverImageAlt ?? post.title,
+                url: post.coverImageUrl,
+              },
+            ],
+          },
+        }
+      : {}),
   };
 }
 
@@ -106,6 +123,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </Link>
               ))}
             </div>
+          ) : null}
+          {post.coverImageUrl ? (
+            <figure className={styles.cover}>
+              <PostCoverImage
+                alt={post.coverImageAlt ?? post.title}
+                src={post.coverImageUrl}
+              />
+            </figure>
           ) : null}
           {/* <SocialShare title={post.title} url={postUrl} /> */}
           <TableOfContents headings={article.headings} />

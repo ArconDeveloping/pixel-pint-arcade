@@ -3,6 +3,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
+import { PostCoverImage } from "@/components/posts/PostCoverImage";
 import { getPublishedPostCount, getPublishedPosts } from "@/data/posts";
 import styles from "./BlogPage.module.css";
 
@@ -120,6 +121,13 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           <section className={styles.grid} aria-label="Published posts">
             {posts.map((post) => (
               <article className={styles.card} key={post.id}>
+                {post.coverImageUrl ? (
+                  <PostCoverImage
+                    alt={post.coverImageAlt ?? post.title}
+                    className={styles.coverImage}
+                    src={post.coverImageUrl}
+                  />
+                ) : null}
                 <time dateTime={post.createdAt}>
                   {formatDate(post.createdAt)}
                 </time>

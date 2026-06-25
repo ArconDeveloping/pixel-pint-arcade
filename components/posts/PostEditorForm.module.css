@@ -59,6 +59,41 @@
   padding-top: 4px;
 }
 
+.coverPreview {
+  display: grid;
+  gap: 12px;
+  max-width: 420px;
+}
+
+.coverPreview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 4px solid #260c39;
+  background: #090411;
+  box-shadow: 5px 5px 0 #000;
+  object-fit: cover;
+}
+
+.removeCover {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  color: #ffe6a3;
+  cursor: pointer;
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.removeCover input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--red);
+  cursor: pointer;
+}
+
 .toggle {
   display: inline-flex;
   align-items: center;

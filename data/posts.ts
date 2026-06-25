@@ -8,6 +8,8 @@ export type PostListItemDTO = {
   title: string;
   slug: string;
   excerpt: string | null;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
   createdAt: string;
   tags: {
     name: string;
@@ -21,6 +23,8 @@ export type PostListItemDTO = {
 
 export type PostDetailDTO = PostListItemDTO & {
   content: string;
+  seoTitle: string | null;
+  seoDescription: string | null;
 };
 
 export type AccountPostDTO = {
@@ -28,6 +32,10 @@ export type AccountPostDTO = {
   title: string;
   slug: string;
   excerpt: string | null;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   published: boolean;
   tags: {
     name: string;
@@ -46,6 +54,8 @@ const postListSelect = {
   title: true,
   slug: true,
   excerpt: true,
+  coverImageUrl: true,
+  coverImageAlt: true,
   createdAt: true,
   tags: {
     orderBy: { name: "asc" },
@@ -67,6 +77,8 @@ const toPostListItemDTO = (post: {
   title: string;
   slug: string;
   excerpt: string | null;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
   createdAt: Date;
   tags: {
     name: string;
@@ -122,6 +134,13 @@ const getPublishedPostWhere = (query?: string) => {
           OR: [
             { title: { contains: search, mode: "insensitive" as const } },
             { excerpt: { contains: search, mode: "insensitive" as const } },
+            { seoTitle: { contains: search, mode: "insensitive" as const } },
+            {
+              seoDescription: {
+                contains: search,
+                mode: "insensitive" as const,
+              },
+            },
             { content: { contains: search, mode: "insensitive" as const } },
             {
               tags: {
@@ -167,6 +186,8 @@ export const getPublishedPostBySlug = async (
     select: {
       ...postListSelect,
       content: true,
+      seoTitle: true,
+      seoDescription: true,
     },
   });
 
@@ -177,6 +198,8 @@ export const getPublishedPostBySlug = async (
   return {
     ...toPostListItemDTO(post),
     content: post.content,
+    seoTitle: post.seoTitle,
+    seoDescription: post.seoDescription,
   };
 };
 
@@ -217,6 +240,10 @@ export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
       title: true,
       slug: true,
       excerpt: true,
+      coverImageUrl: true,
+      coverImageAlt: true,
+      seoTitle: true,
+      seoDescription: true,
       published: true,
       tags: {
         orderBy: { name: "asc" },
@@ -249,6 +276,10 @@ export const getAdminPostForEdit = async (
       title: true,
       slug: true,
       excerpt: true,
+      coverImageUrl: true,
+      coverImageAlt: true,
+      seoTitle: true,
+      seoDescription: true,
       content: true,
       published: true,
       tags: {
@@ -278,6 +309,10 @@ export const createPost = async (input: {
   title: string;
   slug: string;
   excerpt?: string | null;
+  coverImageUrl?: string | null;
+  coverImageAlt?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
   tags?: string | null;
   content: string;
   published?: boolean;
@@ -290,6 +325,10 @@ export const createPost = async (input: {
       title: input.title,
       slug: input.slug,
       excerpt: input.excerpt,
+      coverImageUrl: input.coverImageUrl,
+      coverImageAlt: input.coverImageAlt,
+      seoTitle: input.seoTitle,
+      seoDescription: input.seoDescription,
       content: input.content,
       published: input.published ?? false,
       author: {
@@ -312,6 +351,10 @@ export const updatePost = async (
     title: string;
     slug: string;
     excerpt?: string | null;
+    coverImageUrl?: string | null;
+    coverImageAlt?: string | null;
+    seoTitle?: string | null;
+    seoDescription?: string | null;
     tags?: string | null;
     content: string;
     published?: boolean;
@@ -334,6 +377,10 @@ export const updatePost = async (
       title: input.title,
       slug: input.slug,
       excerpt: input.excerpt,
+      coverImageUrl: input.coverImageUrl,
+      coverImageAlt: input.coverImageAlt,
+      seoTitle: input.seoTitle,
+      seoDescription: input.seoDescription,
       content: input.content,
       published: input.published ?? false,
       ...(input.tags !== undefined

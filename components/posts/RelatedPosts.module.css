@@ -32,6 +32,15 @@
   border-color: var(--cyan);
 }
 
+.coverImage {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 4px solid #260c39;
+  background: #090411;
+  box-shadow: 5px 5px 0 #000;
+  object-fit: cover;
+}
+
 .card time {
   color: var(--green);
   font-size: 14px;

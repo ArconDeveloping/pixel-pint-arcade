@@ -20,6 +20,10 @@ export const postSchema = z.object({
     .max(180)
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   excerpt: z.string().trim().max(300).nullable().optional(),
+  coverImageUrl: z.string().trim().url().max(1000).nullable().optional(),
+  coverImageAlt: z.string().trim().max(180).nullable().optional(),
+  seoTitle: z.string().trim().max(160).nullable().optional(),
+  seoDescription: z.string().trim().max(300).nullable().optional(),
   tags: z.string().trim().max(240).optional(),
   content: z.string().trim().min(1),
   published: z.boolean().optional(),

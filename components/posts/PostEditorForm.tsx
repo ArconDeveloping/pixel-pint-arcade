@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 
 import { createPostAction, updatePostAction } from "@/app/actions/posts";
 import type { ActionState } from "@/app/actions/comments";
+import { PostCoverImage } from "./PostCoverImage";
 import styles from "./PostEditorForm.module.css";
 
 const initialState: ActionState = {
@@ -49,6 +50,10 @@ export type PostEditorInitialValues = {
   title: string;
   slug: string;
   excerpt: string;
+  coverImageUrl: string;
+  coverImageAlt: string;
+  seoTitle: string;
+  seoDescription: string;
   tags: string;
   content: string;
   published: boolean;
@@ -58,6 +63,10 @@ const emptyInitialValues: PostEditorInitialValues = {
   title: "",
   slug: "",
   excerpt: "",
+  coverImageUrl: "",
+  coverImageAlt: "",
+  seoTitle: "",
+  seoDescription: "",
   tags: "",
   content: "",
   published: false,
@@ -72,6 +81,13 @@ const PostEditorFields = ({
   const [title, setTitle] = useState(initialValues.title);
   const [slug, setSlug] = useState(initialValues.slug);
   const [excerpt, setExcerpt] = useState(initialValues.excerpt);
+  const [coverImageAlt, setCoverImageAlt] = useState(
+    initialValues.coverImageAlt,
+  );
+  const [seoTitle, setSeoTitle] = useState(initialValues.seoTitle);
+  const [seoDescription, setSeoDescription] = useState(
+    initialValues.seoDescription,
+  );
   const [tags, setTags] = useState(initialValues.tags);
   const [content, setContent] = useState(initialValues.content);
   const [slugEdited, setSlugEdited] = useState(mode === "edit");
@@ -134,6 +150,72 @@ const PostEditorFields = ({
           onChange={(event) => setExcerpt(event.target.value)}
         />
         {state.errors?.excerpt ? <p>{state.errors.excerpt[0]}</p> : null}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="coverImageFile">Cover image</label>
+        <input
+          accept="image/gif,image/jpeg,image/png,image/webp"
+          id="coverImageFile"
+          name="coverImageFile"
+          type="file"
+        />
+        {state.errors?.coverImageFile ? (
+          <p>{state.errors.coverImageFile[0]}</p>
+        ) : null}
+        {initialValues.coverImageUrl ? (
+          <div className={styles.coverPreview}>
+            <PostCoverImage
+              alt={initialValues.coverImageAlt || initialValues.title}
+              src={initialValues.coverImageUrl}
+            />
+            <label className={styles.removeCover}>
+              <input name="removeCoverImage" type="checkbox" />
+              <span>Remove current cover</span>
+            </label>
+          </div>
+        ) : null}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="coverImageAlt">Cover image alt</label>
+        <input
+          id="coverImageAlt"
+          name="coverImageAlt"
+          maxLength={180}
+          value={coverImageAlt}
+          onChange={(event) => setCoverImageAlt(event.target.value)}
+        />
+        {state.errors?.coverImageAlt ? (
+          <p>{state.errors.coverImageAlt[0]}</p>
+        ) : null}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="seoTitle">SEO title</label>
+        <input
+          id="seoTitle"
+          name="seoTitle"
+          maxLength={160}
+          value={seoTitle}
+          onChange={(event) => setSeoTitle(event.target.value)}
+        />
+        {state.errors?.seoTitle ? <p>{state.errors.seoTitle[0]}</p> : null}
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="seoDescription">SEO description</label>
+        <textarea
+          id="seoDescription"
+          name="seoDescription"
+          rows={3}
+          maxLength={300}
+          value={seoDescription}
+          onChange={(event) => setSeoDescription(event.target.value)}
+        />
+        {state.errors?.seoDescription ? (
+          <p>{state.errors.seoDescription[0]}</p>
+        ) : null}
       </div>
 
       <div className={styles.field}>

@@ -17,6 +17,20 @@
   text-transform: uppercase;
 }
 
+.cover {
+  margin: 0 0 30px;
+}
+
+.cover img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 5px solid #51207b;
+  background: #090411;
+  box-shadow: 8px 8px 0 #000;
+  object-fit: cover;
+}
+
 .content {
   border: 5px solid #51207b;
   background: rgba(12, 5, 22, .82);
