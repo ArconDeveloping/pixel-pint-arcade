@@ -168,6 +168,14 @@
   margin-top: 16px;
 }
 
+.itemActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 18px;
+}
+
 @media (max-width: 720px) {
   .sectionHeader {
     align-items: flex-start;

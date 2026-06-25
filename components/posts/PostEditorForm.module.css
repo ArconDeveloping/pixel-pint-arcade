@@ -52,6 +52,13 @@
   font-weight: 700;
 }
 
+.tagPreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding-top: 4px;
+}
+
 .toggle {
   display: inline-flex;
   align-items: center;

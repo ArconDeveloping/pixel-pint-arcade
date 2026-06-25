@@ -12,7 +12,6 @@
 }
 
 .tag {
-  padding: 6px 9px;
   font-family: var(--font-press-start-2p), "Courier New", monospace;
   font-size: 12px;
   text-transform: uppercase;

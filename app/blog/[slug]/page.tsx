@@ -97,9 +97,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {post.tags.length > 0 ? (
             <div className={`tag-list ${styles.tags}`} aria-label="Post tags">
               {post.tags.map((tag) => (
-                <span className={`tag-chip ${styles.tag}`} key={tag.slug}>
+                <Link
+                  className={`tag-chip ${styles.tag}`}
+                  href={`/blog?q=${encodeURIComponent(tag.name)}`}
+                  key={tag.slug}
+                >
                   {tag.name}
-                </span>
+                </Link>
               ))}
             </div>
           ) : null}
@@ -107,13 +111,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <TableOfContents headings={article.headings} />
           <ArticleBody blocks={article.blocks} />
         </article>
-        <RelatedPosts posts={relatedPosts} />
         <CommentsSection
           comments={comments}
           currentUser={currentUser}
           postId={post.id}
           postSlug={post.slug}
         />
+        <RelatedPosts posts={relatedPosts} />
       </div>
     </main>
   );

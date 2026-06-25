@@ -83,12 +83,10 @@
   align-content: start;
   gap: 14px;
   padding: 22px;
-  text-decoration: none;
 }
 
 .card:hover {
   border-color: var(--cyan);
-  transform: translate(-2px, -2px);
 }
 
 .card time,
@@ -101,6 +99,14 @@
   font-size: 18px;
   margin: 0;
   text-shadow: 3px 3px 0 #3d1555, 5px 5px 0 #000;
+}
+
+.card h2 a {
+  text-decoration: none;
+}
+
+.card h2 a:hover {
+  color: var(--yellow);
 }
 
 .card p,

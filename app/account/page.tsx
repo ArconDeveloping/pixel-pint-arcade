@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { SignOutButton } from "@/components/auth/SignOutButton";
+import { DeletePostButton } from "@/components/posts/DeletePostButton";
 import { getCurrentSession, requireUserRecord } from "@/data/auth";
 import { getCurrentUserComments } from "@/data/comments";
 import { getCurrentUserPosts } from "@/data/posts";
@@ -98,12 +99,28 @@ export default async function AccountPage() {
                         aria-label="Post tags"
                       >
                         {post.tags.map((tag) => (
-                          <span className="tag-chip" key={tag.slug}>
+                          <Link
+                            className="tag-chip"
+                            href={`/blog?q=${encodeURIComponent(tag.name)}`}
+                            key={tag.slug}
+                          >
                             {tag.name}
-                          </span>
+                          </Link>
                         ))}
                       </div>
                     ) : null}
+                    <div className={styles.itemActions}>
+                      <Link
+                        className="pixel-link"
+                        href={`/account/posts/${post.id}/edit`}
+                      >
+                        Edit
+                      </Link>
+                      <DeletePostButton
+                        postId={post.id}
+                        postTitle={post.title}
+                      />
+                    </div>
                   </article>
                 ))}
               </div>

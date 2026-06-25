@@ -27,20 +27,26 @@ export const RelatedPosts = ({ posts }: RelatedPostsProps) => {
       </div>
       <div className={styles.grid}>
         {posts.map((post) => (
-          <Link className={styles.card} href={`/blog/${post.slug}`} key={post.id}>
+          <article className={styles.card} key={post.id}>
             <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
-            <h3>{post.title}</h3>
+            <h3>
+              <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+            </h3>
             {post.excerpt ? <p>{post.excerpt}</p> : null}
             {post.tags.length > 0 ? (
               <div className="tag-list" aria-label="Related post tags">
                 {post.tags.map((tag) => (
-                  <span className="tag-chip" key={tag.slug}>
+                  <Link
+                    className="tag-chip"
+                    href={`/blog?q=${encodeURIComponent(tag.name)}`}
+                    key={tag.slug}
+                  >
                     {tag.name}
-                  </span>
+                  </Link>
                 ))}
               </div>
             ) : null}
-          </Link>
+          </article>
         ))}
       </div>
     </section>

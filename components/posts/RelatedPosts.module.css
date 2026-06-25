@@ -26,12 +26,10 @@
   background: rgba(12, 5, 22, .82);
   box-shadow: 8px 8px 0 #000;
   padding: 22px;
-  text-decoration: none;
 }
 
 .card:hover {
   border-color: var(--cyan);
-  transform: translate(-2px, -2px);
 }
 
 .card time {
@@ -44,6 +42,14 @@
   line-height: 1.35;
   margin: 0;
   text-shadow: 3px 3px 0 #3d1555, 5px 5px 0 #000;
+}
+
+.card h3 a {
+  text-decoration: none;
+}
+
+.card h3 a:hover {
+  color: var(--yellow);
 }
 
 .card p {

@@ -19,7 +19,7 @@ export const postSchema = z.object({
     .min(1)
     .max(180)
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  excerpt: z.string().trim().max(300).optional(),
+  excerpt: z.string().trim().max(300).nullable().optional(),
   tags: z.string().trim().max(240).optional(),
   content: z.string().trim().min(1),
   published: z.boolean().optional(),

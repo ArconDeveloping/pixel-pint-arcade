@@ -37,6 +37,10 @@ export type AccountPostDTO = {
   updatedAt: string;
 };
 
+export type AdminPostEditDTO = AccountPostDTO & {
+  content: string;
+};
+
 const postListSelect = {
   id: true,
   title: true,
@@ -233,6 +237,43 @@ export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
   }));
 };
 
+export const getAdminPostForEdit = async (
+  postId: string,
+): Promise<AdminPostEditDTO | null> => {
+  await requireAdmin();
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      content: true,
+      published: true,
+      tags: {
+        orderBy: { name: "asc" },
+        select: {
+          name: true,
+          slug: true,
+        },
+      },
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  if (!post) {
+    return null;
+  }
+
+  return {
+    ...post,
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  };
+};
+
 export const createPost = async (input: {
   title: string;
   slug: string;
@@ -278,8 +319,16 @@ export const updatePost = async (
 ) => {
   await requireAdmin();
   const tags = tagConnectOrCreate(input.tags);
+  const currentPost = await prisma.post.findUnique({
+    where: { id: postId },
+    select: { slug: true },
+  });
 
-  await prisma.post.update({
+  if (!currentPost) {
+    throw new Error("NotFound");
+  }
+
+  const updatedPost = await prisma.post.update({
     where: { id: postId },
     data: {
       title: input.title,
@@ -296,13 +345,24 @@ export const updatePost = async (
           }
         : {}),
     },
+    select: { slug: true },
   });
+
+  return {
+    previousSlug: currentPost.slug,
+    slug: updatedPost.slug,
+  };
 };
 
 export const deletePost = async (postId: string) => {
   await requireAdmin();
 
-  await prisma.post.delete({
+  const deletedPost = await prisma.post.delete({
     where: { id: postId },
+    select: { slug: true },
   });
+
+  return {
+    slug: deletedPost.slug,
+  };
 };

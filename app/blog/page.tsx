@@ -119,27 +119,29 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         {posts.length > 0 ? (
           <section className={styles.grid} aria-label="Published posts">
             {posts.map((post) => (
-              <Link
-                className={styles.card}
-                href={`/blog/${post.slug}`}
-                key={post.id}
-              >
+              <article className={styles.card} key={post.id}>
                 <time dateTime={post.createdAt}>
                   {formatDate(post.createdAt)}
                 </time>
-                <h2>{post.title}</h2>
+                <h2>
+                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                </h2>
                 {post.excerpt ? <p>{post.excerpt}</p> : null}
                 {post.tags.length > 0 ? (
                   <div className="tag-list" aria-label="Post tags">
                     {post.tags.map((tag) => (
-                      <span className="tag-chip" key={tag.slug}>
+                      <Link
+                        className="tag-chip"
+                        href={`/blog?q=${encodeURIComponent(tag.name)}`}
+                        key={tag.slug}
+                      >
                         {tag.name}
-                      </span>
+                      </Link>
                     ))}
                   </div>
                 ) : null}
                 <span>By {post.author.name}</span>
-              </Link>
+              </article>
             ))}
           </section>
         ) : (

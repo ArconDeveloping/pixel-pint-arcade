@@ -23,6 +23,9 @@ const booleanFromForm = (value: FormDataEntryValue | null) => {
   return value === "on" || value === "true";
 };
 
+const nullableStringFromForm = (value: FormDataEntryValue | null) =>
+  typeof value === "string" && value.trim() ? value : null;
+
 export async function createPostAction(
   _state: ActionState,
   formData: FormData,
@@ -30,7 +33,7 @@ export async function createPostAction(
   const parsed = postSchema.safeParse({
     title: formData.get("title"),
     slug: formData.get("slug"),
-    excerpt: formData.get("excerpt") || undefined,
+    excerpt: nullableStringFromForm(formData.get("excerpt")),
     tags: formData.get("tags") || undefined,
     content: formData.get("content"),
     published: booleanFromForm(formData.get("published")),
@@ -70,8 +73,8 @@ export async function updatePostAction(
     postId: formData.get("postId"),
     title: formData.get("title"),
     slug: formData.get("slug"),
-    excerpt: formData.get("excerpt") || undefined,
-    tags: formData.get("tags") || undefined,
+    excerpt: nullableStringFromForm(formData.get("excerpt")),
+    tags: formData.get("tags") ?? "",
     content: formData.get("content"),
     published: booleanFromForm(formData.get("published")),
   });
@@ -85,8 +88,11 @@ export async function updatePostAction(
 
   try {
     const { postId, ...postInput } = parsed.data;
-    await updatePost(postId, postInput);
+    const updatedPost = await updatePost(postId, postInput);
     revalidatePath("/");
+    revalidatePath("/account");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${updatedPost.previousSlug}`);
     revalidatePath(`/blog/${postInput.slug}`);
     return { ok: true };
   } catch (error) {
@@ -96,6 +102,10 @@ export async function updatePostAction(
 
     if (error instanceof Error && error.message === "Forbidden") {
       return actionError("Only admins can edit posts.");
+    }
+
+    if (error instanceof Error && error.message === "NotFound") {
+      return actionError("Post not found.");
     }
 
     return actionError("Could not update the post.");
@@ -118,8 +128,11 @@ export async function deletePostAction(
   }
 
   try {
-    await deletePost(parsed.data.postId);
+    const deletedPost = await deletePost(parsed.data.postId);
     revalidatePath("/");
+    revalidatePath("/account");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${deletedPost.slug}`);
     return { ok: true };
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
