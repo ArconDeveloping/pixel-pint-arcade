@@ -76,23 +76,20 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       <div className="wrap">
         <div className={`page-topline ${styles.topline}`}>
           <div className="eyebrow">Pixel Pint Arcade Blog</div>
-          <Link className="pixel-link" href="/">
-            Back home
-          </Link>
+          {/* <Link className="pixel-link" href="/">
+            Back
+          </Link> */}
         </div>
 
         <Breadcrumbs
-          items={[
-            { href: "/", label: "Home" },
-            { label: "Blog" },
-          ]}
+          items={[{ href: "/", label: "Home" }, { label: "Blog" }]}
         />
 
         <section className={styles.intro}>
           <h1>Blog</h1>
           <p>
-            Notes, breakdowns and stories about 2D games, retro hardware, consoles
-            and the culture around them.
+            Notes, breakdowns and stories about 2D games, retro hardware,
+            consoles and the culture around them.
           </p>
         </section>
 
@@ -122,8 +119,14 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         {posts.length > 0 ? (
           <section className={styles.grid} aria-label="Published posts">
             {posts.map((post) => (
-              <Link className={styles.card} href={`/blog/${post.slug}`} key={post.id}>
-                <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
+              <Link
+                className={styles.card}
+                href={`/blog/${post.slug}`}
+                key={post.id}
+              >
+                <time dateTime={post.createdAt}>
+                  {formatDate(post.createdAt)}
+                </time>
                 <h2>{post.title}</h2>
                 {post.excerpt ? <p>{post.excerpt}</p> : null}
                 {post.tags.length > 0 ? (
@@ -144,14 +147,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             {hasSearch ? (
               <>
                 <h2>No posts found</h2>
-                <p>No articles match &quot;{query}&quot;. Try another search.</p>
+                <p>
+                  No articles match &quot;{query}&quot;. Try another search.
+                </p>
               </>
             ) : (
               <>
                 <h2>No posts yet</h2>
                 <p>
-                  The first stories are still being prepared. Check back soon for
-                  notes on 2D games, retro hardware and arcade culture.
+                  The first stories are still being prepared. Check back soon
+                  for notes on 2D games, retro hardware and arcade culture.
                 </p>
               </>
             )}

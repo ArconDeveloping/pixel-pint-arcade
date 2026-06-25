@@ -4,9 +4,14 @@ import { notFound } from "next/navigation";
 
 import { CommentsSection } from "@/components/comments/CommentsSection";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
+import { ArticleBody } from "@/components/posts/ArticleBody";
+import { RelatedPosts } from "@/components/posts/RelatedPosts";
+// import { SocialShare } from "@/components/posts/SocialShare";
+import { TableOfContents } from "@/components/posts/TableOfContents";
 import { getCurrentSession, requireUserRecord } from "@/data/auth";
 import { getCommentsForPost } from "@/data/comments";
-import { getPublishedPostBySlug } from "@/data/posts";
+import { getPublishedPostBySlug, getRelatedPosts } from "@/data/posts";
+import { parseArticleContent } from "@/lib/article-content";
 import { formatReadingTime, getReadingTimeMinutes } from "@/lib/reading-time";
 import styles from "./PostPage.module.css";
 
@@ -22,6 +27,14 @@ const formatDate = (value: string) =>
     day: "numeric",
     year: "numeric",
   }).format(new Date(value));
+
+// const getPostUrl = (slug: string) => {
+//   const siteUrl =
+//     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+//     "http://localhost:3000";
+//
+//   return `${siteUrl}/blog/${slug}`;
+// };
 
 export async function generateMetadata({
   params,
@@ -49,12 +62,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const [comments, session] = await Promise.all([
+  const [comments, relatedPosts, session] = await Promise.all([
     getCommentsForPost(post.id),
+    getRelatedPosts({
+      postId: post.id,
+      tagSlugs: post.tags.map((tag) => tag.slug),
+    }),
     getCurrentSession(),
   ]);
   const currentUser = session?.user ? await requireUserRecord() : null;
   const readingTime = formatReadingTime(getReadingTimeMinutes(post.content));
+  const article = parseArticleContent(post.content);
+  // const postUrl = getPostUrl(post.slug);
 
   return (
     <main className="page-shell">
@@ -68,7 +87,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             ]}
           />
           <Link className={`pixel-link ${styles.backLink}`} href="/blog">
-            Back to blog
+            Back
           </Link>
           <div className="eyebrow">Article</div>
           <h1>{post.title}</h1>
@@ -78,12 +97,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {post.tags.length > 0 ? (
             <div className={`tag-list ${styles.tags}`} aria-label="Post tags">
               {post.tags.map((tag) => (
-                <span className={`tag-chip ${styles.tag}`} key={tag.slug}>{tag.name}</span>
+                <span className={`tag-chip ${styles.tag}`} key={tag.slug}>
+                  {tag.name}
+                </span>
               ))}
             </div>
           ) : null}
-          <div className={styles.content}>{post.content}</div>
+          {/* <SocialShare title={post.title} url={postUrl} /> */}
+          <TableOfContents headings={article.headings} />
+          <ArticleBody blocks={article.blocks} />
         </article>
+        <RelatedPosts posts={relatedPosts} />
         <CommentsSection
           comments={comments}
           currentUser={currentUser}

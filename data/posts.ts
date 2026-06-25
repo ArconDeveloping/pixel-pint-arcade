@@ -176,6 +176,33 @@ export const getPublishedPostBySlug = async (
   };
 };
 
+export const getRelatedPosts = async (options: {
+  postId: string;
+  tagSlugs: string[];
+  take?: number;
+}): Promise<PostListItemDTO[]> => {
+  if (options.tagSlugs.length === 0) {
+    return [];
+  }
+
+  const posts = await prisma.post.findMany({
+    where: {
+      id: { not: options.postId },
+      published: true,
+      tags: {
+        some: {
+          slug: { in: options.tagSlugs },
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    take: options.take ?? 3,
+    select: postListSelect,
+  });
+
+  return posts.map(toPostListItemDTO);
+};
+
 export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
   const user = await requireUserRecord();
   const posts = await prisma.post.findMany({

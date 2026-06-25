@@ -29,7 +29,7 @@ export default async function NewPostPage() {
       <div className="wrap">
         <div className={`page-topline ${styles.topline}`}>
           <Link className="pixel-link" href="/account">
-            Back to account
+            Back
           </Link>
         </div>
 
