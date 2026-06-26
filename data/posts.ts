@@ -12,6 +12,7 @@ export type PostListItemDTO = {
   coverImageAlt: string | null;
   createdAt: string;
   updatedAt: string;
+  commentsEnabled: boolean;
   tags: {
     name: string;
     slug: string;
@@ -38,6 +39,7 @@ export type AccountPostDTO = {
   seoTitle: string | null;
   seoDescription: string | null;
   published: boolean;
+  commentsEnabled: boolean;
   tags: {
     name: string;
     slug: string;
@@ -59,6 +61,7 @@ const postListSelect = {
   coverImageAlt: true,
   createdAt: true,
   updatedAt: true,
+  commentsEnabled: true,
   tags: {
     orderBy: { name: "asc" },
     select: {
@@ -83,6 +86,7 @@ const toPostListItemDTO = (post: {
   coverImageAlt: string | null;
   createdAt: Date;
   updatedAt: Date;
+  commentsEnabled: boolean;
   tags: {
     name: string;
     slug: string;
@@ -249,6 +253,7 @@ export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
       seoTitle: true,
       seoDescription: true,
       published: true,
+      commentsEnabled: true,
       tags: {
         orderBy: { name: "asc" },
         select: {
@@ -286,6 +291,7 @@ export const getAdminPostForEdit = async (
       seoDescription: true,
       content: true,
       published: true,
+      commentsEnabled: true,
       tags: {
         orderBy: { name: "asc" },
         select: {
@@ -320,6 +326,7 @@ export const createPost = async (input: {
   tags?: string | null;
   content: string;
   published?: boolean;
+  commentsEnabled?: boolean;
 }) => {
   const admin = await requireAdmin();
   const tags = tagConnectOrCreate(input.tags);
@@ -335,6 +342,7 @@ export const createPost = async (input: {
       seoDescription: input.seoDescription,
       content: input.content,
       published: input.published ?? false,
+      commentsEnabled: input.commentsEnabled ?? true,
       author: {
         connect: { id: admin.id },
       },
@@ -362,6 +370,7 @@ export const updatePost = async (
     tags?: string | null;
     content: string;
     published?: boolean;
+    commentsEnabled?: boolean;
   },
 ) => {
   await requireAdmin();
@@ -387,6 +396,7 @@ export const updatePost = async (
       seoDescription: input.seoDescription,
       content: input.content,
       published: input.published ?? false,
+      commentsEnabled: input.commentsEnabled ?? true,
       ...(input.tags !== undefined
         ? {
             tags: {

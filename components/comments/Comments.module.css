@@ -30,6 +30,7 @@
 
 .form,
 .signInPrompt,
+.closedState,
 .emptyState,
 .comment > article {
   border: 5px solid #51207b;
@@ -100,11 +101,13 @@
 }
 
 .signInPrompt,
+.closedState,
 .emptyState {
   padding: clamp(18px, 4vw, 28px);
 }
 
 .signInPrompt h3,
+.closedState h3,
 .emptyState h3 {
   margin: 0 0 12px;
   color: var(--yellow);
@@ -114,6 +117,7 @@
 }
 
 .signInPrompt p,
+.closedState p,
 .emptyState p {
   color: #ffe6a3;
   line-height: 1.6;

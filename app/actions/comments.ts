@@ -58,6 +58,10 @@ export async function createCommentAction(
       return actionError("This post is not available for comments.");
     }
 
+    if (error instanceof Error && error.message === "Comments closed") {
+      return actionError("Comments are closed for this post.");
+    }
+
     return actionError("Could not publish the comment.");
   }
 }

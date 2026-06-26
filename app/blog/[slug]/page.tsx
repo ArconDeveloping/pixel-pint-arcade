@@ -152,6 +152,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </article>
         <CommentsSection
           comments={comments}
+          commentsEnabled={post.commentsEnabled}
           currentUser={currentUser}
           postId={post.id}
           postSlug={post.slug}

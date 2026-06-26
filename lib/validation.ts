@@ -27,6 +27,7 @@ export const postSchema = z.object({
   tags: z.string().trim().max(240).optional(),
   content: z.string().trim().min(1),
   published: z.boolean().optional(),
+  commentsEnabled: z.boolean().optional(),
 });
 
 export const updatePostSchema = postSchema.extend({

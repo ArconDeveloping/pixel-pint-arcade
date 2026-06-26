@@ -7,6 +7,7 @@ import styles from "./Comments.module.css";
 
 type CommentsSectionProps = {
   comments: CommentDTO[];
+  commentsEnabled: boolean;
   postId: string;
   postSlug: string;
   currentUser:
@@ -50,6 +51,7 @@ const buildCommentTree = (comments: CommentDTO[]) => {
 
 export const CommentsSection = ({
   comments,
+  commentsEnabled,
   currentUser,
   postId,
   postSlug,
@@ -66,9 +68,9 @@ export const CommentsSection = ({
         <span>{comments.length}</span>
       </div>
 
-      {currentUser ? (
+      {commentsEnabled && currentUser ? (
         <CommentForm postId={postId} postSlug={postSlug} />
-      ) : (
+      ) : commentsEnabled ? (
         <div className={styles.signInPrompt}>
           <h3>Join the discussion</h3>
           <p>Sign in to leave a comment under this article.</p>
@@ -81,6 +83,11 @@ export const CommentsSection = ({
             </Link>
           </div>
         </div>
+      ) : (
+        <div className={styles.closedState}>
+          <h3>Comments are closed</h3>
+          <p>This article is not accepting new comments or replies.</p>
+        </div>
       )}
 
       {roots.length > 0 ? (
@@ -88,6 +95,7 @@ export const CommentsSection = ({
           {roots.map((comment) => (
             <CommentThreadItem
               comment={comment}
+              commentsEnabled={commentsEnabled}
               currentUser={currentUser}
               key={comment.id}
               postId={postId}
@@ -95,12 +103,12 @@ export const CommentsSection = ({
             />
           ))}
         </ol>
-      ) : (
+      ) : commentsEnabled ? (
         <div className={styles.emptyState}>
           <h3>No comments yet</h3>
           <p>Start the conversation with the first take on this post.</p>
         </div>
-      )}
+      ) : null}
     </section>
   );
 };

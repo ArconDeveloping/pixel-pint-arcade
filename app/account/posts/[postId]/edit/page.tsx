@@ -72,6 +72,7 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
             tags: post.tags.map((tag) => tag.name).join(", "),
             content: post.content,
             published: post.published,
+            commentsEnabled: post.commentsEnabled,
           }}
         />
       </div>

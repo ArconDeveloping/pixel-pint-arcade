@@ -60,6 +60,7 @@ export type PostEditorInitialValues = {
   tags: string;
   content: string;
   published: boolean;
+  commentsEnabled: boolean;
 };
 
 const emptyInitialValues: PostEditorInitialValues = {
@@ -73,6 +74,7 @@ const emptyInitialValues: PostEditorInitialValues = {
   tags: "",
   content: "",
   published: false,
+  commentsEnabled: true,
 };
 
 const PostEditorFields = ({
@@ -296,6 +298,15 @@ const PostEditorFields = ({
             defaultChecked={initialValues.published}
           />
           <span>Publish now</span>
+        </label>
+
+        <label className={styles.toggle}>
+          <input
+            name="commentsEnabled"
+            type="checkbox"
+            defaultChecked={initialValues.commentsEnabled}
+          />
+          <span>Allow comments</span>
         </label>
       </section>
 

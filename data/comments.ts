@@ -84,11 +84,18 @@ export const createComment = async (input: {
       id: input.postId,
       published: true,
     },
-    select: { id: true },
+    select: {
+      commentsEnabled: true,
+      id: true,
+    },
   });
 
   if (!post) {
     throw new Error("Post not found");
+  }
+
+  if (!post.commentsEnabled) {
+    throw new Error("Comments closed");
   }
 
   if (input.parentId) {

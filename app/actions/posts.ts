@@ -68,6 +68,7 @@ export async function createPostAction(
     tags: formData.get("tags") || undefined,
     content: formData.get("content"),
     published: booleanFromForm(formData.get("published")),
+    commentsEnabled: booleanFromForm(formData.get("commentsEnabled")),
   });
 
   if (!parsed.success) {
@@ -126,6 +127,7 @@ export async function updatePostAction(
     tags: formData.get("tags") ?? "",
     content: formData.get("content"),
     published: booleanFromForm(formData.get("published")),
+    commentsEnabled: booleanFromForm(formData.get("commentsEnabled")),
   });
 
   if (!parsed.success) {

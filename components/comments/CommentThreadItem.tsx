@@ -9,6 +9,7 @@ import styles from "./Comments.module.css";
 
 type CommentThreadItemProps = {
   comment: CommentNode;
+  commentsEnabled: boolean;
   currentUser:
     | {
         id: string;
@@ -38,6 +39,7 @@ const getRepliesLabel = (count: number, expanded: boolean) => {
 
 export const CommentThreadItem = ({
   comment,
+  commentsEnabled,
   currentUser,
   postId,
   postSlug,
@@ -49,7 +51,7 @@ export const CommentThreadItem = ({
   const canDelete =
     currentUser?.role === "ADMIN" || currentUser?.id === comment.author.id;
   const hasReplies = comment.replies.length > 0;
-  const canReply = Boolean(currentUser);
+  const canReply = commentsEnabled && Boolean(currentUser);
   const handleReplyPosted = useCallback(() => {
     setReplyFormOpen(false);
     setRepliesExpanded(true);
@@ -119,6 +121,7 @@ export const CommentThreadItem = ({
             {comment.replies.map((reply) => (
               <CommentThreadItem
                 comment={reply}
+                commentsEnabled={commentsEnabled}
                 currentUser={currentUser}
                 key={reply.id}
                 postId={postId}
