@@ -43,6 +43,15 @@ const toCommentDTO = (comment: {
   createdAt: comment.createdAt.toISOString(),
 });
 
+const COMMENT_RATE_LIMIT_MS = 30_000;
+const MAX_COMMENT_LINKS = 2;
+
+const normalizeCommentBody = (body: string) =>
+  body.trim().replace(/\s+/g, " ").toLowerCase();
+
+const countCommentLinks = (body: string) =>
+  body.match(/\b(?:https?:\/\/|www\.)\S+/gi)?.length ?? 0;
+
 export const getCommentsForPost = async (
   postId: string,
 ): Promise<CommentDTO[]> => {
@@ -84,11 +93,45 @@ export const createComment = async (input: {
       id: input.postId,
       published: true,
     },
-    select: { id: true },
+    select: {
+      commentsEnabled: true,
+      id: true,
+    },
   });
 
   if (!post) {
     throw new Error("Post not found");
+  }
+
+  if (!post.commentsEnabled) {
+    throw new Error("Comments closed");
+  }
+
+  const latestComment = await prisma.comment.findFirst({
+    where: { authorId: user.id },
+    orderBy: { createdAt: "desc" },
+    select: {
+      body: true,
+      createdAt: true,
+    },
+  });
+
+  if (
+    latestComment &&
+    Date.now() - latestComment.createdAt.getTime() < COMMENT_RATE_LIMIT_MS
+  ) {
+    throw new Error("Comment rate limited");
+  }
+
+  if (
+    latestComment &&
+    normalizeCommentBody(latestComment.body) === normalizeCommentBody(input.body)
+  ) {
+    throw new Error("Duplicate comment");
+  }
+
+  if (countCommentLinks(input.body) > MAX_COMMENT_LINKS) {
+    throw new Error("Too many comment links");
   }
 
   if (input.parentId) {

@@ -30,6 +30,7 @@
 
 .form,
 .signInPrompt,
+.closedState,
 .emptyState,
 .comment > article {
   border: 5px solid #51207b;
@@ -46,6 +47,16 @@
 .field {
   display: grid;
   gap: 8px;
+}
+
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .field label {
@@ -100,11 +111,13 @@
 }
 
 .signInPrompt,
+.closedState,
 .emptyState {
   padding: clamp(18px, 4vw, 28px);
 }
 
 .signInPrompt h3,
+.closedState h3,
 .emptyState h3 {
   margin: 0 0 12px;
   color: var(--yellow);
@@ -114,6 +127,7 @@
 }
 
 .signInPrompt p,
+.closedState p,
 .emptyState p {
   color: #ffe6a3;
   line-height: 1.6;

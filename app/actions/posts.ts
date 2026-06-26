@@ -12,6 +12,8 @@ import {
   deletePost,
   updatePost,
 } from "@/data/posts";
+import { requireAdmin } from "@/data/auth";
+import { savePostCoverImage } from "@/lib/post-cover-upload";
 import type { ActionState } from "@/app/actions/comments";
 
 const actionError = (message: string): ActionState => ({
@@ -23,6 +25,35 @@ const booleanFromForm = (value: FormDataEntryValue | null) => {
   return value === "on" || value === "true";
 };
 
+const nullableStringFromForm = (value: FormDataEntryValue | null) =>
+  typeof value === "string" && value.trim() ? value : null;
+
+const coverImageError = (error: unknown): ActionState | null => {
+  if (!(error instanceof Error)) {
+    return null;
+  }
+
+  if (error.message === "InvalidCoverImageType") {
+    return {
+      ok: false,
+      errors: {
+        coverImageFile: ["Upload a PNG, JPG, WebP, or GIF image."],
+      },
+    };
+  }
+
+  if (error.message === "CoverImageTooLarge") {
+    return {
+      ok: false,
+      errors: {
+        coverImageFile: ["Cover image must be 5MB or smaller."],
+      },
+    };
+  }
+
+  return null;
+};
+
 export async function createPostAction(
   _state: ActionState,
   formData: FormData,
@@ -30,10 +61,14 @@ export async function createPostAction(
   const parsed = postSchema.safeParse({
     title: formData.get("title"),
     slug: formData.get("slug"),
-    excerpt: formData.get("excerpt") || undefined,
+    excerpt: nullableStringFromForm(formData.get("excerpt")),
+    coverImageAlt: nullableStringFromForm(formData.get("coverImageAlt")),
+    seoTitle: nullableStringFromForm(formData.get("seoTitle")),
+    seoDescription: nullableStringFromForm(formData.get("seoDescription")),
     tags: formData.get("tags") || undefined,
     content: formData.get("content"),
     published: booleanFromForm(formData.get("published")),
+    commentsEnabled: booleanFromForm(formData.get("commentsEnabled")),
   });
 
   if (!parsed.success) {
@@ -44,9 +79,18 @@ export async function createPostAction(
   }
 
   try {
-    await createPost(parsed.data);
+    await requireAdmin();
+    const coverImageUrl = await savePostCoverImage(
+      formData.get("coverImageFile"),
+    );
+
+    await createPost({
+      ...parsed.data,
+      coverImageUrl: coverImageUrl ?? null,
+    });
     revalidatePath("/");
     revalidatePath("/account");
+    revalidatePath("/blog");
     revalidatePath(`/blog/${parsed.data.slug}`);
     return { ok: true, resetKey: parsed.data.slug };
   } catch (error) {
@@ -56,6 +100,12 @@ export async function createPostAction(
 
     if (error instanceof Error && error.message === "Forbidden") {
       return actionError("Only admins can create posts.");
+    }
+
+    const uploadError = coverImageError(error);
+
+    if (uploadError) {
+      return uploadError;
     }
 
     return actionError("Could not create the post.");
@@ -70,10 +120,14 @@ export async function updatePostAction(
     postId: formData.get("postId"),
     title: formData.get("title"),
     slug: formData.get("slug"),
-    excerpt: formData.get("excerpt") || undefined,
-    tags: formData.get("tags") || undefined,
+    excerpt: nullableStringFromForm(formData.get("excerpt")),
+    coverImageAlt: nullableStringFromForm(formData.get("coverImageAlt")),
+    seoTitle: nullableStringFromForm(formData.get("seoTitle")),
+    seoDescription: nullableStringFromForm(formData.get("seoDescription")),
+    tags: formData.get("tags") ?? "",
     content: formData.get("content"),
     published: booleanFromForm(formData.get("published")),
+    commentsEnabled: booleanFromForm(formData.get("commentsEnabled")),
   });
 
   if (!parsed.success) {
@@ -85,8 +139,22 @@ export async function updatePostAction(
 
   try {
     const { postId, ...postInput } = parsed.data;
-    await updatePost(postId, postInput);
+    await requireAdmin();
+    const uploadedCoverImageUrl = await savePostCoverImage(
+      formData.get("coverImageFile"),
+    );
+    const removeCoverImage = booleanFromForm(formData.get("removeCoverImage"));
+    const coverImageUrl = removeCoverImage
+      ? null
+      : uploadedCoverImageUrl;
+    const updatedPost = await updatePost(postId, {
+      ...postInput,
+      ...(coverImageUrl !== undefined ? { coverImageUrl } : {}),
+    });
     revalidatePath("/");
+    revalidatePath("/account");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${updatedPost.previousSlug}`);
     revalidatePath(`/blog/${postInput.slug}`);
     return { ok: true };
   } catch (error) {
@@ -96,6 +164,16 @@ export async function updatePostAction(
 
     if (error instanceof Error && error.message === "Forbidden") {
       return actionError("Only admins can edit posts.");
+    }
+
+    if (error instanceof Error && error.message === "NotFound") {
+      return actionError("Post not found.");
+    }
+
+    const uploadError = coverImageError(error);
+
+    if (uploadError) {
+      return uploadError;
     }
 
     return actionError("Could not update the post.");
@@ -118,8 +196,11 @@ export async function deletePostAction(
   }
 
   try {
-    await deletePost(parsed.data.postId);
+    const deletedPost = await deletePost(parsed.data.postId);
     revalidatePath("/");
+    revalidatePath("/account");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${deletedPost.slug}`);
     return { ok: true };
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {

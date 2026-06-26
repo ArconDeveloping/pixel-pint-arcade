@@ -12,10 +12,23 @@
 }
 
 .tag {
-  padding: 6px 9px;
   font-family: var(--font-press-start-2p), "Courier New", monospace;
   font-size: 12px;
   text-transform: uppercase;
+}
+
+.cover {
+  margin: 0 0 30px;
+}
+
+.cover img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 5px solid #51207b;
+  background: #090411;
+  box-shadow: 8px 8px 0 #000;
+  object-fit: cover;
 }
 
 .content {

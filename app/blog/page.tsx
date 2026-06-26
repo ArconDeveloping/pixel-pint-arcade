@@ -3,6 +3,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
+import { PostCoverImage } from "@/components/posts/PostCoverImage";
 import { getPublishedPostCount, getPublishedPosts } from "@/data/posts";
 import styles from "./BlogPage.module.css";
 
@@ -76,23 +77,20 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       <div className="wrap">
         <div className={`page-topline ${styles.topline}`}>
           <div className="eyebrow">Pixel Pint Arcade Blog</div>
-          <Link className="pixel-link" href="/">
-            Back home
-          </Link>
+          {/* <Link className="pixel-link" href="/">
+            Back
+          </Link> */}
         </div>
 
         <Breadcrumbs
-          items={[
-            { href: "/", label: "Home" },
-            { label: "Blog" },
-          ]}
+          items={[{ href: "/", label: "Home" }, { label: "Blog" }]}
         />
 
         <section className={styles.intro}>
           <h1>Blog</h1>
           <p>
-            Notes, breakdowns and stories about 2D games, retro hardware, consoles
-            and the culture around them.
+            Notes, breakdowns and stories about 2D games, retro hardware,
+            consoles and the culture around them.
           </p>
         </section>
 
@@ -122,21 +120,40 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         {posts.length > 0 ? (
           <section className={styles.grid} aria-label="Published posts">
             {posts.map((post) => (
-              <Link className={styles.card} href={`/blog/${post.slug}`} key={post.id}>
-                <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
-                <h2>{post.title}</h2>
+              <article className={styles.card} key={post.id}>
+                {post.coverImageUrl ? (
+                  <PostCoverImage
+                    alt={post.coverImageAlt ?? post.title}
+                    className={styles.coverImage}
+                    src={post.coverImageUrl}
+                  />
+                ) : (
+                  <div className={styles.coverPlaceholder} aria-hidden="true">
+                    <span>No cover</span>
+                  </div>
+                )}
+                <time dateTime={post.createdAt}>
+                  {formatDate(post.createdAt)}
+                </time>
+                <h2>
+                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                </h2>
                 {post.excerpt ? <p>{post.excerpt}</p> : null}
                 {post.tags.length > 0 ? (
                   <div className="tag-list" aria-label="Post tags">
                     {post.tags.map((tag) => (
-                      <span className="tag-chip" key={tag.slug}>
+                      <Link
+                        className="tag-chip"
+                        href={`/blog?q=${encodeURIComponent(tag.name)}`}
+                        key={tag.slug}
+                      >
                         {tag.name}
-                      </span>
+                      </Link>
                     ))}
                   </div>
                 ) : null}
                 <span>By {post.author.name}</span>
-              </Link>
+              </article>
             ))}
           </section>
         ) : (
@@ -144,14 +161,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             {hasSearch ? (
               <>
                 <h2>No posts found</h2>
-                <p>No articles match &quot;{query}&quot;. Try another search.</p>
+                <p>
+                  No articles match &quot;{query}&quot;. Try another search.
+                </p>
               </>
             ) : (
               <>
                 <h2>No posts yet</h2>
                 <p>
-                  The first stories are still being prepared. Check back soon for
-                  notes on 2D games, retro hardware and arcade culture.
+                  The first stories are still being prepared. Check back soon
+                  for notes on 2D games, retro hardware and arcade culture.
                 </p>
               </>
             )}

@@ -27,6 +27,12 @@ export async function createCommentAction(
   _state: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
+  const website = formData.get("website");
+
+  if (typeof website === "string" && website.trim()) {
+    return actionError("Could not publish the comment.");
+  }
+
   const parsed = commentSchema.safeParse({
     postId: formData.get("postId"),
     parentId: formData.get("parentId") || null,
@@ -56,6 +62,22 @@ export async function createCommentAction(
 
     if (error instanceof Error && error.message === "Post not found") {
       return actionError("This post is not available for comments.");
+    }
+
+    if (error instanceof Error && error.message === "Comments closed") {
+      return actionError("Comments are closed for this post.");
+    }
+
+    if (error instanceof Error && error.message === "Comment rate limited") {
+      return actionError("Please wait before posting another comment.");
+    }
+
+    if (error instanceof Error && error.message === "Duplicate comment") {
+      return actionError("You already posted this comment.");
+    }
+
+    if (error instanceof Error && error.message === "Too many comment links") {
+      return actionError("Comments can include up to 2 links.");
     }
 
     return actionError("Could not publish the comment.");

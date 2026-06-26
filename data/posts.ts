@@ -8,7 +8,11 @@ export type PostListItemDTO = {
   title: string;
   slug: string;
   excerpt: string | null;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
   createdAt: string;
+  updatedAt: string;
+  commentsEnabled: boolean;
   tags: {
     name: string;
     slug: string;
@@ -21,6 +25,8 @@ export type PostListItemDTO = {
 
 export type PostDetailDTO = PostListItemDTO & {
   content: string;
+  seoTitle: string | null;
+  seoDescription: string | null;
 };
 
 export type AccountPostDTO = {
@@ -28,7 +34,12 @@ export type AccountPostDTO = {
   title: string;
   slug: string;
   excerpt: string | null;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   published: boolean;
+  commentsEnabled: boolean;
   tags: {
     name: string;
     slug: string;
@@ -37,12 +48,20 @@ export type AccountPostDTO = {
   updatedAt: string;
 };
 
+export type AdminPostEditDTO = AccountPostDTO & {
+  content: string;
+};
+
 const postListSelect = {
   id: true,
   title: true,
   slug: true,
   excerpt: true,
+  coverImageUrl: true,
+  coverImageAlt: true,
   createdAt: true,
+  updatedAt: true,
+  commentsEnabled: true,
   tags: {
     orderBy: { name: "asc" },
     select: {
@@ -63,7 +82,11 @@ const toPostListItemDTO = (post: {
   title: string;
   slug: string;
   excerpt: string | null;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
   createdAt: Date;
+  updatedAt: Date;
+  commentsEnabled: boolean;
   tags: {
     name: string;
     slug: string;
@@ -75,6 +98,7 @@ const toPostListItemDTO = (post: {
 }): PostListItemDTO => ({
   ...post,
   createdAt: post.createdAt.toISOString(),
+  updatedAt: post.updatedAt.toISOString(),
 });
 
 const slugifyTag = (value: string) =>
@@ -118,6 +142,13 @@ const getPublishedPostWhere = (query?: string) => {
           OR: [
             { title: { contains: search, mode: "insensitive" as const } },
             { excerpt: { contains: search, mode: "insensitive" as const } },
+            { seoTitle: { contains: search, mode: "insensitive" as const } },
+            {
+              seoDescription: {
+                contains: search,
+                mode: "insensitive" as const,
+              },
+            },
             { content: { contains: search, mode: "insensitive" as const } },
             {
               tags: {
@@ -163,6 +194,8 @@ export const getPublishedPostBySlug = async (
     select: {
       ...postListSelect,
       content: true,
+      seoTitle: true,
+      seoDescription: true,
     },
   });
 
@@ -173,7 +206,36 @@ export const getPublishedPostBySlug = async (
   return {
     ...toPostListItemDTO(post),
     content: post.content,
+    seoTitle: post.seoTitle,
+    seoDescription: post.seoDescription,
   };
+};
+
+export const getRelatedPosts = async (options: {
+  postId: string;
+  tagSlugs: string[];
+  take?: number;
+}): Promise<PostListItemDTO[]> => {
+  if (options.tagSlugs.length === 0) {
+    return [];
+  }
+
+  const posts = await prisma.post.findMany({
+    where: {
+      id: { not: options.postId },
+      published: true,
+      tags: {
+        some: {
+          slug: { in: options.tagSlugs },
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    take: options.take ?? 3,
+    select: postListSelect,
+  });
+
+  return posts.map(toPostListItemDTO);
 };
 
 export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
@@ -186,7 +248,12 @@ export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
       title: true,
       slug: true,
       excerpt: true,
+      coverImageUrl: true,
+      coverImageAlt: true,
+      seoTitle: true,
+      seoDescription: true,
       published: true,
+      commentsEnabled: true,
       tags: {
         orderBy: { name: "asc" },
         select: {
@@ -206,13 +273,60 @@ export const getCurrentUserPosts = async (): Promise<AccountPostDTO[]> => {
   }));
 };
 
+export const getAdminPostForEdit = async (
+  postId: string,
+): Promise<AdminPostEditDTO | null> => {
+  await requireAdmin();
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      coverImageUrl: true,
+      coverImageAlt: true,
+      seoTitle: true,
+      seoDescription: true,
+      content: true,
+      published: true,
+      commentsEnabled: true,
+      tags: {
+        orderBy: { name: "asc" },
+        select: {
+          name: true,
+          slug: true,
+        },
+      },
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  if (!post) {
+    return null;
+  }
+
+  return {
+    ...post,
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  };
+};
+
 export const createPost = async (input: {
   title: string;
   slug: string;
   excerpt?: string | null;
+  coverImageUrl?: string | null;
+  coverImageAlt?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
   tags?: string | null;
   content: string;
   published?: boolean;
+  commentsEnabled?: boolean;
 }) => {
   const admin = await requireAdmin();
   const tags = tagConnectOrCreate(input.tags);
@@ -222,8 +336,13 @@ export const createPost = async (input: {
       title: input.title,
       slug: input.slug,
       excerpt: input.excerpt,
+      coverImageUrl: input.coverImageUrl,
+      coverImageAlt: input.coverImageAlt,
+      seoTitle: input.seoTitle,
+      seoDescription: input.seoDescription,
       content: input.content,
       published: input.published ?? false,
+      commentsEnabled: input.commentsEnabled ?? true,
       author: {
         connect: { id: admin.id },
       },
@@ -244,22 +363,40 @@ export const updatePost = async (
     title: string;
     slug: string;
     excerpt?: string | null;
+    coverImageUrl?: string | null;
+    coverImageAlt?: string | null;
+    seoTitle?: string | null;
+    seoDescription?: string | null;
     tags?: string | null;
     content: string;
     published?: boolean;
+    commentsEnabled?: boolean;
   },
 ) => {
   await requireAdmin();
   const tags = tagConnectOrCreate(input.tags);
+  const currentPost = await prisma.post.findUnique({
+    where: { id: postId },
+    select: { slug: true },
+  });
 
-  await prisma.post.update({
+  if (!currentPost) {
+    throw new Error("NotFound");
+  }
+
+  const updatedPost = await prisma.post.update({
     where: { id: postId },
     data: {
       title: input.title,
       slug: input.slug,
       excerpt: input.excerpt,
+      coverImageUrl: input.coverImageUrl,
+      coverImageAlt: input.coverImageAlt,
+      seoTitle: input.seoTitle,
+      seoDescription: input.seoDescription,
       content: input.content,
       published: input.published ?? false,
+      commentsEnabled: input.commentsEnabled ?? true,
       ...(input.tags !== undefined
         ? {
             tags: {
@@ -269,13 +406,24 @@ export const updatePost = async (
           }
         : {}),
     },
+    select: { slug: true },
   });
+
+  return {
+    previousSlug: currentPost.slug,
+    slug: updatedPost.slug,
+  };
 };
 
 export const deletePost = async (postId: string) => {
   await requireAdmin();
 
-  await prisma.post.delete({
+  const deletedPost = await prisma.post.delete({
     where: { id: postId },
+    select: { slug: true },
   });
+
+  return {
+    slug: deletedPost.slug,
+  };
 };

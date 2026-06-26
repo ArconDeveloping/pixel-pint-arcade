@@ -42,6 +42,18 @@ const CommentFields = ({
     <input name="postId" type="hidden" value={postId} />
     <input name="postSlug" type="hidden" value={postSlug} />
     {parentId ? <input name="parentId" type="hidden" value={parentId} /> : null}
+    <div className={styles.honeypot} aria-hidden="true">
+      <label htmlFor={parentId ? `reply-${parentId}-website` : "comment-website"}>
+        Website
+      </label>
+      <input
+        autoComplete="off"
+        id={parentId ? `reply-${parentId}-website` : "comment-website"}
+        name="website"
+        tabIndex={-1}
+        type="text"
+      />
+    </div>
 
     <div className={styles.field}>
       <label htmlFor={parentId ? `reply-${parentId}` : "comment-body"}>
