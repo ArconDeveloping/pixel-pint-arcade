@@ -1,9 +1,11 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 
 import { createPostAction, updatePostAction } from "@/app/actions/posts";
 import type { ActionState } from "@/app/actions/comments";
+import { parseArticleContent } from "@/lib/article-content";
+import { ArticleBody } from "./ArticleBody";
 import { PostCoverImage } from "./PostCoverImage";
 import styles from "./PostEditorForm.module.css";
 
@@ -44,7 +46,7 @@ type PostEditorFieldsProps = {
 };
 
 type PostEditorMode = "create" | "edit";
-type PostEditorTab = "post" | "seo" | "cover";
+type PostEditorTab = "post" | "seo" | "cover" | "preview";
 
 export type PostEditorInitialValues = {
   id?: string;
@@ -90,11 +92,16 @@ const PostEditorFields = ({
     initialValues.seoDescription,
   );
   const [coverFileName, setCoverFileName] = useState("");
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState("");
+  const [removeCoverImage, setRemoveCoverImage] = useState(false);
   const [tags, setTags] = useState(initialValues.tags);
   const [content, setContent] = useState(initialValues.content);
   const [slugEdited, setSlugEdited] = useState(mode === "edit");
   const [activeTab, setActiveTab] = useState<PostEditorTab>("post");
   const tagPreview = parseTagPreview(tags);
+  const articlePreview = useMemo(() => parseArticleContent(content), [content]);
+  const previewCoverSrc =
+    coverPreviewUrl || (removeCoverImage ? "" : initialValues.coverImageUrl);
   const tabErrors = {
     cover: Boolean(state.errors?.coverImageAlt || state.errors?.coverImageFile),
     post: Boolean(
@@ -106,6 +113,14 @@ const PostEditorFields = ({
     ),
     seo: Boolean(state.errors?.seoDescription || state.errors?.seoTitle),
   };
+
+  useEffect(() => {
+    return () => {
+      if (coverPreviewUrl) {
+        URL.revokeObjectURL(coverPreviewUrl);
+      }
+    };
+  }, [coverPreviewUrl]);
 
   const tabButtonClassName = (tab: PostEditorTab) =>
     activeTab === tab ? `${styles.tab} ${styles.activeTab}` : styles.tab;
@@ -121,6 +136,19 @@ const PostEditorFields = ({
   const handleSlugChange = (value: string) => {
     setSlug(value);
     setSlugEdited(true);
+  };
+
+  const handleCoverFileChange = (file?: File) => {
+    setCoverFileName(file?.name ?? "");
+    setRemoveCoverImage(false);
+
+    setCoverPreviewUrl((currentUrl) => {
+      if (currentUrl) {
+        URL.revokeObjectURL(currentUrl);
+      }
+
+      return file ? URL.createObjectURL(file) : "";
+    });
   };
 
   return (
@@ -165,6 +193,17 @@ const PostEditorFields = ({
         >
           Cover
           {tabErrors.cover ? <span aria-label="Has errors"></span> : null}
+        </button>
+        <button
+          aria-controls="post-editor-panel-preview"
+          aria-selected={activeTab === "preview"}
+          className={`${tabButtonClassName("preview")} ${styles.previewTab}`}
+          id="post-editor-tab-preview"
+          onClick={() => setActiveTab("preview")}
+          role="tab"
+          type="button"
+        >
+          Preview
         </button>
       </div>
 
@@ -309,9 +348,7 @@ const PostEditorFields = ({
             className={styles.fileInput}
             id="coverImageFile"
             name="coverImageFile"
-            onChange={(event) =>
-              setCoverFileName(event.target.files?.[0]?.name ?? "")
-            }
+            onChange={(event) => handleCoverFileChange(event.target.files?.[0])}
             type="file"
           />
           <label className={styles.fileButton} htmlFor="coverImageFile">
@@ -330,7 +367,12 @@ const PostEditorFields = ({
                 src={initialValues.coverImageUrl}
               />
               <label className={styles.removeCover}>
-                <input name="removeCoverImage" type="checkbox" />
+                <input
+                  checked={removeCoverImage}
+                  name="removeCoverImage"
+                  onChange={(event) => setRemoveCoverImage(event.target.checked)}
+                  type="checkbox"
+                />
                 <span>Remove current cover</span>
               </label>
             </div>
@@ -350,6 +392,41 @@ const PostEditorFields = ({
             <p>{state.errors.coverImageAlt[0]}</p>
           ) : null}
         </div>
+      </section>
+
+      <section
+        aria-labelledby="post-editor-tab-preview"
+        className={styles.panel}
+        hidden={activeTab !== "preview"}
+        id="post-editor-panel-preview"
+        role="tabpanel"
+      >
+        <article className={styles.preview}>
+          <div className="eyebrow">Article preview</div>
+          <h2>{title.trim() || "Untitled post"}</h2>
+          {tagPreview.length > 0 ? (
+            <div className="tag-list" aria-label="Preview tags">
+              {tagPreview.map((tag) => (
+                <span className="tag-chip" key={tag.slug}>
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          ) : null}
+          {previewCoverSrc ? (
+            <figure className={styles.previewCover}>
+              <PostCoverImage
+                alt={coverImageAlt.trim() || title.trim() || "Post cover"}
+                src={previewCoverSrc}
+              />
+            </figure>
+          ) : null}
+          {content.trim() ? (
+            <ArticleBody blocks={articlePreview.blocks} />
+          ) : (
+            <div className={styles.previewEmpty}>No content yet.</div>
+          )}
+        </article>
       </section>
 
       <div className={styles.actions}>

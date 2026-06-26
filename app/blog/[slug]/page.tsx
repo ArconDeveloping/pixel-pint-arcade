@@ -29,6 +29,9 @@ const formatDate = (value: string) =>
     year: "numeric",
   }).format(new Date(value));
 
+const shouldShowUpdatedAt = (createdAt: string, updatedAt: string) =>
+  new Date(updatedAt).getTime() - new Date(createdAt).getTime() > 60_000;
+
 // const getPostUrl = (slug: string) => {
 //   const siteUrl =
 //     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
@@ -90,6 +93,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const currentUser = session?.user ? await requireUserRecord() : null;
   const readingTime = formatReadingTime(getReadingTimeMinutes(post.content));
   const article = parseArticleContent(post.content);
+  const showUpdatedAt = shouldShowUpdatedAt(post.createdAt, post.updatedAt);
   // const postUrl = getPostUrl(post.slug);
 
   return (
@@ -109,7 +113,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="eyebrow">Article</div>
           <h1>{post.title}</h1>
           <p className={styles.meta}>
-            {formatDate(post.createdAt)} · {readingTime} · By {post.author.name}
+            <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
+            {showUpdatedAt ? (
+              <>
+                {" "}
+                · Updated{" "}
+                <time dateTime={post.updatedAt}>
+                  {formatDate(post.updatedAt)}
+                </time>
+              </>
+            ) : null}{" "}
+            · {readingTime} · By {post.author.name}
           </p>
           {post.tags.length > 0 ? (
             <div className={`tag-list ${styles.tags}`} aria-label="Post tags">

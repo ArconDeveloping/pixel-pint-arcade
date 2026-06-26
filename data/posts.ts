@@ -11,6 +11,7 @@ export type PostListItemDTO = {
   coverImageUrl: string | null;
   coverImageAlt: string | null;
   createdAt: string;
+  updatedAt: string;
   tags: {
     name: string;
     slug: string;
@@ -57,6 +58,7 @@ const postListSelect = {
   coverImageUrl: true,
   coverImageAlt: true,
   createdAt: true,
+  updatedAt: true,
   tags: {
     orderBy: { name: "asc" },
     select: {
@@ -80,6 +82,7 @@ const toPostListItemDTO = (post: {
   coverImageUrl: string | null;
   coverImageAlt: string | null;
   createdAt: Date;
+  updatedAt: Date;
   tags: {
     name: string;
     slug: string;
@@ -91,6 +94,7 @@ const toPostListItemDTO = (post: {
 }): PostListItemDTO => ({
   ...post,
   createdAt: post.createdAt.toISOString(),
+  updatedAt: post.updatedAt.toISOString(),
 });
 
 const slugifyTag = (value: string) =>
