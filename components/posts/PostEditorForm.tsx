@@ -44,6 +44,7 @@ type PostEditorFieldsProps = {
 };
 
 type PostEditorMode = "create" | "edit";
+type PostEditorTab = "post" | "seo" | "cover";
 
 export type PostEditorInitialValues = {
   id?: string;
@@ -88,10 +89,26 @@ const PostEditorFields = ({
   const [seoDescription, setSeoDescription] = useState(
     initialValues.seoDescription,
   );
+  const [coverFileName, setCoverFileName] = useState("");
   const [tags, setTags] = useState(initialValues.tags);
   const [content, setContent] = useState(initialValues.content);
   const [slugEdited, setSlugEdited] = useState(mode === "edit");
+  const [activeTab, setActiveTab] = useState<PostEditorTab>("post");
   const tagPreview = parseTagPreview(tags);
+  const tabErrors = {
+    cover: Boolean(state.errors?.coverImageAlt || state.errors?.coverImageFile),
+    post: Boolean(
+      state.errors?.content ||
+        state.errors?.excerpt ||
+        state.errors?.slug ||
+        state.errors?.tags ||
+        state.errors?.title,
+    ),
+    seo: Boolean(state.errors?.seoDescription || state.errors?.seoTitle),
+  };
+
+  const tabButtonClassName = (tab: PostEditorTab) =>
+    activeTab === tab ? `${styles.tab} ${styles.activeTab}` : styles.tab;
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
@@ -112,155 +129,228 @@ const PostEditorFields = ({
         <input name="postId" type="hidden" value={initialValues.id ?? ""} />
       ) : null}
 
-      <div className={styles.field}>
-        <label htmlFor="title">Title</label>
-        <input
-          id="title"
-          name="title"
-          value={title}
-          onChange={(event) => handleTitleChange(event.target.value)}
-          required
-          maxLength={160}
-        />
-        {state.errors?.title ? <p>{state.errors.title[0]}</p> : null}
+      <div className={styles.tabs} role="tablist" aria-label="Post editor sections">
+        <button
+          aria-controls="post-editor-panel-post"
+          aria-selected={activeTab === "post"}
+          className={tabButtonClassName("post")}
+          id="post-editor-tab-post"
+          onClick={() => setActiveTab("post")}
+          role="tab"
+          type="button"
+        >
+          Post
+          {tabErrors.post ? <span aria-label="Has errors"></span> : null}
+        </button>
+        <button
+          aria-controls="post-editor-panel-seo"
+          aria-selected={activeTab === "seo"}
+          className={tabButtonClassName("seo")}
+          id="post-editor-tab-seo"
+          onClick={() => setActiveTab("seo")}
+          role="tab"
+          type="button"
+        >
+          SEO
+          {tabErrors.seo ? <span aria-label="Has errors"></span> : null}
+        </button>
+        <button
+          aria-controls="post-editor-panel-cover"
+          aria-selected={activeTab === "cover"}
+          className={tabButtonClassName("cover")}
+          id="post-editor-tab-cover"
+          onClick={() => setActiveTab("cover")}
+          role="tab"
+          type="button"
+        >
+          Cover
+          {tabErrors.cover ? <span aria-label="Has errors"></span> : null}
+        </button>
       </div>
 
-      <div className={styles.field}>
-        <label htmlFor="slug">Slug</label>
-        <input
-          id="slug"
-          name="slug"
-          value={slug}
-          onChange={(event) => handleSlugChange(event.target.value)}
-          required
-          maxLength={180}
-          pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
-        />
-        {state.errors?.slug ? <p>{state.errors.slug[0]}</p> : null}
-      </div>
+      <section
+        aria-labelledby="post-editor-tab-post"
+        className={styles.panel}
+        hidden={activeTab !== "post"}
+        id="post-editor-panel-post"
+        role="tabpanel"
+      >
+        <div className={styles.field}>
+          <label htmlFor="title">Title</label>
+          <input
+            id="title"
+            name="title"
+            value={title}
+            onChange={(event) => handleTitleChange(event.target.value)}
+            required
+            maxLength={160}
+          />
+          {state.errors?.title ? <p>{state.errors.title[0]}</p> : null}
+        </div>
 
-      <div className={styles.field}>
-        <label htmlFor="excerpt">Excerpt</label>
-        <textarea
-          id="excerpt"
-          name="excerpt"
-          rows={3}
-          maxLength={300}
-          value={excerpt}
-          onChange={(event) => setExcerpt(event.target.value)}
-        />
-        {state.errors?.excerpt ? <p>{state.errors.excerpt[0]}</p> : null}
-      </div>
+        <div className={styles.field}>
+          <label htmlFor="slug">Slug</label>
+          <input
+            id="slug"
+            name="slug"
+            value={slug}
+            onChange={(event) => handleSlugChange(event.target.value)}
+            required
+            maxLength={180}
+            pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+          />
+          {state.errors?.slug ? <p>{state.errors.slug[0]}</p> : null}
+        </div>
 
-      <div className={styles.field}>
-        <label htmlFor="coverImageFile">Cover image</label>
-        <input
-          accept="image/gif,image/jpeg,image/png,image/webp"
-          id="coverImageFile"
-          name="coverImageFile"
-          type="file"
-        />
-        {state.errors?.coverImageFile ? (
-          <p>{state.errors.coverImageFile[0]}</p>
-        ) : null}
-        {initialValues.coverImageUrl ? (
-          <div className={styles.coverPreview}>
-            <PostCoverImage
-              alt={initialValues.coverImageAlt || initialValues.title}
-              src={initialValues.coverImageUrl}
-            />
-            <label className={styles.removeCover}>
-              <input name="removeCoverImage" type="checkbox" />
-              <span>Remove current cover</span>
-            </label>
-          </div>
-        ) : null}
-      </div>
+        <div className={styles.field}>
+          <label htmlFor="excerpt">Excerpt</label>
+          <textarea
+            id="excerpt"
+            name="excerpt"
+            rows={3}
+            maxLength={300}
+            value={excerpt}
+            onChange={(event) => setExcerpt(event.target.value)}
+          />
+          {state.errors?.excerpt ? <p>{state.errors.excerpt[0]}</p> : null}
+        </div>
 
-      <div className={styles.field}>
-        <label htmlFor="coverImageAlt">Cover image alt</label>
-        <input
-          id="coverImageAlt"
-          name="coverImageAlt"
-          maxLength={180}
-          value={coverImageAlt}
-          onChange={(event) => setCoverImageAlt(event.target.value)}
-        />
-        {state.errors?.coverImageAlt ? (
-          <p>{state.errors.coverImageAlt[0]}</p>
-        ) : null}
-      </div>
+        <div className={styles.field}>
+          <label htmlFor="tags">Tags</label>
+          <input
+            id="tags"
+            name="tags"
+            maxLength={240}
+            placeholder="NES, hardware, review"
+            value={tags}
+            onChange={(event) => setTags(event.target.value)}
+          />
+          {state.errors?.tags ? <p>{state.errors.tags[0]}</p> : null}
+          {tagPreview.length > 0 ? (
+            <div className={styles.tagPreview} aria-label="Tag preview">
+              {tagPreview.map((tag) => (
+                <span className="tag-chip" key={tag.slug}>
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
 
-      <div className={styles.field}>
-        <label htmlFor="seoTitle">SEO title</label>
-        <input
-          id="seoTitle"
-          name="seoTitle"
-          maxLength={160}
-          value={seoTitle}
-          onChange={(event) => setSeoTitle(event.target.value)}
-        />
-        {state.errors?.seoTitle ? <p>{state.errors.seoTitle[0]}</p> : null}
-      </div>
+        <div className={styles.field}>
+          <label htmlFor="content">Content</label>
+          <textarea
+            id="content"
+            name="content"
+            rows={14}
+            required
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+          />
+          {state.errors?.content ? <p>{state.errors.content[0]}</p> : null}
+        </div>
 
-      <div className={styles.field}>
-        <label htmlFor="seoDescription">SEO description</label>
-        <textarea
-          id="seoDescription"
-          name="seoDescription"
-          rows={3}
-          maxLength={300}
-          value={seoDescription}
-          onChange={(event) => setSeoDescription(event.target.value)}
-        />
-        {state.errors?.seoDescription ? (
-          <p>{state.errors.seoDescription[0]}</p>
-        ) : null}
-      </div>
+        <label className={styles.toggle}>
+          <input
+            name="published"
+            type="checkbox"
+            defaultChecked={initialValues.published}
+          />
+          <span>Publish now</span>
+        </label>
+      </section>
 
-      <div className={styles.field}>
-        <label htmlFor="tags">Tags</label>
-        <input
-          id="tags"
-          name="tags"
-          maxLength={240}
-          placeholder="NES, hardware, review"
-          value={tags}
-          onChange={(event) => setTags(event.target.value)}
-        />
-        {state.errors?.tags ? <p>{state.errors.tags[0]}</p> : null}
-        {tagPreview.length > 0 ? (
-          <div className={styles.tagPreview} aria-label="Tag preview">
-            {tagPreview.map((tag) => (
-              <span className="tag-chip" key={tag.slug}>
-                {tag.name}
-              </span>
-            ))}
-          </div>
-        ) : null}
-      </div>
+      <section
+        aria-labelledby="post-editor-tab-seo"
+        className={styles.panel}
+        hidden={activeTab !== "seo"}
+        id="post-editor-panel-seo"
+        role="tabpanel"
+      >
+        <div className={styles.field}>
+          <label htmlFor="seoTitle">SEO title</label>
+          <input
+            id="seoTitle"
+            name="seoTitle"
+            maxLength={160}
+            value={seoTitle}
+            onChange={(event) => setSeoTitle(event.target.value)}
+          />
+          {state.errors?.seoTitle ? <p>{state.errors.seoTitle[0]}</p> : null}
+        </div>
 
-      <div className={styles.field}>
-        <label htmlFor="content">Content</label>
-        <textarea
-          id="content"
-          name="content"
-          rows={14}
-          required
-          value={content}
-          onChange={(event) => setContent(event.target.value)}
-        />
-        {state.errors?.content ? <p>{state.errors.content[0]}</p> : null}
-      </div>
+        <div className={styles.field}>
+          <label htmlFor="seoDescription">SEO description</label>
+          <textarea
+            id="seoDescription"
+            name="seoDescription"
+            rows={3}
+            maxLength={300}
+            value={seoDescription}
+            onChange={(event) => setSeoDescription(event.target.value)}
+          />
+          {state.errors?.seoDescription ? (
+            <p>{state.errors.seoDescription[0]}</p>
+          ) : null}
+        </div>
+      </section>
 
-      <label className={styles.toggle}>
-        <input
-          name="published"
-          type="checkbox"
-          defaultChecked={initialValues.published}
-        />
-        <span>Publish now</span>
-      </label>
+      <section
+        aria-labelledby="post-editor-tab-cover"
+        className={styles.panel}
+        hidden={activeTab !== "cover"}
+        id="post-editor-panel-cover"
+        role="tabpanel"
+      >
+        <div className={styles.field}>
+          <span className={styles.fieldLabel}>Cover image</span>
+          <input
+            accept="image/gif,image/jpeg,image/png,image/webp"
+            className={styles.fileInput}
+            id="coverImageFile"
+            name="coverImageFile"
+            onChange={(event) =>
+              setCoverFileName(event.target.files?.[0]?.name ?? "")
+            }
+            type="file"
+          />
+          <label className={styles.fileButton} htmlFor="coverImageFile">
+            Choose image
+          </label>
+          <span className={styles.fileName}>
+            {coverFileName || "No image selected"}
+          </span>
+          {state.errors?.coverImageFile ? (
+            <p>{state.errors.coverImageFile[0]}</p>
+          ) : null}
+          {initialValues.coverImageUrl ? (
+            <div className={styles.coverPreview}>
+              <PostCoverImage
+                alt={initialValues.coverImageAlt || initialValues.title}
+                src={initialValues.coverImageUrl}
+              />
+              <label className={styles.removeCover}>
+                <input name="removeCoverImage" type="checkbox" />
+                <span>Remove current cover</span>
+              </label>
+            </div>
+          ) : null}
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="coverImageAlt">Cover image alt</label>
+          <input
+            id="coverImageAlt"
+            name="coverImageAlt"
+            maxLength={180}
+            value={coverImageAlt}
+            onChange={(event) => setCoverImageAlt(event.target.value)}
+          />
+          {state.errors?.coverImageAlt ? (
+            <p>{state.errors.coverImageAlt[0]}</p>
+          ) : null}
+        </div>
+      </section>
 
       <div className={styles.actions}>
         <button className="btn" type="submit" disabled={pending}>
@@ -294,7 +384,7 @@ export const PostEditorForm = ({
   const [state, formAction, pending] = useActionState(action, initialState);
 
   return (
-    <form className={styles.form} action={formAction}>
+    <form className={styles.form} action={formAction} noValidate>
       <PostEditorFields
         key={
           mode === "create"

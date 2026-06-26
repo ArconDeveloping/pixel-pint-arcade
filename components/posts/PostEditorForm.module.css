@@ -7,12 +7,62 @@
   padding: clamp(18px, 4vw, 30px);
 }
 
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 3px solid #5b2c7e;
+  background: #17082a;
+  box-shadow: 4px 4px 0 #000;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 11px;
+  padding: 0 12px;
+  text-transform: uppercase;
+}
+
+.tab:hover {
+  transform: translate(-2px, -2px);
+}
+
+.activeTab {
+  background: var(--green);
+  color: #08130d;
+}
+
+.tab span {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  box-shadow: 2px 2px 0 #000;
+}
+
+.panel {
+  display: grid;
+  gap: 18px;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
 .field {
   display: grid;
   gap: 8px;
 }
 
 .field label,
+.fieldLabel,
 .toggle {
   color: var(--yellow);
   font-family: var(--font-press-start-2p), "Courier New", monospace;
@@ -50,6 +100,48 @@
   margin: 0;
   color: var(--red);
   font-weight: 700;
+}
+
+.fieldLabel {
+  display: block;
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px !important;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.fileButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 48px;
+  border: 4px solid #260c39;
+  background: var(--green);
+  box-shadow: 5px 5px 0 #000;
+  color: #08130d !important;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+.fileButton:hover {
+  transform: translate(-2px, -2px);
+}
+
+.fileInput:focus-visible + .fileButton {
+  outline: 3px solid var(--cyan);
+  outline-offset: 4px;
+}
+
+.fileName {
+  color: #ffe6a3;
+  overflow-wrap: anywhere;
 }
 
 .tagPreview {

@@ -127,7 +127,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     className={styles.coverImage}
                     src={post.coverImageUrl}
                   />
-                ) : null}
+                ) : (
+                  <div className={styles.coverPlaceholder} aria-hidden="true">
+                    <span>No cover</span>
+                  </div>
+                )}
                 <time dateTime={post.createdAt}>
                   {formatDate(post.createdAt)}
                 </time>
