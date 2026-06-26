@@ -1,0 +1,79 @@
+.engagement {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 24px;
+}
+
+.engagement form {
+  margin: 0;
+}
+
+.action,
+.authLink,
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border: 3px solid #5b2c7e;
+  background: #17082a;
+  box-shadow: 4px 4px 0 #000;
+  color: var(--ink);
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.action,
+.authLink {
+  cursor: pointer;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.action {
+  font: inherit;
+  font-family: var(--font-press-start-2p), "Courier New", monospace;
+  font-size: 10px;
+}
+
+.action:hover,
+.authLink:hover {
+  transform: translate(-2px, -2px);
+}
+
+.action:disabled {
+  cursor: wait;
+  filter: grayscale(.7);
+  opacity: .72;
+}
+
+.activeAction {
+  background: var(--green);
+  color: #08130d;
+}
+
+.action span,
+.count {
+  color: var(--green);
+}
+
+.activeAction span {
+  color: #08130d;
+}
+
+.authLink {
+  text-decoration: none;
+}
+
+.count {
+  padding: 0 12px;
+}
+
+.error {
+  color: var(--red);
+  font-weight: 700;
+}

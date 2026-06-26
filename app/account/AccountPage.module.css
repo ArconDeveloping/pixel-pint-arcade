@@ -1,7 +1,3 @@
-.topline {
-  margin-bottom: 36px;
-}
-
 .tabs a {
   border: 3px solid #5b2c7e;
   background: #17082a;
@@ -21,10 +17,14 @@
 
 .hero {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: clamp(18px, 4vw, 34px);
   margin-bottom: 28px;
+}
+
+.signOut {
+  justify-self: end;
 }
 
 .avatar {
@@ -183,6 +183,11 @@
   }
 
   .hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .signOut {
+    grid-column: 1 / -1;
+    justify-self: end;
   }
 }

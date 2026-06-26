@@ -6,6 +6,7 @@ import { SignOutButton } from "@/components/auth/SignOutButton";
 import { DeletePostButton } from "@/components/posts/DeletePostButton";
 import { getCurrentSession, requireUserRecord } from "@/data/auth";
 import { getCurrentUserComments } from "@/data/comments";
+import { getCurrentUserSavedPosts } from "@/data/post-engagement";
 import { getCurrentUserPosts } from "@/data/posts";
 import styles from "./AccountPage.module.css";
 
@@ -33,18 +34,15 @@ export default async function AccountPage() {
 
   const user = await requireUserRecord();
   const isAdmin = user.role === "ADMIN";
-  const [posts, comments] = await Promise.all([
+  const [posts, comments, savedPosts] = await Promise.all([
     isAdmin ? getCurrentUserPosts() : Promise.resolve([]),
     getCurrentUserComments(),
+    getCurrentUserSavedPosts(),
   ]);
 
   return (
     <main className="page-shell">
       <div className="wrap">
-        <div className={`page-topline ${styles.topline}`}>
-          <SignOutButton className={`pixel-link ${styles.signOut}`} />
-        </div>
-
         <section className={styles.hero}>
           <div className={styles.avatar} aria-hidden="true">
             {user.name.slice(0, 1).toUpperCase()}
@@ -54,11 +52,13 @@ export default async function AccountPage() {
             <h1>{user.name}</h1>
             <p>{user.email}</p>
           </div>
+          <SignOutButton className={`pixel-link ${styles.signOut}`} />
         </section>
 
         <nav className={styles.tabs} aria-label="Account sections">
           {isAdmin ? <Link href="/account/posts/new">Write post</Link> : null}
           {isAdmin ? <a href="#posts">My posts</a> : null}
+          <a href="#saved">Saved posts</a>
           <a href="#comments">My comments</a>
         </nav>
 
@@ -134,6 +134,40 @@ export default async function AccountPage() {
             )}
           </section>
         ) : null}
+
+        <section className={styles.section} id="saved">
+          <div className={styles.sectionHeader}>
+            <h2>Saved posts</h2>
+            <span>{savedPosts.length}</span>
+          </div>
+
+          {savedPosts.length > 0 ? (
+            <div className={styles.list}>
+              {savedPosts.map((post) => (
+                <article className={styles.item} key={post.id}>
+                  <div className={styles.itemMeta}>
+                    <time dateTime={post.savedAt}>
+                      Saved {formatDate(post.savedAt)}
+                    </time>
+                    <span>By {post.author.name}</span>
+                  </div>
+                  <h3>
+                    <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                  </h3>
+                  {post.excerpt ? <p>{post.excerpt}</p> : null}
+                  <div className={styles.postLink}>
+                    <Link href={`/blog/${post.slug}`}>Read post</Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyState}>
+              <h3>No saved posts yet</h3>
+              <p>Saved articles will appear here after you bookmark them.</p>
+            </div>
+          )}
+        </section>
 
         <section className={styles.section} id="comments">
           <div className={styles.sectionHeader}>

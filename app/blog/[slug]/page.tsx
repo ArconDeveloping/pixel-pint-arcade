@@ -6,11 +6,13 @@ import { CommentsSection } from "@/components/comments/CommentsSection";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { ArticleBody } from "@/components/posts/ArticleBody";
 import { PostCoverImage } from "@/components/posts/PostCoverImage";
+import { PostEngagementControls } from "@/components/posts/PostEngagementControls";
 import { RelatedPosts } from "@/components/posts/RelatedPosts";
 // import { SocialShare } from "@/components/posts/SocialShare";
 import { TableOfContents } from "@/components/posts/TableOfContents";
 import { getCurrentSession, requireUserRecord } from "@/data/auth";
 import { getCommentsForPost } from "@/data/comments";
+import { getPostEngagement } from "@/data/post-engagement";
 import { getPublishedPostBySlug, getRelatedPosts } from "@/data/posts";
 import { parseArticleContent } from "@/lib/article-content";
 import { formatReadingTime, getReadingTimeMinutes } from "@/lib/reading-time";
@@ -91,6 +93,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     getCurrentSession(),
   ]);
   const currentUser = session?.user ? await requireUserRecord() : null;
+  const engagement = await getPostEngagement(post.id, currentUser?.id);
   const readingTime = formatReadingTime(getReadingTimeMinutes(post.content));
   const article = parseArticleContent(post.content);
   const showUpdatedAt = shouldShowUpdatedAt(post.createdAt, post.updatedAt);
@@ -138,6 +141,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               ))}
             </div>
           ) : null}
+          <PostEngagementControls
+            bookmarkedByCurrentUser={engagement.bookmarkedByCurrentUser}
+            likedByCurrentUser={engagement.likedByCurrentUser}
+            likesCount={engagement.likesCount}
+            postId={post.id}
+            signedIn={Boolean(currentUser)}
+          />
           {post.coverImageUrl ? (
             <figure className={styles.cover}>
               <PostCoverImage
