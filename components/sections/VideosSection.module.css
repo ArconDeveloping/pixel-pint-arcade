@@ -105,52 +105,24 @@
 .monster {
   position: fixed;
   top: calc(50vh + 22px);
-  width: 44px;
-  height: 46px;
+  width: 64px;
+  height: 64px;
   opacity: 0;
   image-rendering: pixelated;
   filter: drop-shadow(5px 5px 0 rgba(0, 0, 0, .75));
 }
 
-.monster::before {
-  content: "";
-  position: absolute;
-  left: 6px;
-  top: 8px;
-  width: 32px;
-  height: 30px;
-  background:
-    linear-gradient(#fff 0 0) 7px 9px / 6px 6px no-repeat,
-    linear-gradient(#fff 0 0) 20px 9px / 6px 6px no-repeat,
-    linear-gradient(#090411 0 0) 9px 11px / 4px 4px no-repeat,
-    linear-gradient(#090411 0 0) 22px 11px / 4px 4px no-repeat,
-    linear-gradient(var(--red) 0 0) 10px 22px / 14px 4px no-repeat,
-    linear-gradient(135deg, #7d35ff, #ff4fd8);
-  border: 4px solid #090411;
-}
-
-.monster::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 28px;
-  width: 44px;
-  height: 16px;
-  background:
-    linear-gradient(#090411 0 0) 0 0 / 10px 10px no-repeat,
-    linear-gradient(#090411 0 0) 34px 0 / 10px 10px no-repeat,
-    linear-gradient(var(--green) 0 0) 10px 4px / 24px 10px no-repeat;
-}
-
 .monster span {
+  display: block;
   position: absolute;
-  left: 16px;
-  top: -9px;
-  width: 12px;
-  height: 12px;
-  background: var(--yellow);
-  border: 3px solid #090411;
-  transform: rotate(45deg);
+  inset: 0;
+  width: 64px;
+  height: 64px;
+  background-image: url("/sprites/enemy.png");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  animation: enemyIdle .82s steps(4) infinite;
 }
 
 .monsterLeft {
@@ -164,18 +136,22 @@
 
 .m1 {
   margin-top: -58px;
+  --defeat-delay: 1.64s;
 }
 
 .m2 {
   margin-top: 18px;
+  --defeat-delay: 1.72s;
 }
 
 .m3 {
   margin-top: -30px;
+  --defeat-delay: 1.68s;
 }
 
 .m4 {
   margin-top: 48px;
+  --defeat-delay: 1.78s;
 }
 
 :global(#videos.battle-on) .monsterLeft.m1 {
@@ -194,8 +170,12 @@
   animation: monsterRunRight2 1.02s steps(9) .28s forwards, monsterFall .42s steps(4) 1.78s forwards;
 }
 
-:global(#videos.battle-done) .monster::before,
-:global(#videos.battle-done) .monster::after,
+:global(#videos.battle-on) .monster span {
+  animation:
+    enemyAlert 1.38s steps(2) forwards,
+    enemyDefeat .42s steps(5) var(--defeat-delay) forwards;
+}
+
 :global(#videos.battle-done) .monster span {
   filter: grayscale(1) brightness(.55);
 }
@@ -208,6 +188,36 @@
 
   50% {
     transform: scale(1.08);
+  }
+}
+
+@keyframes enemyIdle {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -256px 0;
+  }
+}
+
+@keyframes enemyAlert {
+  from {
+    background-position: 0 -64px;
+  }
+
+  to {
+    background-position: -128px -64px;
+  }
+}
+
+@keyframes enemyDefeat {
+  from {
+    background-position: 0 -192px;
+  }
+
+  to {
+    background-position: -320px -192px;
   }
 }
 

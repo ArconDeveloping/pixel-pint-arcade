@@ -31,7 +31,7 @@
   --pixel: 4px;
   --max: 1180px;
   --runner-y: 50vh;
-  --runner-x: calc(50vw - 28px);
+  --runner-x: calc(50vw - 32px);
   --runner-hop: 0px;
   --runner-bob: 0px;
   --gate: clamp(44px, 8vw, 118px);

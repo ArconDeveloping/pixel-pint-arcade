@@ -56,59 +56,70 @@
 
 .swordPickup {
   position: fixed;
-  left: calc(50% + 34px);
-  top: calc(50vh + 78px);
-  width: 14px;
-  height: 62px;
+  left: calc(50% - 16px);
+  top: calc(50vh + 30px);
+  width: 96px;
+  height: 96px;
   z-index: 112;
   opacity: 0;
   pointer-events: none;
-  transform: rotate(55deg) translateY(18px);
-  transform-origin: 50% 100%;
+  transform: translateY(18px);
+  transform-origin: 50% 50%;
   image-rendering: pixelated;
-  background:
-    linear-gradient(#fff8d8 0 0) 4px 0 / 6px 40px no-repeat,
-    linear-gradient(var(--cyan) 0 0) 2px 8px / 10px 28px no-repeat,
-    linear-gradient(var(--yellow) 0 0) 0 40px / 14px 7px no-repeat,
-    linear-gradient(#6f341e 0 0) 5px 47px / 4px 15px no-repeat;
-  border-top: 2px solid #fff;
+  background-image: url("/sprites/effects.png");
+  background-repeat: no-repeat;
+  background-position: 0 -192px;
   filter: drop-shadow(0 0 10px rgba(70, 240, 255, .8));
 }
 
 :global(#history.is-active:not(.sword-collected)) .swordPickup {
   opacity: 1;
-  animation: swordWaiting 1.2s steps(4) infinite;
+  animation:
+    pickupSpark .82s steps(4) infinite,
+    pickupWaiting 1.2s steps(4) infinite;
 }
 
 :global(#history.sword-collected) .swordPickup {
-  animation: swordPickupFly .48s steps(6) forwards;
+  animation:
+    pickupSpark .48s steps(4) forwards,
+    swordPickupFly .48s steps(6) forwards;
 }
 
-@keyframes swordWaiting {
+@keyframes pickupSpark {
+  from {
+    background-position: 0 -192px;
+  }
+
+  to {
+    background-position: -384px -192px;
+  }
+}
+
+@keyframes pickupWaiting {
   0%,
   100% {
-    transform: rotate(55deg) translateY(18px);
+    transform: translateY(18px) scale(1);
   }
 
   50% {
-    transform: rotate(52deg) translateY(8px);
+    transform: translateY(8px) scale(1.04);
   }
 }
 
 @keyframes swordPickupFly {
   0% {
     opacity: 1;
-    transform: rotate(55deg) translateY(18px) scale(1);
+    transform: translateY(18px) scale(1);
   }
 
   50% {
     opacity: 1;
-    transform: rotate(10deg) translate(-34px, -96px) scale(1.15);
+    transform: translate(-34px, -96px) scale(1.15);
   }
 
   100% {
     opacity: 0;
-    transform: rotate(0deg) translate(-54px, -136px) scale(.7);
+    transform: translate(-54px, -136px) scale(.7);
   }
 }
 
@@ -123,6 +134,6 @@
   }
 
   .swordPickup {
-    left: calc(100vw - 44px);
+    left: calc(100vw - 112px);
   }
 }
