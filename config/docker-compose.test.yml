@@ -1,3 +1,5 @@
+name: pixel-pint-arcade
+
 services:
   postgres_test:
     image: postgres:17
