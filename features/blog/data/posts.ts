@@ -2,6 +2,7 @@ import "server-only";
 
 import { prisma } from "@/db/prisma";
 import { requireAdmin, requireUserRecord } from "@/server/permissions";
+import { tagConnectOrCreate } from "@/features/blog/validators/tags";
 import type {
   AccountPostDTO,
   AdminPostEditDTO,
@@ -57,37 +58,6 @@ const toPostListItemDTO = (post: {
   createdAt: post.createdAt.toISOString(),
   updatedAt: post.updatedAt.toISOString(),
 });
-
-const slugifyTag = (value: string) =>
-  value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-const normalizeTags = (value?: string | null) => {
-  const tags = new Map<string, { name: string; slug: string }>();
-
-  value
-    ?.split(",")
-    .map((tag) => tag.trim())
-    .filter(Boolean)
-    .forEach((name) => {
-      const slug = slugifyTag(name);
-
-      if (slug && !tags.has(slug)) {
-        tags.set(slug, { name, slug });
-      }
-    });
-
-  return [...tags.values()];
-};
-
-const tagConnectOrCreate = (tags?: string | null) =>
-  normalizeTags(tags).map((tag) => ({
-    where: { slug: tag.slug },
-    create: tag,
-  }));
 
 const getPublishedPostWhere = (query?: string) => {
   const search = query?.trim();
