@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { SignOutButton } from "@/components/auth/SignOutButton";
-import { DeletePostButton } from "@/components/posts/DeletePostButton";
-import { getCurrentSession, requireUserRecord } from "@/data/auth";
-import { getCurrentUserComments } from "@/data/comments";
-import { getCurrentUserSavedPosts } from "@/data/post-engagement";
-import { getCurrentUserPosts } from "@/data/posts";
+import { SignOutButton } from "@/features/auth/components/SignOutButton";
+import { DeletePostButton } from "@/features/blog/components/DeletePostButton";
+import { getCurrentSession } from "@/server/auth";
+import { requireUserRecord } from "@/server/permissions";
+import { getCurrentUserComments } from "@/features/comments/data/comments";
+import { getCurrentUserSavedPosts } from "@/features/blog/data/post-engagement";
+import { getCurrentUserPosts } from "@/features/blog/data/posts";
 import styles from "./AccountPage.module.css";
 
 export const metadata: Metadata = {
@@ -56,8 +57,8 @@ export default async function AccountPage() {
         </section>
 
         <nav className={styles.tabs} aria-label="Account sections">
-          {isAdmin ? <Link href="/account/posts/new">Write post</Link> : null}
-          {isAdmin ? <a href="#posts">My posts</a> : null}
+          {isAdmin ? <Link href="/admin/posts/new">Write post</Link> : null}
+          {isAdmin ? <Link href="/admin/posts">Manage posts</Link> : null}
           <a href="#saved">Saved posts</a>
           <a href="#comments">My comments</a>
         </nav>
@@ -112,7 +113,7 @@ export default async function AccountPage() {
                     <div className={styles.itemActions}>
                       <Link
                         className="pixel-link"
-                        href={`/account/posts/${post.id}/edit`}
+                        href={`/admin/posts/${post.id}/edit`}
                       >
                         Edit
                       </Link>

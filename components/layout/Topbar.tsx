@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getCurrentSession } from "@/data/auth";
+import { getCurrentSession } from "@/server/auth";
 import { TopbarNav } from "./TopbarNav";
 import styles from "./Topbar.module.css";
 

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { AuthPanel } from "@/components/auth/AuthPanel";
-import { getCurrentSession } from "@/data/auth";
+import { AuthPanel } from "@/features/auth/components/AuthPanel";
+import { getCurrentSession } from "@/server/auth";
 
 const googleEnabled =
   Boolean(process.env.GOOGLE_CLIENT_ID) &&
