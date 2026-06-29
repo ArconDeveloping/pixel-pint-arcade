@@ -2,20 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { CommentsSection } from "@/components/comments/CommentsSection";
-import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
-import { ArticleBody } from "@/components/posts/ArticleBody";
-import { PostCoverImage } from "@/components/posts/PostCoverImage";
-import { PostEngagementControls } from "@/components/posts/PostEngagementControls";
-import { RelatedPosts } from "@/components/posts/RelatedPosts";
-// import { SocialShare } from "@/components/posts/SocialShare";
-import { TableOfContents } from "@/components/posts/TableOfContents";
-import { getCurrentSession, requireUserRecord } from "@/data/auth";
-import { getCommentsForPost } from "@/data/comments";
-import { getPostEngagement } from "@/data/post-engagement";
-import { getPublishedPostBySlug, getRelatedPosts } from "@/data/posts";
-import { parseArticleContent } from "@/lib/article-content";
-import { formatReadingTime, getReadingTimeMinutes } from "@/lib/reading-time";
+import { CommentsSection } from "@/features/comments/components/CommentsSection";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
+import { ArticleBody } from "@/features/blog/components/ArticleBody";
+import { PostCoverImage } from "@/features/blog/components/PostCoverImage";
+import { PostEngagementControls } from "@/features/blog/components/PostEngagementControls";
+import { RelatedPosts } from "@/features/blog/components/RelatedPosts";
+// import { SocialShare } from "@/features/blog/components/SocialShare";
+import { TableOfContents } from "@/features/blog/components/TableOfContents";
+import { getCurrentSession } from "@/server/auth";
+import { requireUserRecord } from "@/server/permissions";
+import { getCommentsForPost } from "@/features/comments/data/comments";
+import { getPostEngagement } from "@/features/blog/data/post-engagement";
+import { getPublishedPostBySlug, getRelatedPosts } from "@/features/blog/data/posts";
+import { parseArticleContent } from "@/features/blog/data/article-content";
+import { formatReadingTime, getReadingTimeMinutes } from "@/lib/formatting";
 import styles from "./PostPage.module.css";
 
 type BlogPostPageProps = {

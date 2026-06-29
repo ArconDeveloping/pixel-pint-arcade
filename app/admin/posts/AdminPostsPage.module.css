@@ -1,0 +1,83 @@
+.topline {
+  margin-bottom: 28px;
+}
+
+.intro {
+  margin-bottom: 28px;
+}
+
+.intro h1 {
+  margin: 8px 0 12px;
+}
+
+.intro p {
+  color: var(--muted);
+  max-width: 720px;
+}
+
+.list {
+  display: grid;
+  gap: 18px;
+}
+
+.item {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(8, 10, 20, 0.72);
+  padding: 20px;
+}
+
+.item h2 {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  margin: 10px 0;
+}
+
+.item p {
+  color: var(--muted);
+}
+
+.itemMeta {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.78rem;
+}
+
+.published,
+.draft {
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  padding: 4px 8px;
+}
+
+.published {
+  color: #9dffb3;
+}
+
+.draft {
+  color: #ffd36a;
+}
+
+.tags {
+  margin-top: 14px;
+}
+
+.itemActions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.emptyState {
+  border: 1px dashed rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  padding: 28px;
+}
+
+.emptyState p {
+  color: var(--muted);
+}

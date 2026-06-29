@@ -1,13 +1,13 @@
-import { DecorLayers } from "@/components/decor/DecorLayers";
-import { Runner } from "@/components/decor/Runner";
+import { DecorLayers } from "@/features/home/components/DecorLayers";
+import { Runner } from "@/features/home/components/Runner";
 import { Footer } from "@/components/layout/Footer";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { BlogSection } from "@/components/sections/BlogSection";
-import { HistorySection } from "@/components/sections/HistorySection";
-import { VideosSection } from "@/components/sections/VideosSection";
-import { DevSection } from "@/components/sections/DevSection";
-import { JoinSection } from "@/components/sections/JoinSection";
-import { ArcadeEffects } from "@/components/effects/ArcadeEffects";
+import { HeroSection } from "@/features/home/components/HeroSection";
+import { BlogSection } from "@/features/home/components/BlogSection";
+import { HistorySection } from "@/features/home/components/HistorySection";
+import { VideosSection } from "@/features/home/components/VideosSection";
+import { DevSection } from "@/features/home/components/DevSection";
+import { JoinSection } from "@/features/home/components/JoinSection";
+import { ArcadeEffects } from "@/features/home/components/ArcadeEffects";
 
 const Home = () => (
   <>

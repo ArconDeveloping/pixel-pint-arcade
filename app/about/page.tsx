@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import styles from "./AboutPage.module.css";
 
 export const metadata: Metadata = {

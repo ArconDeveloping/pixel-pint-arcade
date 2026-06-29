@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connection } from "next/server";
 
-import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
-import { PostCoverImage } from "@/components/posts/PostCoverImage";
-import { getPublishedPostCount, getPublishedPosts } from "@/data/posts";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
+import { PostCoverImage } from "@/features/blog/components/PostCoverImage";
+import { getPublishedPostCount, getPublishedPosts } from "@/features/blog/data/posts";
 import styles from "./BlogPage.module.css";
 
 export const metadata: Metadata = {
