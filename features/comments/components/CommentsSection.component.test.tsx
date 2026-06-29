@@ -96,4 +96,26 @@ describe("CommentsSection", () => {
       screen.getByRole("button", { name: "Hide replies" }),
     ).toHaveAttribute("aria-expanded", "true");
   });
+
+  it("opens and closes the reply form for signed-in users", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <CommentsSection
+        comments={comments}
+        commentsEnabled
+        currentUser={{ id: "signed-in-user", role: "USER" }}
+        postId="post-1"
+        postSlug="test-post"
+      />,
+    );
+
+    await user.click(screen.getAllByRole("button", { name: "Reply" })[0]);
+
+    expect(screen.getByLabelText("Reply to User One")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Cancel reply" }));
+
+    expect(screen.queryByLabelText("Reply to User One")).not.toBeInTheDocument();
+  });
 });

@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -69,5 +70,20 @@ describe("CommentForm", () => {
 
     expect(screen.getByText("Comment posted.")).toBeInTheDocument();
     expect(onSuccess).toHaveBeenCalled();
+  });
+
+  it("submits the action with the comment form", async () => {
+    const user = userEvent.setup();
+    const action = vi.fn();
+    queueActionState({ ok: false }, { action });
+
+    render(<CommentForm postId="post-1" postSlug="test-post" />);
+
+    await user.type(screen.getByLabelText("Comment"), "A component comment");
+    await user.click(screen.getByRole("button", { name: "Post comment" }));
+
+    await waitFor(() => {
+      expect(action).toHaveBeenCalled();
+    });
   });
 });

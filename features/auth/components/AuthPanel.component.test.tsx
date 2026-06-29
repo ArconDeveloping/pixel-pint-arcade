@@ -51,6 +51,10 @@ describe("AuthPanel", () => {
     });
     expect(router.push).toHaveBeenCalledWith("/account");
     expect(router.refresh).toHaveBeenCalled();
+    expect(screen.getByRole("link", { name: "Create account" })).toHaveAttribute(
+      "href",
+      "/register",
+    );
   });
 
   it("renders sign-up fields and submits account data", async () => {
@@ -72,6 +76,10 @@ describe("AuthPanel", () => {
         callbackURL: "/account",
       });
     });
+    expect(screen.getByRole("link", { name: "I have account" })).toHaveAttribute(
+      "href",
+      "/login",
+    );
   });
 
   it("shows auth errors from the client", async () => {

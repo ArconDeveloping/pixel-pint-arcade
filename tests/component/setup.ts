@@ -11,6 +11,7 @@ afterEach(() => {
 
 vi.mock("@/features/blog/actions/posts", () => ({
   createPostAction: vi.fn(),
+  deletePostAction: vi.fn(),
   updatePostAction: vi.fn(),
 }));
 
