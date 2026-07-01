@@ -73,7 +73,7 @@
   color: #08130d;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .nav {
     align-items: flex-start;
     padding: 14px 0;

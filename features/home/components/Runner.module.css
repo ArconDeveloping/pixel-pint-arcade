@@ -354,7 +354,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .runner {
     width: 48px;
     left: calc(100vw - 72px) !important;

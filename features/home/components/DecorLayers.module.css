@@ -55,9 +55,9 @@
   content: "" !important;
   display: block !important;
   position: fixed !important;
-  left: calc(50% - 96px) !important;
+  left: calc(50% - var(--runner-gap-half)) !important;
   top: calc(var(--break-top) - 2px) !important;
-  width: 192px !important;
+  width: calc(var(--runner-gap-half) * 2) !important;
   height: calc(var(--break-bottom) - var(--break-top) + 4px) !important;
   opacity: var(--road-gap-opacity) !important;
   z-index: 2 !important;
@@ -95,13 +95,13 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .runnerPath {
     left: calc(100% - 48px) !important;
   }
 
   .runnerPath::before {
-    left: calc(100% - 136px) !important;
+    left: calc(100% - 14px - (var(--runner-gap-half) * 2)) !important;
   }
 
   .trackLayer::before,

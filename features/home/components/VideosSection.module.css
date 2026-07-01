@@ -1,6 +1,6 @@
 .videosGrid {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: calc(24px + var(--gate));
+  gap: clamp(96px, 9.333vw, 140px);
 }
 
 .videosGrid > * {
@@ -301,7 +301,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .videosGrid {
     grid-template-columns: 1fr;
     gap: 28px;

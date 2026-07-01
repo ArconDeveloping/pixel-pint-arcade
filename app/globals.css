@@ -34,7 +34,9 @@
   --runner-x: calc(50vw - 28px);
   --runner-hop: 0px;
   --runner-bob: 0px;
-  --gate: clamp(44px, 8vw, 118px);
+  --gate: clamp(44px, 50vw, 118px);
+  --hero-gate: var(--gate);
+  --runner-gap-half: 96px;
   --joy-tilt: 0deg;
   --road-gap-opacity: 0;
   --road-gap-size: 0px;
@@ -183,8 +185,8 @@ main {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: calc(50% - 70px);
-  width: 140px;
+  left: calc(50% - (clamp(96px, 9.333vw, 140px) / 2));
+  width: clamp(96px, 9.333vw, 140px);
   z-index: 2;
   pointer-events: none;
   background:
@@ -305,13 +307,38 @@ h2 {
   transform: translateX(var(--gate));
 }
 
-@media (max-width: 900px) {
+@media (min-width: 992px) and (max-width: 1500px) {
+  :root {
+    --gate: clamp(0px, calc((100vw - 991px) * .14), 72px);
+    --hero-gate: var(--gate);
+    --runner-gap-half: clamp(64px, 6.4vw, 96px);
+    --max: min(1180px, calc(100vw - 28px - (var(--gate) * 2)));
+  }
+}
+
+@media (max-width: 991px) {
   :root {
     --gate: 0px;
+    --hero-gate: 0px;
+    --runner-gap-half: 64px;
   }
 
   .section::before {
-    left: calc(100% - 48px);
+    left: calc(100% - 72px);
+    width: 72px;
+  }
+
+  .wrap {
+    gap: 80px;
+    padding-right: 50px;
+  }
+
+  .pt-\[110px\] {
+    padding-top: 50px;
+  }
+
+  .pb-\[100px\] {
+    padding-bottom: 50px;
   }
 
   .section-title-row {
