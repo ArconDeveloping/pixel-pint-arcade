@@ -13,31 +13,17 @@ const navClassName = (active: boolean) =>
   active ? `${styles.navLink} active` : styles.navLink;
 
 const AccountIcon = () => (
-  <svg
-    className={styles.navIcon}
+  <span
+    className={`${styles.navIcon} ${styles.accountIcon}`}
     aria-hidden="true"
-    viewBox="0 0 24 24"
-    focusable="false"
-  >
-    <path d="M12 4h4v4h-4z" />
-    <path d="M8 8h8v4H8z" />
-    <path d="M6 16h12v4H6z" />
-    <path d="M8 14h8v2H8z" />
-  </svg>
+  />
 );
 
 const SoundIcon = () => (
-  <svg
-    className={styles.navIcon}
+  <span
+    className={`${styles.navIcon} ${styles.soundIcon}`}
     aria-hidden="true"
-    viewBox="0 0 24 24"
-    focusable="false"
-  >
-    <path d="M3 9h4v6H3z" />
-    <path d="M7 7h4v10H7z" />
-    <path d="M13 8h2v8h-2z" />
-    <path d="M17 6h2v12h-2z" />
-  </svg>
+  />
 );
 
 export const TopbarNav = ({ signedIn }: TopbarNavProps) => {

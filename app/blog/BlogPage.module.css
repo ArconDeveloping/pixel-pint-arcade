@@ -204,6 +204,11 @@
 }
 
 @media (max-width: 575px) {
+  .topline,
+  .intro {
+    margin-bottom: 15px;
+  }
+
   .intro p {
     font-size: clamp(16px, 2vw, 20px);
   }

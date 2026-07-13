@@ -124,7 +124,7 @@ export const AuthPanel = ({ mode, googleEnabled }: AuthPanelProps) => {
             </button>
             {googleEnabled ? (
               <button
-                className={styles.googleButton}
+                className={`btn ${styles.googleButton}`}
                 type="button"
                 onClick={handleGoogle}
                 disabled={pending}

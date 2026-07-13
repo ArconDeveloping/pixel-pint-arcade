@@ -40,6 +40,14 @@
   box-shadow: 4px 4px 0 #000;
 }
 
+.logoMarkSvg {
+  display: block;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  shape-rendering: crispEdges;
+}
+
 .navLink,
 .soundBtn {
   display: inline-flex;
@@ -63,8 +71,23 @@
   flex: 0 0 auto;
   width: 24px;
   height: 24px;
-  fill: currentColor;
-  shape-rendering: crispEdges;
+  background: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+}
+
+.accountIcon {
+  mask-image: url("/icons/account.svg");
+  -webkit-mask-image: url("/icons/account.svg");
+}
+
+.soundIcon {
+  mask-image: url("/icons/sound-off.svg");
+  -webkit-mask-image: url("/icons/sound-off.svg");
 }
 
 .navLink:hover,
@@ -85,6 +108,11 @@
   color: #08130d;
 }
 
+.soundBtn:global(.is-on) .soundIcon {
+  mask-image: url("/icons/sound-on.svg");
+  -webkit-mask-image: url("/icons/sound-on.svg");
+}
+
 @media (max-width: 1199px) {
   .navLink:not([data-account-link]) {
     display: none;
@@ -93,13 +121,14 @@
 
 @media (max-width: 991px) {
   .nav {
-    align-items: flex-start;
+    align-items: center;
     padding: 14px 0;
     min-height: auto;
   }
 }
 
 @media (max-width: 699px) {
+
   .navLink[data-account-link],
   .soundBtn {
     width: 44px;
@@ -121,5 +150,11 @@
 
   .navIcon {
     display: block;
+  }
+}
+
+@media (max-width: 575px) {
+  .logo > span {
+    display: none;
   }
 }

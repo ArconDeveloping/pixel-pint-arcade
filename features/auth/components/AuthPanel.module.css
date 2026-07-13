@@ -60,15 +60,10 @@
 }
 
 .googleButton {
-  min-height: 56px;
-  border: 4px solid #260c39;
+  width: 100%;
   background: var(--cyan);
   color: #06131c;
-  box-shadow: 6px 6px 0 #000;
   cursor: pointer;
-  font-family: var(--font-press-start-2p), "Courier New", monospace;
-  font-size: 12px;
-  text-transform: uppercase;
 }
 
 .googleButton:disabled,
