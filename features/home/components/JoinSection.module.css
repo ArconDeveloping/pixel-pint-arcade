@@ -94,3 +94,15 @@
 .jumpSection:global(.is-active) .ctaBox {
   isolation: isolate;
 }
+
+@media (max-width: 991px) {
+  .ctaBox::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .ctaBox::after {
+    content: none !important;
+    display: none !important;
+  }
+}

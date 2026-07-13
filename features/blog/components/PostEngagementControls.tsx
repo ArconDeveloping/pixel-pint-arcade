@@ -31,6 +31,10 @@ export const PostEngagementControls = ({
   signedIn,
 }: PostEngagementControlsProps) => {
   const router = useRouter();
+  const likeLabel = likedByCurrentUser ? "Liked" : "Like";
+  const bookmarkLabel = bookmarkedByCurrentUser
+    ? "Bookmarked"
+    : "Add to bookmarks";
   const [likeState, likeAction, likePending] = useActionState(
     togglePostLikeAction,
     initialState,
@@ -68,28 +72,40 @@ export const PostEngagementControls = ({
       <form action={likeAction}>
         <input name="postId" type="hidden" value={postId} />
         <button
+          aria-label={`${likeLabel}: ${likesCount}`}
           aria-pressed={likedByCurrentUser}
           className={`${styles.action} ${
             likedByCurrentUser ? styles.activeAction : ""
           }`}
           disabled={likePending}
+          title={likeLabel}
           type="submit"
         >
-          {likedByCurrentUser ? "Liked" : "Like"}
-          <span>{likesCount}</span>
+          <span className={styles.actionLabel}>{likeLabel}</span>
+          <span
+            aria-hidden="true"
+            className={`${styles.actionIcon} ${styles.likeIcon}`}
+          />
+          <span className={styles.countValue}>{likesCount}</span>
         </button>
       </form>
       <form action={bookmarkAction}>
         <input name="postId" type="hidden" value={postId} />
         <button
+          aria-label={bookmarkLabel}
           aria-pressed={bookmarkedByCurrentUser}
           className={`${styles.action} ${
             bookmarkedByCurrentUser ? styles.activeAction : ""
           }`}
           disabled={bookmarkPending}
+          title={bookmarkLabel}
           type="submit"
         >
-          {bookmarkedByCurrentUser ? "Bookmarked" : "Add to bookmarks"}
+          <span className={styles.actionLabel}>{bookmarkLabel}</span>
+          <span
+            aria-hidden="true"
+            className={`${styles.actionIcon} ${styles.bookmarkIcon}`}
+          />
         </button>
       </form>
       {likeState.message ? (

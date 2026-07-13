@@ -202,3 +202,48 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 575px) {
+  .topline,
+  .intro {
+    margin-bottom: 15px;
+  }
+
+  .intro p {
+    font-size: clamp(16px, 2vw, 20px);
+  }
+
+  .searchField label {
+    font-size: 9px;
+  }
+
+  .searchField input {
+    font-size: 14px;
+  }
+
+  .coverPlaceholder span {
+    font-size: 9px;
+  }
+
+  .card time,
+  .card span {
+    font-size: 12px;
+  }
+
+  .card h2 {
+    font-size: 16px;
+  }
+
+  .card p,
+  .emptyState p {
+    font-size: 14px;
+  }
+
+  .emptyState h2 {
+    font-size: 20px;
+  }
+
+  .paginationMeta {
+    font-size: 10px;
+  }
+}

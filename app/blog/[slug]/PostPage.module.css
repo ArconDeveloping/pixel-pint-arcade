@@ -40,3 +40,17 @@
   line-height: 1.75;
   white-space: pre-wrap;
 }
+
+@media (max-width: 575px) {
+  .meta {
+    font-size: 14px;
+  }
+
+  .tag {
+    font-size: 10px;
+  }
+
+  .content {
+    font-size: 14px;
+  }
+}

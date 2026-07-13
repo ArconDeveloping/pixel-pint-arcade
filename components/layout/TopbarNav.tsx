@@ -12,6 +12,20 @@ type TopbarNavProps = {
 const navClassName = (active: boolean) =>
   active ? `${styles.navLink} active` : styles.navLink;
 
+const AccountIcon = () => (
+  <span
+    className={`${styles.navIcon} ${styles.accountIcon}`}
+    aria-hidden="true"
+  />
+);
+
+const SoundIcon = () => (
+  <span
+    className={`${styles.navIcon} ${styles.soundIcon}`}
+    aria-hidden="true"
+  />
+);
+
 export const TopbarNav = ({ signedIn }: TopbarNavProps) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -35,11 +49,20 @@ export const TopbarNav = ({ signedIn }: TopbarNavProps) => {
         <a className={styles.navLink} href="#dev" data-nav-link>
           Dev Lab
         </a>
-        <Link className={navClassName(isAccount)} href={accountHref}>
-          {accountLabel}
+        <Link
+          aria-label={accountLabel}
+          className={navClassName(isAccount)}
+          href={accountHref}
+          data-account-link
+        >
+          <AccountIcon />
+          <span className={styles.navLabel}>{accountLabel}</span>
         </Link>
-        <button className={styles.soundBtn} type="button" data-sound-toggle>
-          Sound OFF
+        <button className={styles.soundBtn} type="button" data-sound-toggle aria-label="Sound off">
+          <SoundIcon />
+          <span className={styles.navLabel} data-sound-label>
+            Sound OFF
+          </span>
         </button>
       </div>
     );
@@ -53,8 +76,14 @@ export const TopbarNav = ({ signedIn }: TopbarNavProps) => {
       <Link className={navClassName(isBlog)} href="/blog">
         Blog
       </Link>
-      <Link className={navClassName(isAccount)} href={accountHref}>
-        {accountLabel}
+      <Link
+        aria-label={accountLabel}
+        className={navClassName(isAccount)}
+        href={accountHref}
+        data-account-link
+      >
+        <AccountIcon />
+        <span className={styles.navLabel}>{accountLabel}</span>
       </Link>
     </div>
   );

@@ -73,7 +73,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   };
 
   return (
-    <main className="page-shell">
+    <main className="page-shell blog-page">
       <div className="wrap">
         <div className={`page-topline ${styles.topline}`}>
           <div className="eyebrow">Pixel Pint Arcade Blog</div>

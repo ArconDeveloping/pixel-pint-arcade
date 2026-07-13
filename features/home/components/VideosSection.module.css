@@ -1,6 +1,6 @@
 .videosGrid {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: calc(24px + var(--gate));
+  gap: clamp(96px, 9.333vw, 140px);
 }
 
 .videosGrid > * {
@@ -301,7 +301,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .videosGrid {
     grid-template-columns: 1fr;
     gap: 28px;
@@ -309,5 +309,99 @@
 
   .videoScreen {
     min-height: 330px;
+  }
+
+  .monsterRight {
+    right: auto;
+    left: -80px;
+    transform: none;
+  }
+
+  :global(#videos.battle-on) .monsterLeft.m1 {
+    animation: monsterRunMobile1 1.15s steps(9) .12s forwards, monsterFall .42s steps(4) 1.64s forwards;
+  }
+
+  :global(#videos.battle-on) .monsterLeft.m2 {
+    animation: monsterRunMobile2 1.05s steps(9) .24s forwards, monsterFall .42s steps(4) 1.72s forwards;
+  }
+
+  :global(#videos.battle-on) .monsterRight.m3 {
+    animation: monsterRunMobile3 1.12s steps(9) .16s forwards, monsterFall .42s steps(4) 1.68s forwards;
+  }
+
+  :global(#videos.battle-on) .monsterRight.m4 {
+    animation: monsterRunMobile4 1.02s steps(9) .28s forwards, monsterFall .42s steps(4) 1.78s forwards;
+  }
+}
+
+@keyframes monsterRunMobile1 {
+  0% {
+    left: -80px;
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    left: calc(100vw - 142px);
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes monsterRunMobile2 {
+  0% {
+    left: -80px;
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    left: calc(100vw - 118px);
+    opacity: 1;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes monsterRunMobile3 {
+  0% {
+    left: -80px;
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    left: calc(100vw - 146px);
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes monsterRunMobile4 {
+  0% {
+    left: -80px;
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    left: calc(100vw - 122px);
+    opacity: 1;
+    transform: translateY(5px);
   }
 }

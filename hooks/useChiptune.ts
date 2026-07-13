@@ -12,6 +12,7 @@ const bass = [65.41, 65.41, 98.00, 98.00, 82.41, 82.41, 73.42, 98.00];
 export const useChiptune = () => {
   useEffect(() => {
     const soundBtn = document.querySelector<HTMLButtonElement>('[data-sound-toggle]');
+    const soundLabel = soundBtn?.querySelector<HTMLElement>('[data-sound-label]');
 
     let audioCtx: AudioContext | null = null;
     let musicTimer: ReturnType<typeof setInterval> | null = null;
@@ -50,7 +51,12 @@ export const useChiptune = () => {
       if (!audioCtx) audioCtx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       soundOn = true;
       if (soundBtn) {
-        soundBtn.textContent = 'Sound ON';
+        if (soundLabel) {
+          soundLabel.textContent = 'Sound ON';
+        } else {
+          soundBtn.textContent = 'Sound ON';
+        }
+        soundBtn.setAttribute('aria-label', 'Sound on');
         soundBtn.classList.add('is-on');
       }
       if (musicTimer) clearInterval(musicTimer);
@@ -61,7 +67,12 @@ export const useChiptune = () => {
     function stopMusic() {
       soundOn = false;
       if (soundBtn) {
-        soundBtn.textContent = 'Sound OFF';
+        if (soundLabel) {
+          soundLabel.textContent = 'Sound OFF';
+        } else {
+          soundBtn.textContent = 'Sound OFF';
+        }
+        soundBtn.setAttribute('aria-label', 'Sound off');
         soundBtn.classList.remove('is-on');
       }
       if (musicTimer) clearInterval(musicTimer);

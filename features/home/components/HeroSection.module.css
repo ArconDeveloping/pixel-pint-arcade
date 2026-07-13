@@ -1,6 +1,7 @@
 .heroGrid {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: calc(44px + var(--gate));
+  gap: clamp(96px, 9.333vw, 140px);
+  padding-top: 80px;
 }
 
 .heroGrid > * {
@@ -8,11 +9,11 @@
 }
 
 :global(.section.is-active) .heroGrid > :first-child {
-  transform: translateX(calc(var(--gate) * -1));
+  transform: translateX(calc(var(--hero-gate) * -1));
 }
 
 :global(.section.is-active) .heroGrid > :last-child {
-  transform: translateX(var(--gate));
+  transform: translateX(var(--hero-gate));
 }
 
 .floatingPixels span {
@@ -208,13 +209,35 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .heroGrid {
     grid-template-columns: 1fr;
     gap: 28px;
   }
 
+  .heroGrid > * {
+    width: 100%;
+  }
+
   .barScene {
     min-height: 330px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1198px) {
+  .heroGrid > * {
+    width: min(100%, clamp(432px, 44vw, 520px));
+  }
+
+  .heroGrid > :first-child {
+    justify-self: end;
+  }
+
+  .heroGrid > :last-child {
+    justify-self: start;
+  }
+
+  .barScene {
+    min-height: clamp(330px, 36vw, 430px);
   }
 }

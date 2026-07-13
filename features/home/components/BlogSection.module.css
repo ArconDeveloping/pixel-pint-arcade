@@ -3,13 +3,19 @@
   inset: 0;
   z-index: 4;
   pointer-events: none;
+  --joystick-width: clamp(82px, 7.2vw, 108px);
+  --joystick-height: calc(var(--joystick-width) * 2.5);
+  --joystick-hidden-top: calc(var(--joystick-height) * -1);
+  --joystick-bounce-top: calc(var(--joystick-width) * -.24);
+  --joystick-settle-top: calc(var(--joystick-width) * -.074);
+  --joystick-center-offset: clamp(170px, 17.333vw, 260px);
 }
 
 .joystick {
   position: absolute;
-  top: -260px;
-  width: 108px;
-  height: 270px;
+  top: var(--joystick-hidden-top);
+  width: var(--joystick-width);
+  height: var(--joystick-height);
   transform-origin: top center;
   transform: rotate(0deg);
   pointer-events: auto;
@@ -31,12 +37,12 @@
 }
 
 .j3 {
-  left: calc(50% - 260px);
+  left: calc(50% - var(--joystick-center-offset));
   animation-delay: .34s, 1.39s;
 }
 
 .j4 {
-  right: calc(50% - 260px);
+  right: calc(50% - var(--joystick-center-offset));
   animation-delay: .48s, 1.53s;
 }
 
@@ -46,7 +52,7 @@
   left: 50%;
   top: 0;
   width: 6px;
-  height: 186px;
+  height: calc(var(--joystick-height) * .69);
   background: #120719;
   border-left: 3px solid #412167;
   border-right: 3px solid #000;
@@ -57,9 +63,9 @@
   content: "";
   position: absolute;
   left: 50%;
-  top: 168px;
-  width: 102px;
-  height: 70px;
+  top: calc(var(--joystick-height) * .62);
+  width: calc(var(--joystick-width) * .94);
+  height: calc(var(--joystick-width) * .65);
   transform: translateX(-50%) rotate(var(--joy-tilt));
   background:
     linear-gradient(#05020a 0 0) 18px 31px / 34px 10px no-repeat,
@@ -284,7 +290,7 @@
 
 @keyframes joystickDrop {
   0% {
-    top: -260px;
+    top: var(--joystick-hidden-top);
     transform: rotate(0deg);
   }
 
@@ -294,7 +300,7 @@
   }
 
   62% {
-    top: -26px;
+    top: var(--joystick-bounce-top);
     transform: rotate(-15deg);
   }
 
@@ -304,7 +310,7 @@
   }
 
   90% {
-    top: -8px;
+    top: var(--joystick-settle-top);
     transform: rotate(-5deg);
   }
 
@@ -325,10 +331,26 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .cards,
   .stats {
     grid-template-columns: 1fr;
+  }
+
+  :global(#blog.is-active) .featureCard:global(.is-visible):nth-child(2),
+  :global(#blog.is-active) .featureCard:global(.is-visible):nth-child(2):global(.is-jump-target),
+  :global(.section.is-active) .stats > :nth-child(2) {
+    transform: none !important;
+  }
+
+  :global(#blog.is-active) .featureCard:global(.is-visible):nth-child(2)::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .obstacleCard:global(.is-jump-target)::after {
+    content: none !important;
+    display: none !important;
   }
 
   .joystick {
