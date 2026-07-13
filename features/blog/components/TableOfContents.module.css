@@ -40,3 +40,13 @@
   border-left-color: var(--cyan);
   margin-left: 18px;
 }
+
+@media (max-width: 575px) {
+  .toc h2 {
+    font-size: 12px;
+  }
+
+  .toc a {
+    font-size: 14px;
+  }
+}

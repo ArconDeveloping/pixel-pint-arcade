@@ -101,7 +101,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // const postUrl = getPostUrl(post.slug);
 
   return (
-    <main className="page-shell">
+    <main className="page-shell blog-page">
       <div className="wrap">
         <article>
           <Breadcrumbs

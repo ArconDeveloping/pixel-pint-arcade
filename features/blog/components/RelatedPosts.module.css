@@ -72,3 +72,21 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 575px) {
+  .header h2 {
+    font-size: clamp(20px, 3vw, 32px);
+  }
+
+  .card time {
+    font-size: 12px;
+  }
+
+  .card h3 {
+    font-size: 14px;
+  }
+
+  .card p {
+    font-size: 14px;
+  }
+}

@@ -40,3 +40,17 @@
 .paragraph:last-child {
   margin-bottom: 0;
 }
+
+@media (max-width: 575px) {
+  .content {
+    font-size: 14px;
+  }
+
+  .content h2 {
+    font-size: clamp(18px, 2.4vw, 28px);
+  }
+
+  .content h3 {
+    font-size: clamp(14px, 2vw, 20px);
+  }
+}

@@ -328,11 +328,6 @@ h2 {
     width: 72px;
   }
 
-  .wrap {
-    gap: 80px;
-    padding-right: 50px;
-  }
-
   .pt-\[110px\] {
     padding-top: 50px;
   }
@@ -348,6 +343,53 @@ h2 {
   .page-topline {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 991px) {
+  .home-page .wrap {
+    gap: 80px;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 575px) {
+  .btn {
+    min-height: 48px;
+    padding: 0 15px;
+    font-size: 10px;
+  }
+
+  .blog-page {
+    font-size: 14px;
+  }
+
+  .blog-page h1 {
+    font-size: clamp(28px, calc(5.8vw - 2px), 72px);
+  }
+
+  .blog-page h2 {
+    font-size: clamp(22px, calc(3.6vw - 2px), 48px);
+  }
+
+  .blog-page .btn {
+    font-size: 8px;
+  }
+
+  .blog-page .pixel-link {
+    font-size: 10px;
+  }
+
+  .blog-page .eyebrow {
+    font-size: 12px;
+  }
+
+  .blog-page .tag-chip {
+    font-size: 11px;
+  }
+
+  .blog-page [aria-label="Breadcrumb"] li {
+    font-size: 9px;
   }
 }
 

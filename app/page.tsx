@@ -13,7 +13,7 @@ const Home = () => (
   <>
     <DecorLayers />
     <Runner />
-    <main>
+    <main className="home-page">
       <HeroSection />
       <BlogSection />
       <HistorySection />

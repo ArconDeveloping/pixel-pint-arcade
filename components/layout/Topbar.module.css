@@ -42,6 +42,9 @@
 
 .navLink,
 .soundBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 3px solid #5b2c7e;
   background: #17082a;
   color: var(--ink);
@@ -53,6 +56,15 @@
   transition: transform .15s ease, background .15s ease, color .15s ease;
   font-family: var(--font-press-start-2p), "Courier New", monospace;
   font-size: 12px;
+}
+
+.navIcon {
+  display: none;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  shape-rendering: crispEdges;
 }
 
 .navLink:hover,
@@ -73,14 +85,41 @@
   color: #08130d;
 }
 
+@media (max-width: 1199px) {
+  .navLink:not([data-account-link]) {
+    display: none;
+  }
+}
+
 @media (max-width: 991px) {
   .nav {
     align-items: flex-start;
     padding: 14px 0;
     min-height: auto;
   }
+}
 
-  .navLink {
-    display: none;
+@media (max-width: 699px) {
+  .navLink[data-account-link],
+  .soundBtn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+  }
+
+  .navLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .navIcon {
+    display: block;
   }
 }

@@ -77,3 +77,19 @@
   color: var(--red);
   font-weight: 700;
 }
+
+@media (max-width: 575px) {
+  .action,
+  .authLink,
+  .count {
+    font-size: 8px;
+  }
+
+  .action {
+    font-size: 8px;
+  }
+
+  .error {
+    font-size: 14px;
+  }
+}

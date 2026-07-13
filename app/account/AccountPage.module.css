@@ -176,18 +176,28 @@
   margin-top: 18px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .sectionHeader {
     align-items: flex-start;
     flex-direction: column;
   }
 
   .hero {
-    grid-template-columns: auto minmax(0, 1fr);
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .hero > div:nth-child(2) {
+    min-width: 0;
+  }
+
+  .hero :global(.eyebrow) {
+    display: none;
   }
 
   .signOut {
-    grid-column: 1 / -1;
-    justify-self: end;
+    flex-shrink: 0;
+    margin-left: auto;
   }
 }
