@@ -1,0 +1,47 @@
+name: pixel-pint-arcade-local
+
+services:
+  db:
+    image: postgres:17
+    container_name: pixel_pint_arcade_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pixel_pint
+      POSTGRES_PASSWORD: pixel_pint_dev_password
+      POSTGRES_DB: pixel_pint_arcade
+    ports:
+      - "${APP_DATABASE_PORT:-5435}:5432"
+    volumes:
+      - pixel_pint_arcade_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pixel_pint -d pixel_pint_arcade"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  app:
+    build:
+      context: .
+    container_name: pixel_pint_arcade_app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://pixel_pint:pixel_pint_dev_password@db:5432/pixel_pint_arcade?schema=public
+      BETTER_AUTH_SECRET: docker-dev-secret-change-me-before-production
+      BETTER_AUTH_URL: http://localhost:${APP_PORT:-3000}
+      NEXT_TELEMETRY_DISABLED: "1"
+      WATCHPACK_POLLING: "true"
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      - .:/app
+      - pixel_pint_arcade_node_modules:/app/node_modules
+      - pixel_pint_arcade_next:/app/.next
+      - ./public/uploads:/app/public/uploads
+
+volumes:
+  pixel_pint_arcade_postgres_data:
+  pixel_pint_arcade_node_modules:
+  pixel_pint_arcade_next:

@@ -1,0 +1,13 @@
+.git
+.next
+app/generated/prisma
+coverage
+node_modules
+npm-debug.log*
+playwright-report
+public/uploads/*
+test-results
+.env
+.env.*
+!.env.example
+!.env.test.example
